@@ -20,7 +20,6 @@ export const fetchPopularMovies = async (page = 1) => {
       totalPage: data.totalPage,
     };
   } catch (error) {
-    console.log("API ERROR DETAILS", error.response?.data);
     throw new Error("Couldn't get any populer film");
   }
 };
