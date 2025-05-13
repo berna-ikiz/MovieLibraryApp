@@ -4,7 +4,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  Touchable,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -18,6 +17,7 @@ import { MovieType, RootStackParamList } from "../utils/movieType";
 import Colors from "../utils/colors";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import Header from "../components/Header";
 
 export type HomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -67,7 +67,7 @@ const HomeScreen = () => {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <StatusBar barStyle="dark-content" backgroundColor={Colors.black} />
+        <Header title="🎬 Movie Library" showBackButton={false} />
         <ActivityIndicator size="large" color={Colors.primary} />
       </View>
     );
@@ -75,8 +75,7 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor={Colors.black} />
-      <Text style={styles.header}>🎬 Movie Library</Text>
+      <Header title="🎬 Movie Library" showBackButton={false} />
       <FlatList
         data={movies}
         keyExtractor={(item) => item.id.toString()}
@@ -165,13 +164,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: Colors.black,
-  },
-  header: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: Colors.primaryDark,
-    paddingTop: 60,
-    paddingBottom: 10,
-    textAlign: "center",
   },
 });

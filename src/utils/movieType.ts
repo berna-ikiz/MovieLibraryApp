@@ -10,9 +10,15 @@ export type MovieType = {
   genre_ids: number[];
   original_language: string;
   adult: boolean;
+  vote_avarage: number;
 };
 
 export type RootStackParamList = {
   HomeScreen: undefined;
   Details: { movie: MovieType };
+};
+
+export type HeaderType = {
+  title: string;
+  showBackButton: boolean;
 };

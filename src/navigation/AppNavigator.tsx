@@ -6,10 +6,11 @@ import DetailsScreen from "../screens/DetailsScreen";
 import FavoritesScreen from "../screens/FavoritesScreen";
 import SearchScreen from "../screens/SearchScreen";
 import ProfileScreen from "../screens/ProfileScreen";
+import { RootStackParamList } from "../utils/movieType";
 
 const Tab = createBottomTabNavigator();
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 const HomeStack = () => {
   return (
@@ -19,7 +20,11 @@ const HomeStack = () => {
         component={HomeScreen}
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="Details" component={DetailsScreen} />
+      <Stack.Screen
+        name="Details"
+        component={DetailsScreen}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };
