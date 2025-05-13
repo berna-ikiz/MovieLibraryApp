@@ -16,9 +16,16 @@ const moviesSlice = createSlice({
     setMovies: (state, action: PayloadAction<{ movies: MovieType[] }>) => {
       state.movies = [...state.movies, ...action.payload.movies];
     },
+    appendMovies: (state, action: PayloadAction<{ movies: MovieType[] }>) => {
+      const newMovies = action.payload.movies;
+      const existingIds = new Set(state.movies.map((m) => m.id));
+      const filteredMovies = newMovies.filter((m) => !existingIds.has(m.id));
+      console.log("here ", filteredMovies);
+      state.movies = [...state.movies, ...filteredMovies];
+    },
   },
 });
 
-export const { setMovies } = moviesSlice.actions;
+export const { setMovies, appendMovies } = moviesSlice.actions;
 
 export default moviesSlice.reducer;

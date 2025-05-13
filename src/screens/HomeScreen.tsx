@@ -2,7 +2,7 @@ import { ActivityIndicator, Image, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { fetchPopularMovies } from "../services/movieApi";
 import { useDispatch, useSelector } from "react-redux";
-import { setMovies } from "../state/slices/moviesSlice";
+import { appendMovies, setMovies } from "../state/slices/moviesSlice";
 import { FlatList } from "react-native-gesture-handler";
 import { RootState } from "../state/movieStore";
 import { MovieType } from "../utils/movieType";
@@ -11,11 +11,12 @@ import Colors from "../utils/colors";
 const HomeScreen = () => {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [fetchingMore, setFetchingMore] = useState(false);
   const dispatch = useDispatch();
   const movies = useSelector((state: RootState) => state.moviesData.movies);
 
   useEffect(() => {
-    const getMovies = async () => {
+    const loadInitialMovies = async () => {
       try {
         const data = await fetchPopularMovies(page);
         dispatch(setMovies({ movies: data.movies }));
@@ -26,29 +27,50 @@ const HomeScreen = () => {
         setLoading(false);
       }
     };
-    getMovies();
-  }, [page]);
+    loadInitialMovies();
+  }, []);
+
+  const loadMoreMovies = async () => {
+    if (fetchingMore) return;
+    setFetchingMore(true);
+    try {
+      const nextPage = page + 1;
+      const data = await fetchPopularMovies(nextPage);
+      dispatch(appendMovies({ movies: data.movies }));
+      console.log(data);
+      setPage(nextPage);
+    } catch (error) {
+      //TODO toast message
+      console.error("Load more error", error);
+    } finally {
+      setFetchingMore(false);
+    }
+  };
+
+  const load = () => {
+    return <ActivityIndicator size="large" color={Colors.primary} />;
+  };
 
   if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color={Colors.primary} />
-      </View>
-    );
+    load();
   }
+
   return (
     <View style={styles.container}>
       <FlatList
         data={movies}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => RenderItem({ item })}
+        onEndReached={loadMoreMovies}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={fetchingMore ? load() : null}
       />
     </View>
   );
 };
 
 const RenderItem = ({ item }: { item: MovieType }) => {
-  console.log({ item });
+  const releaseYear = item.release_date?.split("-")[0] || "N/A";
   return (
     <View style={styles.movieItemContainer}>
       <View style={styles.movieCard}>
@@ -58,7 +80,7 @@ const RenderItem = ({ item }: { item: MovieType }) => {
         />
         <View style={styles.movieCardTextContainer}>
           <Text style={styles.title}>{item.title}</Text>
-          <Text style={styles.title}>{item.release_date}</Text>
+          <Text style={styles.title}>{releaseYear}</Text>
         </View>
       </View>
       <View style={styles.movieItemDevider}></View>
