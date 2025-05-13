@@ -11,3 +11,8 @@ export type MovieType = {
   original_language: string;
   adult: boolean;
 };
+
+export type RootStackParamList = {
+  HomeScreen: undefined;
+  Details: { movie: MovieType };
+};

@@ -1,12 +1,28 @@
-import { ActivityIndicator, Image, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Image,
+  StatusBar,
+  StyleSheet,
+  Text,
+  Touchable,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { fetchPopularMovies } from "../services/movieApi";
 import { useDispatch, useSelector } from "react-redux";
 import { appendMovies, setMovies } from "../state/slices/moviesSlice";
 import { FlatList } from "react-native-gesture-handler";
 import { RootState } from "../state/movieStore";
-import { MovieType } from "../utils/movieType";
+import { MovieType, RootStackParamList } from "../utils/movieType";
 import Colors from "../utils/colors";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+
+export type HomeScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "HomeScreen"
+>;
 
 const HomeScreen = () => {
   const [loading, setLoading] = useState(true);
@@ -14,6 +30,7 @@ const HomeScreen = () => {
   const [fetchingMore, setFetchingMore] = useState(false);
   const dispatch = useDispatch();
   const movies = useSelector((state: RootState) => state.moviesData.movies);
+  const navigation = useNavigation<HomeScreenNavigationProp>();
 
   useEffect(() => {
     const loadInitialMovies = async () => {
@@ -47,42 +64,61 @@ const HomeScreen = () => {
     }
   };
 
-  const load = () => {
-    return <ActivityIndicator size="large" color={Colors.primary} />;
-  };
-
   if (loading) {
-    load();
+    return (
+      <View style={styles.loadingContainer}>
+        <StatusBar barStyle="dark-content" backgroundColor={Colors.black} />
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
   }
 
   return (
     <View style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor={Colors.black} />
+      <Text style={styles.header}>🎬 Movie Library</Text>
       <FlatList
         data={movies}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => RenderItem({ item })}
+        renderItem={({ item }) => RenderItem({ item, navigation })}
         onEndReached={loadMoreMovies}
         onEndReachedThreshold={0.5}
-        ListFooterComponent={fetchingMore ? load() : null}
+        ListFooterComponent={
+          fetchingMore ? (
+            <ActivityIndicator size="small" color={Colors.primary} />
+          ) : null
+        }
       />
     </View>
   );
 };
 
-const RenderItem = ({ item }: { item: MovieType }) => {
+const RenderItem = ({
+  item,
+  navigation,
+}: {
+  item: MovieType;
+  navigation: HomeScreenNavigationProp;
+}) => {
   const releaseYear = item.release_date?.split("-")[0] || "N/A";
   return (
     <View style={styles.movieItemContainer}>
-      <View style={styles.movieCard}>
-        <Image
-          source={{ uri: `https://image.tmdb.org/t/p/w500${item.poster_path}` }}
-          style={styles.poster}
-        />
-        <View style={styles.movieCardTextContainer}>
-          <Text style={styles.title}>{item.title}</Text>
-          <Text style={styles.title}>{releaseYear}</Text>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Details", { movie: item })}
+      >
+        <View style={styles.movieCard}>
+          <Image
+            source={{
+              uri: `https://image.tmdb.org/t/p/w500${item.poster_path}`,
+            }}
+            style={styles.poster}
+          />
+          <View style={styles.movieCardTextContainer}>
+            <Text style={styles.title}>{item.title}</Text>
+            <Text style={styles.title}>{releaseYear}</Text>
+          </View>
         </View>
-      </View>
+      </TouchableOpacity>
       <View style={styles.movieItemDevider}></View>
     </View>
   );
@@ -129,5 +165,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: Colors.black,
+  },
+  header: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: Colors.primaryDark,
+    paddingTop: 60,
+    paddingBottom: 10,
+    textAlign: "center",
   },
 });

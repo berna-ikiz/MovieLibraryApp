@@ -4,7 +4,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "../screens/HomeScreen";
 import DetailsScreen from "../screens/DetailsScreen";
 import FavoritesScreen from "../screens/FavoritesScreen";
-import { createStaticNavigation } from "@react-navigation/native";
 import SearchScreen from "../screens/SearchScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 
@@ -31,7 +30,7 @@ const AppNavigator = () => {
       <Tab.Screen
         name="HomeTab"
         component={HomeStack}
-        options={{ title: "Home" }}
+        options={{ headerShown: false }}
       />
       <Tab.Screen name="Favorites" component={FavoritesScreen} />
       <Tab.Screen name="Search" component={SearchScreen} />
