@@ -1,0 +1,13 @@
+node_modules/
+ios/Pods/
+.env
+.env.*
+Gemfile.lock
+.bundle/
+.vscode/
+ios/.xcode.env
+ios/.xcode.env.local
+ios/*.xcworkspace/
+ios/build/
+build/
+vendor/

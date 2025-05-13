@@ -1,10 +1,15 @@
-import React from 'react';
-import {Text,View} from 'react-native';
+import React from "react";
+import { View } from "react-native";
+import Navigation from "./navigation/AppNavigator";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { NavigationContainer } from "@react-navigation/native";
 
 export default () => {
-    return (
-        <View>
-            <Text>IMPLEMENT ME!</Text>
-        </View>
-    )
-}
+  return (
+    <GestureHandlerRootView>
+      <NavigationContainer>
+        <Navigation />
+      </NavigationContainer>
+    </GestureHandlerRootView>
+  );
+};
