@@ -9,6 +9,7 @@ import React from "react";
 import Colors from "../utils/colors";
 import { HeaderType } from "../utils/movieType";
 import { useNavigation } from "@react-navigation/native";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 const Header = ({ title, showBackButton }: HeaderType) => {
   const navigation = useNavigation();
@@ -21,7 +22,7 @@ const Header = ({ title, showBackButton }: HeaderType) => {
             onPress={() => navigation.goBack()}
             style={styles.backButton}
           >
-            <Text style={{ color: Colors.white }}>Back</Text>
+            <Icon name="keyboard-backspace" size={24} color={Colors.primary} />
           </TouchableOpacity>
         )}
         <Text style={styles.headerTitle}>{title}</Text>
@@ -41,6 +42,7 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
     alignItems: "center",
     justifyContent: "center",
+    flexDirection: "row",
   },
   headerTitle: {
     fontSize: 20,
@@ -48,6 +50,8 @@ const styles = StyleSheet.create({
     color: Colors.primaryDark,
   },
   backButton: {
-    marginRight: 10,
+    position: "absolute",
+    left: 16,
+    top: 60,
   },
 });
