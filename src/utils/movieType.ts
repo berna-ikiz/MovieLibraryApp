@@ -12,6 +12,7 @@ export type MovieType = {
   adult: boolean;
   vote_average: number;
 };
+
 export type MovieDetailType = {
   id: number;
   title: string;
@@ -20,6 +21,15 @@ export type MovieDetailType = {
   release_date: string;
   vote_average: number;
   genres?: { id: number; name: string }[];
+};
+
+export type castMemberType = {
+  id: number;
+  name: string;
+  character: string;
+  profile_path: string | null;
+  cast_id?: number;
+  order?: number;
 };
 
 export type RootStackParamList = {

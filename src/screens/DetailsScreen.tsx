@@ -1,7 +1,11 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { RouteProp } from "@react-navigation/native";
-import { MovieDetailType, RootStackParamList } from "../utils/movieType";
+import {
+  castMemberType,
+  MovieDetailType,
+  RootStackParamList,
+} from "../utils/movieType";
 import { ScrollView } from "react-native-gesture-handler";
 import Colors from "../utils/colors";
 import Header from "../components/Header";
@@ -16,7 +20,7 @@ type Props = {
 
 const DetailsScreen = ({ route }: Props) => {
   const [movie, setMovie] = useState<MovieDetailType | null>(null);
-  const [cast, setCast] = useState<MovieDetailType | null>(null);
+  const [cast, setCast] = useState<castMemberType[] | []>([]);
   const [isloading, setIsLoading] = useState(true);
   const { movieId } = route.params;
 
@@ -79,9 +83,40 @@ const DetailsScreen = ({ route }: Props) => {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ paddingBottom: 24 }}
           >
-            <Text style={styles.description}>{movie.overview}</Text>
+            <Text
+              style={movie.overview ? styles.description : styles.noDescription}
+            >
+              {movie.overview ? movie.overview : "NO DESCRIPTION"}
+            </Text>
           </ScrollView>
         </>
+      )}
+      {cast && (
+        <View>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={styles.castScroll}
+          >
+            {cast.map((person) => (
+              <View style={styles.castItem}>
+                <Image
+                  source={
+                    person.profile_path
+                      ? {
+                          uri: `https://image.tmdb.org/t/p/w185${person.profile_path}`,
+                        }
+                      : require("../assests/no-image.webp")
+                  }
+                  style={styles.castImage}
+                />
+                <Text style={styles.castName} numberOfLines={1}>
+                  {person.name}
+                </Text>
+              </View>
+            ))}
+          </ScrollView>
+        </View>
       )}
     </View>
   );
@@ -119,6 +154,16 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     textAlign: "justify",
   },
+  noDescription: {
+    textAlign: "center",
+    color: Colors.gray800,
+    fontSize: 24,
+    fontWeight: "bold",
+    textShadowColor: Colors.gray800,
+    textShadowOffset: { width: 0, height: 2 },
+    opacity: 0.4,
+    marginTop: 80,
+  },
   voteText: {
     color: Colors.white,
     fontWeight: "bold",
@@ -152,5 +197,24 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
     textAlign: "center",
+  },
+  castScroll: { paddingLeft: 16 },
+  castItem: {
+    alignItems: "center",
+    width: 100,
+  },
+  castImage: {
+    width: 70,
+    height: 110,
+    borderRadius: 8,
+    marginBottom: 6,
+    borderWidth: 1,
+    borderColor: Colors.gray300,
+  },
+  castName: {
+    color: Colors.white,
+    fontWeight: "bold",
+    textAlign: "center",
+    fontSize: 12,
   },
 });
