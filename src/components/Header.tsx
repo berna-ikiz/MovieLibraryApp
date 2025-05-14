@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    color: Colors.primaryDark,
+    color: Colors.primary,
   },
   backButton: {
     position: "absolute",

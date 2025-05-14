@@ -6,7 +6,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import Colors from "../utils/colors";
 import Header from "../components/Header";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { fetchMovieDetails } from "../services/movieApi";
+import { fetchCastDetails, fetchMovieDetails } from "../services/movieApi";
 import Loading from "../components/Loading";
 
 type DetailsScreenRouteProp = RouteProp<RootStackParamList, "Details">;
@@ -16,14 +16,18 @@ type Props = {
 
 const DetailsScreen = ({ route }: Props) => {
   const [movie, setMovie] = useState<MovieDetailType | null>(null);
+  const [cast, setCast] = useState<MovieDetailType | null>(null);
   const [isloading, setIsLoading] = useState(true);
   const { movieId } = route.params;
 
   useEffect(() => {
     const getMovieDetails = async () => {
       try {
-        const data = await fetchMovieDetails(movieId);
-        setMovie(data.movieDetails);
+        const movieData = await fetchMovieDetails(movieId);
+        const castData = await fetchCastDetails(movieId);
+        setMovie(movieData.movieDetails);
+        setCast(castData.castData);
+        console.log(castData);
         setIsLoading(false);
       } catch (error) {
         console.error("Failed to fetch movie details:", error);
@@ -52,11 +56,24 @@ const DetailsScreen = ({ route }: Props) => {
           />
           <Text style={styles.movieTitle}>{movie.title}</Text>
           <View style={styles.voteContainer}>
-            <Icon name="heart-outline" size={34} color={Colors.primaryDark} />
+            <Icon name="heart-outline" size={34} color={Colors.primary} />
             <Text style={styles.voteText}>
               {movie.vote_average} / {releaseYear}
             </Text>
           </View>
+          {cast && (
+            <ScrollView
+              horizontal
+              style={styles.genreScroll}
+              showsHorizontalScrollIndicator={false}
+            >
+              {movie.genres?.map((genre) => (
+                <View style={styles.genreBox}>
+                  <Text style={styles.genreText}>{genre.name}</Text>
+                </View>
+              ))}
+            </ScrollView>
+          )}
           <ScrollView
             style={styles.descriptionScroll}
             showsVerticalScrollIndicator={false}
@@ -114,5 +131,26 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginVertical: 5,
     gap: 5,
+  },
+  genreScroll: {
+    marginVertical: 5,
+    paddingLeft: 16,
+    maxHeight: 40,
+  },
+  genreBox: {
+    backgroundColor: Colors.primary,
+    borderRadius: 20,
+    paddingHorizontal: 14,
+    paddingVertical: 6,
+    marginRight: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "flex-start",
+  },
+  genreText: {
+    color: Colors.white,
+    fontSize: 14,
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });

@@ -33,3 +33,15 @@ export const fetchMovieDetails = async (movieId: Number) => {
     throw new Error("Couldn't get the film details.");
   }
 };
+
+export const fetchCastDetails = async (movieId: Number) => {
+  try {
+    const { data } = await api.get(`/movie/${movieId}/credits`);
+    console.log(data);
+    return {
+      castData: data.cast,
+    };
+  } catch (error) {
+    throw new Error("Couldn't get the cast details.");
+  }
+};
