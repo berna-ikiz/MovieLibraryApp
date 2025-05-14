@@ -11,3 +11,8 @@ ios/*.xcworkspace/
 ios/build/
 build/
 vendor/
+android/.gradle/
+android/.kotlin/
+android/app/.cxx/
+android/build/
+android/app/build/

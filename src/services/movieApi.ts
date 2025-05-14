@@ -14,12 +14,22 @@ export const fetchPopularMovies = async (page = 1) => {
     const { data } = await api.get("/movie/popular", {
       params: { page },
     });
-    console.log("data", data);
     return {
       movies: data.results,
       totalPage: data.totalPage,
     };
   } catch (error) {
-    throw new Error("Couldn't get any populer film");
+    throw new Error("Couldn't get any film.");
+  }
+};
+
+export const fetchMovieDetails = async (movieId: Number) => {
+  try {
+    const { data } = await api.get(`/movie/${movieId}`);
+    return {
+      movieDetails: data,
+    };
+  } catch (error) {
+    throw new Error("Couldn't get the film details.");
   }
 };

@@ -9,7 +9,7 @@ import React from "react";
 import Colors from "../utils/colors";
 import { HeaderType } from "../utils/movieType";
 import { useNavigation } from "@react-navigation/native";
-import Icon from "react-native-vector-icons/MaterialIcons";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 const Header = ({ title, showBackButton }: HeaderType) => {
   const navigation = useNavigation();

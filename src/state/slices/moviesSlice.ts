@@ -20,7 +20,6 @@ const moviesSlice = createSlice({
       const newMovies = action.payload.movies;
       const existingIds = new Set(state.movies.map((m) => m.id));
       const filteredMovies = newMovies.filter((m) => !existingIds.has(m.id));
-      console.log("here ", filteredMovies);
       state.movies = [...state.movies, ...filteredMovies];
     },
   },

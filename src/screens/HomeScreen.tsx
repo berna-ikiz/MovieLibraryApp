@@ -1,7 +1,6 @@
 import {
   ActivityIndicator,
   Image,
-  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -18,6 +17,7 @@ import Colors from "../utils/colors";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import Header from "../components/Header";
+import Loading from "../components/Loading";
 
 export type HomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -25,7 +25,7 @@ export type HomeScreenNavigationProp = StackNavigationProp<
 >;
 
 const HomeScreen = () => {
-  const [loading, setLoading] = useState(true);
+  const [isloading, setIsLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [fetchingMore, setFetchingMore] = useState(false);
   const dispatch = useDispatch();
@@ -41,7 +41,7 @@ const HomeScreen = () => {
         //TODO: Toast message
         console.error("API error", error);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
     loadInitialMovies();
@@ -54,7 +54,6 @@ const HomeScreen = () => {
       const nextPage = page + 1;
       const data = await fetchPopularMovies(nextPage);
       dispatch(appendMovies({ movies: data.movies }));
-      console.log(data);
       setPage(nextPage);
     } catch (error) {
       //TODO toast message
@@ -64,13 +63,8 @@ const HomeScreen = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <Header title="🎬 Movie Library" showBackButton={false} />
-        <ActivityIndicator size="large" color={Colors.primary} />
-      </View>
-    );
+  if (isloading) {
+    return <Loading title="🎬 Movie Library" />;
   }
 
   return (
@@ -103,7 +97,7 @@ const RenderItem = ({
   return (
     <View style={styles.movieItemContainer}>
       <TouchableOpacity
-        onPress={() => navigation.navigate("Details", { movie: item })}
+        onPress={() => navigation.navigate("Details", { movieId: item.id })}
       >
         <View style={styles.movieCard}>
           <Image

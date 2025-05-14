@@ -10,12 +10,21 @@ export type MovieType = {
   genre_ids: number[];
   original_language: string;
   adult: boolean;
-  vote_avarage: number;
+  vote_average: number;
+};
+export type MovieDetailType = {
+  id: number;
+  title: string;
+  overview: string;
+  poster_path: string;
+  release_date: string;
+  vote_average: number;
+  genres?: { id: number; name: string }[];
 };
 
 export type RootStackParamList = {
   HomeScreen: undefined;
-  Details: { movie: MovieType };
+  Details: { movieId: number };
 };
 
 export type HeaderType = {
