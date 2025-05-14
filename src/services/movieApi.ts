@@ -37,7 +37,6 @@ export const fetchMovieDetails = async (movieId: Number) => {
 export const fetchCastDetails = async (movieId: Number) => {
   try {
     const { data } = await api.get(`/movie/${movieId}/credits`);
-    console.log(data);
     return {
       castData: data.cast,
     };

@@ -31,7 +31,6 @@ const DetailsScreen = ({ route }: Props) => {
         const castData = await fetchCastDetails(movieId);
         setMovie(movieData.movieDetails);
         setCast(castData.castData);
-        console.log(castData);
         setIsLoading(false);
       } catch (error) {
         console.error("Failed to fetch movie details:", error);
