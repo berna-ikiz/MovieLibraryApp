@@ -25,7 +25,7 @@ export type HomeScreenNavigationProp = StackNavigationProp<
 >;
 
 const HomeScreen = () => {
-  const [isloading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [fetchingMore, setFetchingMore] = useState(false);
   const dispatch = useDispatch();
@@ -63,7 +63,7 @@ const HomeScreen = () => {
     }
   };
 
-  if (isloading) {
+  if (isLoading) {
     return <Loading title="🎬 Movie Library" />;
   }
 

@@ -6,6 +6,8 @@ import DetailsScreen from "../screens/DetailsScreen";
 import FavoritesScreen from "../screens/FavoritesScreen";
 import SearchScreen from "../screens/SearchScreen";
 import ProfileScreen from "../screens/ProfileScreen";
+import RegisterScreen from "../screens/RegisterScreen";
+
 import { RootStackParamList } from "../utils/movieType";
 
 const Tab = createBottomTabNavigator();
@@ -37,9 +39,21 @@ const AppNavigator = () => {
         component={HomeStack}
         options={{ headerShown: false }}
       />
-      <Tab.Screen name="Favorites" component={FavoritesScreen} />
-      <Tab.Screen name="Search" component={SearchScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen
+        name="Favorites"
+        component={FavoritesScreen}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Search"
+        component={SearchScreen}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={RegisterScreen}
+        options={{ headerShown: false }}
+      />
     </Tab.Navigator>
   );
 };
