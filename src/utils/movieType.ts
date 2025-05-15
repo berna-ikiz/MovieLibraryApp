@@ -36,6 +36,10 @@ export type RootStackParamList = {
   HomeScreen: undefined;
   Details: { movieId: number };
 };
+export type AuthStackParamList = {
+  Login: undefined;
+  Register: undefined;
+};
 
 export type HeaderType = {
   title: string;
