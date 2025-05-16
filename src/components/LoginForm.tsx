@@ -14,6 +14,7 @@ import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { AuthStackParamList } from "../utils/type/authType";
 import Loading from "./Loading";
+import Toast from "react-native-toast-message";
 
 type AuthStackNavigationProp = StackNavigationProp<AuthStackParamList>;
 
@@ -44,10 +45,33 @@ const LoginForm = (Props: Props) => {
           dispatch(register(email, password));
         }
       } else {
-        //TODO Toast message should be shown
-        console.log("Please fill all field");
+        console.log("here");
+        Toast.show({
+          type: "error",
+          text1: "Please fill all fields.",
+          position: "top",
+          visibilityTime: 3000,
+        });
       }
     } catch (error) {
+      if (error instanceof Error) {
+        Toast.show({
+          type: "error",
+          text1: "Unexpected error occured.",
+          text2: error.message,
+          position: "top",
+          visibilityTime: 3000,
+        });
+      } else {
+        if (error instanceof Error) {
+          Toast.show({
+            type: "error",
+            text1: "Unexpected error occured.",
+            position: "top",
+            visibilityTime: 3000,
+          });
+        }
+      }
       console.log(error);
     }
   };

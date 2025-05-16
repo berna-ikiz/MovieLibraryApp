@@ -8,12 +8,15 @@ import { auth } from "./services/firebase";
 import { setUser } from "./state/slices/authSlice";
 import RootNavigator from "./navigation/RootNavigator";
 import { UserInfo } from "./utils/type/authType";
+import Toast from "react-native-toast-message";
+import { StyleSheet } from "react-native";
 
 export default () => {
   return (
     <Provider store={store}>
-      <GestureHandlerRootView>
+      <GestureHandlerRootView style={styles.container}>
         <Main />
+        <Toast />
       </GestureHandlerRootView>
     </Provider>
   );
@@ -37,3 +40,9 @@ const Main = () => {
   }, []);
   return <RootNavigator />;
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
