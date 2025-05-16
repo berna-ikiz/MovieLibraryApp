@@ -44,6 +44,9 @@ const LoginForm = (Props: Props) => {
           console.log(password);
           dispatch(register(email, password));
         }
+      } else {
+        //TODO Toast message should be shown
+        console.log("Please fill all field");
       }
     } catch (error) {
       console.log(error);
