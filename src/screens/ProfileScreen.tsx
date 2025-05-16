@@ -41,7 +41,6 @@ const ProfileScreen = () => {
   return (
     <View style={styles.container}>
       <Header title="🎬 Movie Library" showBackButton={false} />
-
       <TouchableOpacity style={styles.button} onPress={handleLogout}>
         <Icon name="door-open" size={24} color={Colors.white} />
         <Text style={styles.buttonText}>Log out</Text>

@@ -6,6 +6,7 @@ import {
 import { auth } from "./firebase";
 import { setUser, setLoading } from "../state/slices/authSlice";
 import { AppDispatch } from "../state/movieStore";
+import { UserInfo } from "../utils/authType";
 
 export const register =
   (email: string, password: string) => async (dispatch: AppDispatch) => {
@@ -16,7 +17,14 @@ export const register =
         email,
         password
       );
-      dispatch(setUser(userCredential.user));
+
+      const userInfo: UserInfo = {
+        uid: userCredential.user.uid,
+        email: userCredential.user.email,
+        displayName: userCredential.user.displayName ?? null,
+      };
+
+      dispatch(setUser(userInfo));
     } catch (error) {
       console.error("Registration error:", error);
     } finally {
@@ -33,7 +41,13 @@ export const login =
         email,
         password
       );
-      dispatch(setUser(userCredential.user));
+      const userInfo: UserInfo = {
+        uid: userCredential.user.uid,
+        email: userCredential.user.email,
+        displayName: userCredential.user.displayName ?? null,
+      };
+
+      dispatch(setUser(userInfo));
     } catch (error) {
       console.error("Login error:", error);
     } finally {

@@ -6,7 +6,7 @@ import DetailsScreen from "../screens/DetailsScreen";
 import FavoritesScreen from "../screens/FavoritesScreen";
 import SearchScreen from "../screens/SearchScreen";
 import ProfileScreen from "../screens/ProfileScreen";
-import { RootStackParamList } from "../utils/movieType";
+import { RootStackParamList } from "../utils/authType";
 
 const Tab = createBottomTabNavigator();
 

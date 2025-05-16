@@ -1,21 +1,6 @@
 // src/state/slices/authSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { User } from "firebase/auth";
-
-interface UserInfo {
-  uid: string;
-  email: string | null;
-  //displayName: string | null;
-  //emailVerified: boolean;
-  //photoURL: string | null;
-  //providerId?: string;
-}
-
-interface AuthState {
-  currentUser: UserInfo | null;
-  error: string | null;
-  loading: boolean;
-}
+import { AuthState, UserInfo } from "../../utils/authType";
 
 const initialState: AuthState = {
   currentUser: null,
@@ -27,7 +12,8 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setUser(state, action: PayloadAction<User | null>) {
+    setUser(state, action: PayloadAction<UserInfo | null>) {
+      console.log("action.pay", action.payload);
       state.currentUser = action.payload;
     },
     clearUser(state) {

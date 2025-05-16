@@ -7,6 +7,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./services/firebase";
 import { setUser } from "./state/slices/authSlice";
 import RootNavigator from "./navigation/RootNavigator";
+import { UserInfo } from "./utils/authType";
 
 export default () => {
   return (
@@ -23,7 +24,14 @@ const Main = () => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      dispatch(setUser(user ?? null));
+      if (user) {
+        const userInfo: UserInfo = {
+          uid: user?.uid,
+          email: user?.email,
+          displayName: user?.displayName ?? null,
+        };
+        dispatch(setUser(userInfo ?? null));
+      }
     });
     return () => unsubscribe();
   }, []);
