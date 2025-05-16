@@ -1,6 +1,6 @@
 // src/state/slices/authSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AuthState, UserInfo } from "../../utils/authType";
+import { AuthState, UserInfo } from "../../utils/type/authType";
 
 const initialState: AuthState = {
   currentUser: null,

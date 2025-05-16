@@ -6,7 +6,7 @@ import {
 import { auth } from "./firebase";
 import { setUser, setLoading } from "../state/slices/authSlice";
 import { AppDispatch } from "../state/movieStore";
-import { UserInfo } from "../utils/authType";
+import { UserInfo } from "../utils/type/authType";
 
 export const register =
   (email: string, password: string) => async (dispatch: AppDispatch) => {

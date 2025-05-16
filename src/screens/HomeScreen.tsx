@@ -12,13 +12,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { appendMovies, setMovies } from "../state/slices/moviesSlice";
 import { FlatList } from "react-native-gesture-handler";
 import { RootState } from "../state/movieStore";
-import { MovieType } from "../utils/movieType";
+import { MovieType } from "../utils/type/movieType";
 import Colors from "../utils/colors";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
-import { RootStackParamList } from "../utils/authType";
+import { RootStackParamList } from "../utils/type/authType";
 
 export type HomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,

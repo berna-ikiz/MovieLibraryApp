@@ -12,7 +12,7 @@ import { login, register } from "../services/auth";
 import { AppDispatch, RootState } from "../state/movieStore";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { AuthStackParamList } from "../utils/authType";
+import { AuthStackParamList } from "../utils/type/authType";
 import Loading from "./Loading";
 
 type AuthStackNavigationProp = StackNavigationProp<AuthStackParamList>;

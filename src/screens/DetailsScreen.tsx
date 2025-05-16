@@ -1,14 +1,14 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { RouteProp } from "@react-navigation/native";
-import { castMemberType, MovieDetailType } from "../utils/movieType";
+import { castMemberType, MovieDetailType } from "../utils/type/movieType";
 import { ScrollView } from "react-native-gesture-handler";
 import Colors from "../utils/colors";
 import Header from "../components/Header";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { fetchCastDetails, fetchMovieDetails } from "../services/movieApi";
 import Loading from "../components/Loading";
-import { RootStackParamList } from "../utils/authType";
+import { RootStackParamList } from "../utils/type/authType";
 
 type DetailsScreenRouteProp = RouteProp<RootStackParamList, "Details">;
 type Props = {

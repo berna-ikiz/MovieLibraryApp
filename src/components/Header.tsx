@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import React from "react";
 import Colors from "../utils/colors";
-import { HeaderType } from "../utils/movieType";
+import { HeaderType } from "../utils/type/movieType";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 

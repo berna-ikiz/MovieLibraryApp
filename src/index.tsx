@@ -7,7 +7,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./services/firebase";
 import { setUser } from "./state/slices/authSlice";
 import RootNavigator from "./navigation/RootNavigator";
-import { UserInfo } from "./utils/authType";
+import { UserInfo } from "./utils/type/authType";
 
 export default () => {
   return (
