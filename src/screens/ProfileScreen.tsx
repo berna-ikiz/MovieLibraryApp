@@ -8,13 +8,17 @@ const ProfileScreen = () => {
   return (
     <View style={styles.container}>
       <Header title="🎬 Movie Library" showBackButton={false} />
+
       <TouchableOpacity style={styles.button}>
-        <Icon name="door-open" size={30} color={Colors.white} />
+        <Icon name="door-open" size={24} color={Colors.white} />
         <Text style={styles.buttonText}>Log out</Text>
       </TouchableOpacity>
+      <View style={styles.contentContainer}>
+        <Icon name="emoticon-sad" size={100} color={Colors.gray800} />
+      </View>
       <TouchableOpacity style={[styles.button, styles.deleteButton]}>
-        <Icon name="delete-empty" size={30} color={Colors.white} />
-        <Text style={styles.deleteButtonText}>Delete Account</Text>
+        <Icon name="delete-empty" size={24} color={Colors.white} />
+        <Text style={styles.buttonText}>Delete Account</Text>
       </TouchableOpacity>
     </View>
   );
@@ -27,31 +31,41 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.black,
     paddingHorizontal: 24,
-    paddingVertical: 24,
-    justifyContent: "space-between",
+    paddingTop: 24,
+    paddingBottom: 36,
+  },
+  contentContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   button: {
     backgroundColor: Colors.primary,
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 8,
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+    marginTop: 20,
+    borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
-    width: "100%",
     flexDirection: "row",
-    gap: 8,
+    gap: 10,
+    elevation: 4,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
   },
   buttonText: {
     color: Colors.white,
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
   },
   deleteButton: {
-    backgroundColor: Colors.gray800,
-    fontSize: 24,
-  },
-  deleteButtonText: {
-    fontSize: 20,
-    color: Colors.white,
+    backgroundColor: Colors.danger,
+    position: "absolute",
+    bottom: 32,
+    left: 24,
+    right: 24,
+    shadowColor: "#cc4444",
   },
 });

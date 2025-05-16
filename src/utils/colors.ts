@@ -24,7 +24,7 @@ const Colors = {
   // FEEDBACK
   success: "#2ecc71",
   warning: "#f1c40f",
-  danger: "#e74c3c",
+  danger: "#cc4444",
 };
 
 export default Colors;
