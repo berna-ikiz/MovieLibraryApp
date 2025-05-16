@@ -14,11 +14,13 @@ interface UserInfo {
 interface AuthState {
   currentUser: UserInfo | null;
   error: string | null;
+  loading: boolean;
 }
 
 const initialState: AuthState = {
   currentUser: null,
   error: null,
+  loading: false,
 };
 
 const authSlice = createSlice({

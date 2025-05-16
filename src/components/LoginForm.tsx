@@ -7,9 +7,9 @@ import {
 } from "react-native";
 import React, { useRef, useState } from "react";
 import Colors from "../utils/colors";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login, register } from "../services/auth";
-import { AppDispatch } from "../state/movieStore";
+import { AppDispatch, RootState } from "../state/movieStore";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { AuthStackParamList } from "../utils/movieType";
@@ -29,10 +29,9 @@ const LoginForm = (Props: Props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const passwordRef = useRef<TextInput>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const isLoading = useSelector((state: RootState) => state.auth.loading);
 
   const handleSubmit = () => {
-    setIsLoading(true);
     try {
       if (email && password) {
         if (isLogin) {
@@ -50,8 +49,6 @@ const LoginForm = (Props: Props) => {
       }
     } catch (error) {
       console.log(error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
