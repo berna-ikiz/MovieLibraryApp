@@ -10,13 +10,14 @@ import RootNavigator from "./navigation/RootNavigator";
 import { UserInfo } from "./utils/type/authType";
 import Toast from "react-native-toast-message";
 import { StyleSheet } from "react-native";
+import toastConfig from "./utils/toastConfig";
 
 export default () => {
   return (
     <Provider store={store}>
       <GestureHandlerRootView style={styles.container}>
         <Main />
-        <Toast />
+        <Toast config={toastConfig} />
       </GestureHandlerRootView>
     </Provider>
   );
