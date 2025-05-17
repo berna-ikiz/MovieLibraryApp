@@ -59,6 +59,7 @@ export const login = createAsyncThunk<
     return thunkAPI.rejectWithValue(getAuthErrorMessage("auth/unknown"));
   }
 });
+
 export const logout = createAsyncThunk<void, void, { rejectValue: string }>(
   "auth/logout",
   async (_, { rejectWithValue }) => {
@@ -67,5 +68,22 @@ export const logout = createAsyncThunk<void, void, { rejectValue: string }>(
     } catch (error) {
       return rejectWithValue("Logout failed");
     }
+  }
+);
+
+export const checkAuth = createAsyncThunk<UserInfo | null>(
+  "auth/checkAuth",
+  async (_, thunkAPI) => {
+    const user = auth.currentUser;
+
+    if (user) {
+      const userInfo: UserInfo = {
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName ?? null,
+      };
+      return userInfo;
+    }
+    return null;
   }
 );
