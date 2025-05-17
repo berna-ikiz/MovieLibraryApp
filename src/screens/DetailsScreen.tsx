@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { RouteProp } from "@react-navigation/native";
 import { castMemberType, MovieDetailType } from "../utils/type/movieType";
 import { ScrollView } from "react-native-gesture-handler";
-import Colors from "../utils/colors";
+import Colors from "../theme/colors";
 import Header from "../components/Header";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { fetchCastDetails, fetchMovieDetails } from "../services/movieApi";

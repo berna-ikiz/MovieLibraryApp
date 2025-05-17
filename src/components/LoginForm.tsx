@@ -6,7 +6,7 @@ import {
   View,
 } from "react-native";
 import React, { useRef, useState } from "react";
-import Colors from "../utils/colors";
+import Colors from "../theme/colors";
 import { useDispatch, useSelector } from "react-redux";
 import { login, register } from "../services/auth";
 import { AppDispatch, RootState } from "../state/movieStore";
