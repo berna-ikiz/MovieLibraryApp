@@ -48,14 +48,14 @@ const LoginForm = (Props: Props) => {
       if (isLogin) {
         await dispatch(login({ email, password })).unwrap();
       } else {
-        await dispatch(register(email, password));
+        await dispatch(register({ email, password }));
       }
     } catch (err) {
       console.log("here", err);
       Toast.show({
         type: "error",
         text1: isLogin ? "Login Failed" : "Register Failed",
-        text2: err.toString(),
+        text2: typeof err === "string" ? err : "An unexpected error occurred.",
         position: "top",
         visibilityTime: 3000,
       });
