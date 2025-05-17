@@ -19,7 +19,8 @@ export const fetchPopularMovies = async (page = 1) => {
       totalPage: data.totalPage,
     };
   } catch (error) {
-    throw new Error("Couldn't get any film.");
+    console.log(error);
+    throw new Error("Failed to fetch popular movies.");
   }
 };
 
@@ -30,7 +31,8 @@ export const fetchMovieDetails = async (movieId: Number) => {
       movieDetails: data,
     };
   } catch (error) {
-    throw new Error("Couldn't get the film details.");
+    console.log(error);
+    throw new Error("Failed to fetch movie details.");
   }
 };
 
@@ -41,6 +43,19 @@ export const fetchCastDetails = async (movieId: Number) => {
       castData: data.cast,
     };
   } catch (error) {
-    throw new Error("Couldn't get the cast details.");
+    console.log(error);
+    throw new Error("Failed to fetch cast details.");
+  }
+};
+
+export const searchMovies = async (query: string) => {
+  try {
+    const { data } = await api.get(`/search/movie`, {
+      params: { query },
+    });
+    return data.results;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to search movies.");
   }
 };

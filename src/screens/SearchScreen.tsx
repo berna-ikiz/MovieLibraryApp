@@ -1,11 +1,35 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Colors from "../theme/colors";
 import { TextInput } from "react-native-gesture-handler";
+import { searchMovies } from "../services/movieApi";
+import Loading from "../components/Loading";
 
 const SearchScreen = () => {
   const [activeTab, setActiveTab] = useState("Search");
   const [searchText, setSearchText] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [results, setResults] = useState([]);
+  useEffect(() => {
+    const delayDebounce = setTimeout(async () => {
+      if (searchText.trim().length > 1) {
+        setIsLoading(true);
+        try {
+          const results = await searchMovies(searchText);
+          console.log(results);
+        } catch (error) {
+          //TODO toast message
+          console.log(error);
+        } finally {
+          setIsLoading(false);
+        }
+      } else {
+        setResults([]);
+      }
+    }, 500);
+    return () => clearTimeout(delayDebounce);
+  }, [searchText]);
+
   return (
     <View style={styles.container}>
       <View style={styles.tabContainer}>
@@ -40,11 +64,15 @@ const SearchScreen = () => {
       </View>
       <View style={styles.content}>
         {activeTab === "search" && (
-          <TextInput
-            style={styles.input}
-            placeholder="search movie"
-            value={searchText}
-          />
+          <>
+            <TextInput
+              style={styles.input}
+              placeholder="search movie"
+              value={searchText}
+              onChangeText={setSearchText}
+            />
+            {isLoading && <Loading title={""} />}
+          </>
         )}
         {activeTab === "filter" && (
           <Text style={styles.tabText}>Filter UI here</Text>
@@ -93,5 +121,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.primary,
     padding: 10,
     borderRadius: 6,
+    color: Colors.gray400,
+    fontSize: 20,
   },
 });
