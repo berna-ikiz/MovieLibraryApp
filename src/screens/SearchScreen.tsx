@@ -1,6 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
 import Colors from "../theme/colors";
+import { TextInput } from "react-native-gesture-handler";
 
 const SearchScreen = () => {
   const [activeTab, setActiveTab] = useState("Search");
@@ -36,6 +37,18 @@ const SearchScreen = () => {
           </Text>
           {activeTab === "filter" && <View style={styles.underline} />}
         </TouchableOpacity>
+      </View>
+      <View style={styles.content}>
+        {activeTab === "search" && (
+          <TextInput
+            style={styles.input}
+            placeholder="search movie"
+            value={searchText}
+          />
+        )}
+        {activeTab === "filter" && (
+          <Text style={styles.tabText}>Filter UI here</Text>
+        )}
       </View>
     </View>
   );
@@ -73,5 +86,12 @@ const styles = StyleSheet.create({
     width: "100%",
     position: "absolute",
     bottom: 0,
+  },
+  content: { marginTop: 20 },
+  input: {
+    borderWidth: 1,
+    borderColor: Colors.primary,
+    padding: 10,
+    borderRadius: 6,
   },
 });
