@@ -31,6 +31,13 @@ const HomeStack = () => {
   );
 };
 
+const SearchStack = () => (
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="Search" component={SearchScreen} />
+    <Stack.Screen name="Details" component={DetailsScreen} />
+  </Stack.Navigator>
+);
+
 const AppNavigator = () => {
   return (
     <Tab.Navigator
@@ -65,7 +72,7 @@ const AppNavigator = () => {
       />
       <Tab.Screen
         name="Search"
-        component={SearchScreen}
+        component={SearchStack}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Icon name="magnify" color={color} size={30} />

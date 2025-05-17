@@ -12,12 +12,14 @@ import { TextInput } from "react-native-gesture-handler";
 import { searchMovies } from "../services/movieApi";
 import Loading from "../components/Loading";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { useNavigation } from "@react-navigation/native";
 
 const SearchScreen = () => {
   const [activeTab, setActiveTab] = useState("Search");
   const [searchText, setSearchText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState([]);
+  const navigation = useNavigation();
   useEffect(() => {
     const delayDebounce = setTimeout(async () => {
       if (searchText.trim().length > 1) {
@@ -84,7 +86,7 @@ const SearchScreen = () => {
             <FlatList
               data={results}
               keyExtractor={(item) => item.id.toString()}
-              renderItem={({ item }) => renderItem({ item })}
+              renderItem={({ item }) => renderItem({ item, navigation })}
               numColumns={2}
               columnWrapperStyle={styles.columnWrapper}
             />
@@ -98,10 +100,13 @@ const SearchScreen = () => {
   );
 };
 
-const renderItem = ({ item }: any) => {
+const renderItem = ({ item, navigation }: any) => {
   console.log(item);
   return (
-    <View style={styles.searchCard}>
+    <TouchableOpacity
+      style={styles.searchCard}
+      onPress={() => navigation.navigate("Details", { movieId: item.id })}
+    >
       {item.poster_path ? (
         <Image
           source={{
@@ -118,7 +123,7 @@ const renderItem = ({ item }: any) => {
       <Text style={styles.movieTitle} numberOfLines={2}>
         {item.title}
       </Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 

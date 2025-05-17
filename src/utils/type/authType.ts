@@ -13,6 +13,7 @@ export type AuthState = {
 export type RootStackParamList = {
   HomeScreen: undefined;
   Details: { movieId: number };
+  Search: undefined;
 };
 export type AuthStackParamList = {
   Login: undefined;
