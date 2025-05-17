@@ -30,7 +30,7 @@ const DetailsScreen = ({ route }: Props) => {
         setCast(castData.castData);
         setIsLoading(false);
       } catch (error) {
-        console.error("Failed to fetch movie details:", error);
+        console.log("Failed to fetch movie details:", error);
         setIsLoading(false);
       }
     };

@@ -31,62 +31,36 @@ const LoginForm = (Props: Props) => {
   const [password, setPassword] = useState("");
   const passwordRef = useRef<TextInput>(null);
   const isLoading = useSelector((state: RootState) => state.auth.loading);
-  const error = useSelector((state: RootState) => state.auth.error);
 
-  const handleSubmit = () => {
-    try {
-      if (email && password) {
-        if (isLogin) {
-          console.log(email);
-          console.log(password);
-          dispatch(login(email, password));
-        } else {
-          console.log(email);
-          console.log(password);
-          dispatch(register(email, password));
-        }
-      } else {
-        console.log("here");
-        Toast.show({
-          type: "error",
-          text1: "Please fill all fields.",
-          position: "top",
-          visibilityTime: 3000,
-        });
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        Toast.show({
-          type: "error",
-          text1: "Unexpected error occured.",
-          text2: error.message,
-          position: "top",
-          visibilityTime: 3000,
-        });
-      } else {
-        if (error instanceof Error) {
-          Toast.show({
-            type: "error",
-            text1: "Unexpected error occured.",
-            position: "top",
-            visibilityTime: 3000,
-          });
-        }
-      }
-      console.log(error);
+  const handleSubmit = async () => {
+    if (!email || !password) {
+      console.log("here");
+      Toast.show({
+        type: "error",
+        text1: "Please fill all fields.",
+        position: "top",
+        visibilityTime: 3000,
+      });
+      return;
     }
-  };
 
-  useEffect(() => {
-    if (error) {
+    try {
+      if (isLogin) {
+        await dispatch(login({ email, password })).unwrap();
+      } else {
+        await dispatch(register(email, password));
+      }
+    } catch (err) {
+      console.log("here", err);
       Toast.show({
         type: "error",
         text1: isLogin ? "Login Failed" : "Register Failed",
-        text2: error,
+        text2: err.toString(),
         position: "top",
+        visibilityTime: 3000,
       });
     }
-  }, [error]);
+  };
 
   if (isLoading) {
     return <Loading title={""} />;

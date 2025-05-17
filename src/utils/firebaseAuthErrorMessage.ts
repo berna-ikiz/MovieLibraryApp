@@ -10,8 +10,12 @@ const firebaseAuthErrorMessage: { [key: string]: string } = {
   "auth/too-many-requests": "Too many login attempts. Please try again later.",
   "auth/network-request-failed": "Network error. Please check your connection.",
   "auth/operation-not-allowed": "This operation is not allowed.",
+  "auth/invalid-credential": "This credentials are invalid or have expired.",
+  "auth/unknown": "An unexpected error occurred.",
 };
 
 export const getAuthErrorMessage = (code: string): string => {
-  return firebaseAuthErrorMessage[code] || "An unexpected error occured.";
+  return (
+    firebaseAuthErrorMessage[code] || firebaseAuthErrorMessage["auth/unknown"]
+  );
 };

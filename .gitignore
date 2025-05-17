@@ -1,7 +1,5 @@
 node_modules/
 ios/Pods/
-.env
-.env.*
 Gemfile.lock
 .bundle/
 .vscode/

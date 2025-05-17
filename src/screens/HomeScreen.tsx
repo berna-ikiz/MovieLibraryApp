@@ -40,7 +40,7 @@ const HomeScreen = () => {
         dispatch(setMovies({ movies: data.movies }));
       } catch (error) {
         //TODO: Toast message
-        console.error("API error", error);
+        console.log("API error", error);
       } finally {
         setIsLoading(false);
       }
@@ -58,7 +58,7 @@ const HomeScreen = () => {
       setPage(nextPage);
     } catch (error) {
       //TODO toast message
-      console.error("Load more error", error);
+      console.log("Load more error", error);
     } finally {
       setFetchingMore(false);
     }
