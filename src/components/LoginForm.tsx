@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Colors from "../theme/colors";
 import { useDispatch, useSelector } from "react-redux";
 import { login, register } from "../services/auth";
@@ -31,6 +31,7 @@ const LoginForm = (Props: Props) => {
   const [password, setPassword] = useState("");
   const passwordRef = useRef<TextInput>(null);
   const isLoading = useSelector((state: RootState) => state.auth.loading);
+  const error = useSelector((state: RootState) => state.auth.error);
 
   const handleSubmit = () => {
     try {
@@ -75,6 +76,17 @@ const LoginForm = (Props: Props) => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (error) {
+      Toast.show({
+        type: "error",
+        text1: isLogin ? "Login Failed" : "Register Failed",
+        text2: error,
+        position: "top",
+      });
+    }
+  }, [error]);
 
   if (isLoading) {
     return <Loading title={""} />;

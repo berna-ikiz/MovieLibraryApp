@@ -30,7 +30,7 @@ const ProfileScreen = () => {
             }
           } catch (error) {
             //TODO toast message
-            console.error("User couldn't be deleted.");
+            console.log("User couldn't be deleted.");
           }
         },
         style: "destructive",

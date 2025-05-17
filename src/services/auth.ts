@@ -4,9 +4,10 @@ import {
   signOut,
 } from "firebase/auth";
 import { auth } from "./firebase";
-import { setUser, setLoading } from "../state/slices/authSlice";
+import { setUser, setLoading, setError } from "../state/slices/authSlice";
 import { AppDispatch } from "../state/movieStore";
 import { UserInfo } from "../utils/type/authType";
+import { getAuthErrorMessage } from "../utils/firebaseAuthErrorMessage";
 
 export const register =
   (email: string, password: string) => async (dispatch: AppDispatch) => {
@@ -26,7 +27,9 @@ export const register =
 
       dispatch(setUser(userInfo));
     } catch (error) {
-      console.error("Registration error:", error);
+      console.log("Registration error:", error);
+      const message = getAuthErrorMessage(error.code);
+      dispatch(setError(message));
     } finally {
       dispatch(setLoading(false));
     }
@@ -50,6 +53,8 @@ export const login =
       dispatch(setUser(userInfo));
     } catch (error) {
       console.error("Login error:", error);
+      const message = getAuthErrorMessage(error.code);
+      dispatch(setError(message));
     } finally {
       dispatch(setLoading(false));
     }
@@ -62,6 +67,8 @@ export const logout = () => async (dispatch: AppDispatch) => {
     dispatch(setUser(null));
   } catch (error) {
     console.error("Logout error:", error);
+    const message = getAuthErrorMessage(error.code);
+    dispatch(setError(message));
   } finally {
     dispatch(setLoading(false));
   }
