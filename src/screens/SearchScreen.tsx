@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   StyleSheet,
@@ -25,7 +26,11 @@ const SearchScreen = () => {
   const [genres, setGenres] = useState<GenreType[]>([]);
   const [showGenreModal, setShowGenreModal] = useState(false);
   const [selectedGenres, setSelectedGenres] = useState<GenreType[]>([]);
+  const [filteredMovies, setFilteredMovies] = useState<MovieType[]>([]);
+  const [fetchingMore, setFetchingMore] = useState(false);
+
   const navigation = useNavigation();
+
   useEffect(() => {
     const delayDebounce = setTimeout(async () => {
       if (searchText.trim().length > 1) {
@@ -58,6 +63,11 @@ const SearchScreen = () => {
       console.log("genres", genres);
     }
   }, [activeTab]);
+
+  useEffect(() => {
+    if (selectedGenres.length > 0) {
+    }
+  }, [selectedGenres]);
 
   const toggleGenre = (genre: GenreType) => {
     setSelectedGenres((prev) =>
@@ -143,6 +153,21 @@ const SearchScreen = () => {
                 <Text style={styles.filterCardText}>Rating</Text>
               </TouchableOpacity>
             </View>
+            {filteredMovies.length > 0 && (
+              <FlatList
+                data={filteredMovies}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => renderItem({ item, navigation })}
+                numColumns={2}
+                columnWrapperStyle={styles.columnWrapper}
+                showsVerticalScrollIndicator={false}
+                ListFooterComponent={
+                  fetchingMore ? (
+                    <ActivityIndicator size="small" color={Colors.primary} />
+                  ) : null
+                }
+              />
+            )}
             <GenreModal
               visible={showGenreModal}
               onClose={() => setShowGenreModal(false)}

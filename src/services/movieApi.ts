@@ -70,13 +70,14 @@ export const getGenres = async () => {
   }
 };
 
-export const getMoviesByGenres = async (genreIds: string[]) => {
+export const getMoviesByGenres = async (genreIds: string[], page = 1) => {
   try {
     const genreQuery = genreIds.join(",");
     const { data } = await api.get("/discover/movie", {
       params: {
         with_genres: genreQuery,
         sort_by: "popularity.desc",
+        page: page,
       },
     });
     console.log(data);
