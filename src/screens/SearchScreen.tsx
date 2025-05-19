@@ -14,6 +14,7 @@ import Loading from "../components/Loading";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
 import { GenreType, MovieType } from "../utils/type/movieType";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 const SearchScreen = () => {
   const [activeTab, setActiveTab] = useState("Search");
@@ -108,7 +109,26 @@ const SearchScreen = () => {
           </>
         )}
         {activeTab === "filter" && (
-          <Text style={styles.tabText}>Filter UI here</Text>
+          <View style={styles.filterContainer}>
+            <TouchableOpacity style={styles.filterCard}>
+              <MaterialIcons
+                name="category"
+                size={24}
+                color={Colors.white}
+                style={styles.icon}
+              />
+              <Text style={styles.filterCardText}>Genres</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.filterCard}>
+              <MaterialIcons
+                name="star-rate"
+                size={24}
+                color={Colors.white}
+                style={styles.icon}
+              />
+              <Text style={styles.filterCardText}>Rating</Text>
+            </TouchableOpacity>
+          </View>
         )}
       </View>
     </View>
@@ -214,5 +234,35 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 16,
     paddingHorizontal: 10,
+  },
+  filterContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    paddingHorizontal: 16,
+    paddingTop: 10,
+  },
+
+  filterCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: Colors.gray800,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 18,
+    elevation: 3,
+    shadowColor: Colors.gray500,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    minWidth: 140,
+    justifyContent: "center",
+  },
+  icon: {
+    marginRight: 8,
+  },
+  filterCardText: {
+    color: Colors.white,
+    fontSize: 16,
+    fontWeight: "600",
   },
 });
