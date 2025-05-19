@@ -60,7 +60,7 @@ export const searchMovies = async (query: string) => {
   }
 };
 
-export const getGenres = async () => {
+export const fetchGenres = async () => {
   try {
     const { data } = await api.get(`/genre/movie/list`);
     return data.genres;
@@ -70,7 +70,7 @@ export const getGenres = async () => {
   }
 };
 
-export const getMoviesByGenres = async (genreIds: string[], page = 1) => {
+export const fetchMoviesByFilters = async (genreIds: string[], page = 1) => {
   try {
     const genreQuery = genreIds.join(",");
     const { data } = await api.get("/discover/movie", {
@@ -80,7 +80,7 @@ export const getMoviesByGenres = async (genreIds: string[], page = 1) => {
         page: page,
       },
     });
-    console.log(data);
+    console.log("here", data);
     return data.results;
   } catch (error) {
     console.log(error);

@@ -10,7 +10,11 @@ import {
 import React, { useEffect, useState } from "react";
 import Colors from "../theme/colors";
 import { TextInput } from "react-native-gesture-handler";
-import { getGenres, searchMovies } from "../services/movieApi";
+import {
+  fetchGenres,
+  fetchMoviesByFilters,
+  searchMovies,
+} from "../services/movieApi";
 import Loading from "../components/Loading";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
@@ -27,6 +31,7 @@ const SearchScreen = () => {
   const [showGenreModal, setShowGenreModal] = useState(false);
   const [selectedGenres, setSelectedGenres] = useState<GenreType[]>([]);
   const [filteredMovies, setFilteredMovies] = useState<MovieType[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
   const [fetchingMore, setFetchingMore] = useState(false);
 
   const navigation = useNavigation();
@@ -54,20 +59,27 @@ const SearchScreen = () => {
 
   useEffect(() => {
     if (activeTab === "filter") {
-      const fetchGenres = async () => {
-        const genres = await getGenres();
+      const getGenres = async () => {
+        const genres = await fetchGenres();
         console.log(genres);
         setGenres(genres);
       };
-      fetchGenres();
+      getGenres();
       console.log("genres", genres);
     }
   }, [activeTab]);
 
   useEffect(() => {
+    console.log(selectedGenres);
     if (selectedGenres.length > 0) {
+      loadMoreMoviesByFilters(1);
+    } else {
+      setFilteredMovies([]);
+      setCurrentPage(1);
     }
   }, [selectedGenres]);
+
+  console.log(selectedGenres);
 
   const toggleGenre = (genre: GenreType) => {
     setSelectedGenres((prev) =>
@@ -76,6 +88,29 @@ const SearchScreen = () => {
         : [...prev, genre]
     );
   };
+  const loadMoreMoviesByFilters = async (page: number) => {
+    if (fetchingMore) return;
+    setFetchingMore(true);
+    try {
+      const genreIds = selectedGenres.map((g) => g.id.toString());
+      const newMovies = await fetchMoviesByFilters(genreIds, page);
+      console.log(newMovies);
+      setFilteredMovies((prev) => {
+        const existingIds = new Set(prev.map((m) => m.id));
+        const uniqueMovies = newMovies.filter(
+          (m: MovieType) => !existingIds.has(m.id)
+        );
+        return [...prev, ...uniqueMovies];
+      });
+      setCurrentPage(page);
+    } catch (error) {
+      //TODO toast message
+      console.log("Load more error", error);
+    } finally {
+      setFetchingMore(false);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.tabContainer}>
@@ -161,6 +196,8 @@ const SearchScreen = () => {
                 numColumns={2}
                 columnWrapperStyle={styles.columnWrapper}
                 showsVerticalScrollIndicator={false}
+                onEndReached={() => loadMoreMoviesByFilters(currentPage + 1)}
+                onEndReachedThreshold={0.5}
                 ListFooterComponent={
                   fetchingMore ? (
                     <ActivityIndicator size="small" color={Colors.primary} />
@@ -286,9 +323,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     paddingHorizontal: 16,
-    paddingTop: 10,
+    padding: 5,
+    marginTop: -15,
   },
-
   filterCard: {
     flexDirection: "row",
     alignItems: "center",
