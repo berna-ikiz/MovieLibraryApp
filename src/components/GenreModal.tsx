@@ -50,18 +50,24 @@ const GenreModal = (Props: Props) => {
   );
 };
 
-const renderGenreItem = ({ item }) => {};
+const renderGenreItem = ({ item }) => {
+  return (
+    <TouchableOpacity style={styles.genreItem}>
+      <Text style={styles.genreText}>{item.name}</Text>
+    </TouchableOpacity>
+  );
+};
 
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
-    backgroundColor: Colors.gray700,
+    backgroundColor: Colors.black,
     justifyContent: "center",
     alignItems: "center",
   },
   modalView: {
     width: "85%",
-    backgroundColor: Colors.gray700,
+    backgroundColor: Colors.gray900,
     maxHeight: "70%",
     borderRadius: 18,
     padding: 20,
@@ -75,9 +81,36 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  modalTitle: {},
-  closeButton: {},
-  closeButtonText: {},
+  modalTitle: {
+    fontSize: 22,
+    fontWeight: "bold",
+    marginBottom: 15,
+    textAlign: "center",
+    color: Colors.gray500,
+  },
+  closeButton: {
+    backgroundColor: Colors.primary,
+    paddingVertical: 12,
+  },
+  closeButtonText: {
+    color: Colors.white,
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  genreItem: {
+    paddingVertical: 10,
+    paddingHorizontal: 60,
+    borderRadius: 20,
+    marginVertical: 6,
+    backgroundColor: Colors.gray900,
+    borderWidth: 1,
+    borderColor: Colors.primary,
+  },
+  genreText: {
+    fontSize: 18,
+    color: Colors.white,
+  },
 });
 
 export default GenreModal;
