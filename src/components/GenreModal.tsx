@@ -38,7 +38,9 @@ const GenreModal = (Props: Props) => {
           <FlatList
             data={genres}
             keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => renderGenreItem({ item })}
+            renderItem={({ item }) =>
+              renderGenreItem({ item, selectedGenres, onSelectGenre })
+            }
             contentContainerStyle={{ paddingBottom: 20 }}
           />
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
@@ -50,10 +52,28 @@ const GenreModal = (Props: Props) => {
   );
 };
 
-const renderGenreItem = ({ item }) => {
+const renderGenreItem = ({
+  item,
+  selectedGenres,
+  onSelectGenre,
+}: {
+  item: GenreType;
+  selectedGenres: GenreType[];
+  onSelectGenre: (genre: GenreType) => void;
+}) => {
+  const isSelected = (genre: GenreType) =>
+    selectedGenres.some((g) => g.id === genre.id);
+
+  const selected = isSelected(item);
+  console.log(selected);
   return (
-    <TouchableOpacity style={styles.genreItem}>
-      <Text style={styles.genreText}>{item.name}</Text>
+    <TouchableOpacity
+      style={[styles.genreItem, selected && styles.genreItemSelected]}
+      onPress={() => onSelectGenre(item)}
+    >
+      <Text style={[styles.genreText, selected && styles.genreItemSelected]}>
+        {item.name}
+      </Text>
     </TouchableOpacity>
   );
 };
@@ -61,13 +81,13 @@ const renderGenreItem = ({ item }) => {
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
-    backgroundColor: Colors.black,
+    backgroundColor: "rgba(18, 18, 18, 0.9)",
     justifyContent: "center",
     alignItems: "center",
   },
   modalView: {
     width: "85%",
-    backgroundColor: Colors.gray900,
+    backgroundColor: Colors.black,
     maxHeight: "70%",
     borderRadius: 18,
     padding: 20,
@@ -103,13 +123,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 60,
     borderRadius: 20,
     marginVertical: 6,
-    backgroundColor: Colors.gray900,
     borderWidth: 1,
     borderColor: Colors.primary,
   },
   genreText: {
     fontSize: 18,
     color: Colors.white,
+  },
+  genreTextSelected: {
+    color: Colors.white,
+    fontWeight: "bold",
+  },
+  genreItemSelected: {
+    backgroundColor: Colors.primary,
   },
 });
 
