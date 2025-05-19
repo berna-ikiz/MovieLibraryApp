@@ -69,3 +69,20 @@ export const getGenres = async () => {
     throw new Error("Failed to fetch genre  movies.");
   }
 };
+
+export const getMoviesByGenres = async (genreIds: string[]) => {
+  try {
+    const genreQuery = genreIds.join(",");
+    const { data } = await api.get("/discover/movie", {
+      params: {
+        with_genres: genreQuery,
+        sort_by: "popularity.desc",
+      },
+    });
+    console.log(data);
+    return data.results;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to fetch movies by genres.");
+  }
+};

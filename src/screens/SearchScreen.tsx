@@ -15,13 +15,16 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
 import { GenreType, MovieType } from "../utils/type/movieType";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import GenreModal from "../components/GenreModal";
 
 const SearchScreen = () => {
-  const [activeTab, setActiveTab] = useState("Search");
+  const [activeTab, setActiveTab] = useState("search");
   const [searchText, setSearchText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState<MovieType[]>([]);
   const [genres, setGenres] = useState<GenreType[]>([]);
+  const [showGenreModal, setShowGenreModal] = useState(false);
+  const [selectedGenres, setSelectedGenres] = useState<GenreType[]>([]);
   const navigation = useNavigation();
   useEffect(() => {
     const delayDebounce = setTimeout(async () => {
@@ -56,6 +59,13 @@ const SearchScreen = () => {
     }
   }, [activeTab]);
 
+  const toggleGenre = (genre: GenreType) => {
+    setSelectedGenres((prev) =>
+      prev.some((g) => g.id === genre.id)
+        ? prev.filter((g) => g.id !== genre.id)
+        : [...prev, genre]
+    );
+  };
   return (
     <View style={styles.container}>
       <View style={styles.tabContainer}>
@@ -109,26 +119,38 @@ const SearchScreen = () => {
           </>
         )}
         {activeTab === "filter" && (
-          <View style={styles.filterContainer}>
-            <TouchableOpacity style={styles.filterCard}>
-              <MaterialIcons
-                name="category"
-                size={24}
-                color={Colors.white}
-                style={styles.icon}
-              />
-              <Text style={styles.filterCardText}>Genres</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.filterCard}>
-              <MaterialIcons
-                name="star-rate"
-                size={24}
-                color={Colors.white}
-                style={styles.icon}
-              />
-              <Text style={styles.filterCardText}>Rating</Text>
-            </TouchableOpacity>
-          </View>
+          <>
+            <View style={styles.filterContainer}>
+              <TouchableOpacity
+                style={styles.filterCard}
+                onPress={() => setShowGenreModal(true)}
+              >
+                <MaterialIcons
+                  name="category"
+                  size={24}
+                  color={Colors.white}
+                  style={styles.icon}
+                />
+                <Text style={styles.filterCardText}>Genres</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.filterCard}>
+                <MaterialIcons
+                  name="star-rate"
+                  size={24}
+                  color={Colors.white}
+                  style={styles.icon}
+                />
+                <Text style={styles.filterCardText}>Rating</Text>
+              </TouchableOpacity>
+            </View>
+            <GenreModal
+              visible={showGenreModal}
+              onClose={() => setShowGenreModal(false)}
+              genres={genres}
+              selectedGenres={selectedGenres}
+              onSelectGenre={toggleGenre}
+            />
+          </>
         )}
       </View>
     </View>
