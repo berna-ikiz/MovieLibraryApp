@@ -70,20 +70,33 @@ export const fetchGenres = async () => {
   }
 };
 
-export const fetchMoviesByFilters = async (genreIds: string[], page = 1) => {
+export const fetchMoviesByFilters = async (
+  genreIds: string[],
+  page = 1,
+  minRating?: number,
+  maxRating?: number
+) => {
   try {
-    const genreQuery = genreIds.join(",");
-    const { data } = await api.get("/discover/movie", {
-      params: {
-        with_genres: genreQuery,
-        sort_by: "popularity.desc",
-        page: page,
-      },
-    });
+    const params: any = {
+      page,
+      sort_by: "popularity.desc",
+    };
+    if (genreIds.length > 0) {
+      params.with_genres = genreIds.join(",");
+    }
+
+    if (minRating! === undefined) {
+      params["vote_avarage.gte"] = minRating;
+    }
+    if (maxRating! === undefined) {
+      params["vote_avarage.lte"] = maxRating;
+    }
+
+    const { data } = await api.get("/discover/movie", { params });
     console.log("here", data);
     return data.results;
   } catch (error) {
     console.log(error);
-    throw new Error("Failed to fetch movies by genres.");
+    throw new Error("Failed to fetch movies by filters.");
   }
 };
