@@ -9,16 +9,18 @@ import {
 import React, { useEffect, useState } from "react";
 import Colors from "../theme/colors";
 import { TextInput } from "react-native-gesture-handler";
-import { searchMovies } from "../services/movieApi";
+import { getGenres, searchMovies } from "../services/movieApi";
 import Loading from "../components/Loading";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
+import { GenreType, MovieType } from "../utils/type/movieType";
 
 const SearchScreen = () => {
   const [activeTab, setActiveTab] = useState("Search");
   const [searchText, setSearchText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<MovieType[]>([]);
+  const [genres, setGenres] = useState<GenreType[]>([]);
   const navigation = useNavigation();
   useEffect(() => {
     const delayDebounce = setTimeout(async () => {
@@ -40,6 +42,18 @@ const SearchScreen = () => {
     }, 500);
     return () => clearTimeout(delayDebounce);
   }, [searchText]);
+
+  useEffect(() => {
+    if (activeTab === "filter") {
+      const fetchGenres = async () => {
+        const genres = await getGenres();
+        console.log(genres);
+        setGenres(genres);
+      };
+      fetchGenres();
+      console.log("genres", genres);
+    }
+  }, [activeTab]);
 
   return (
     <View style={styles.container}>
@@ -89,6 +103,7 @@ const SearchScreen = () => {
               renderItem={({ item }) => renderItem({ item, navigation })}
               numColumns={2}
               columnWrapperStyle={styles.columnWrapper}
+              showsVerticalScrollIndicator={false}
             />
           </>
         )}

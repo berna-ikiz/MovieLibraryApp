@@ -59,3 +59,13 @@ export const searchMovies = async (query: string) => {
     throw new Error("Failed to search movies.");
   }
 };
+
+export const getGenres = async () => {
+  try {
+    const { data } = await api.get(`/genre/movie/list`);
+    return data.genres;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to fetch genre  movies.");
+  }
+};

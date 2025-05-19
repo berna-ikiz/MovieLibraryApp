@@ -36,3 +36,8 @@ export type HeaderType = {
   title: string;
   showBackButton: boolean;
 };
+
+export type GenreType = {
+  id: number;
+  name: string;
+};
