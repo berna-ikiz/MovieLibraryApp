@@ -40,7 +40,7 @@ export const login = createAsyncThunk<
   UserInfo,
   { email: string; password: string },
   { rejectValue: string }
->("auth/login", async ({ email, password }, thunkAPI) => {
+>("auth/login", async ({ email, password }, { rejectWithValue }) => {
   try {
     const userCredential = await signInWithEmailAndPassword(
       auth,
@@ -54,9 +54,9 @@ export const login = createAsyncThunk<
     };
   } catch (error) {
     if (error instanceof FirebaseError) {
-      return thunkAPI.rejectWithValue(getAuthErrorMessage(error.code));
+      return rejectWithValue(getAuthErrorMessage(error.code));
     }
-    return thunkAPI.rejectWithValue(getAuthErrorMessage("auth/unknown"));
+    return rejectWithValue(getAuthErrorMessage("auth/unknown"));
   }
 });
 

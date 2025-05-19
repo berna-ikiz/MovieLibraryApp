@@ -13,9 +13,9 @@ const moviesSlice = createSlice({
   name: "movies",
   initialState,
   reducers: {
-    setMovies: (state, action: PayloadAction<{ movies: MovieType[] }>) => {
+    /* setMovies: (state, action: PayloadAction<{ movies: MovieType[] }>) => {
       state.movies = [...state.movies, ...action.payload.movies];
-    },
+    },*/
     appendMovies: (state, action: PayloadAction<{ movies: MovieType[] }>) => {
       const newMovies = action.payload.movies;
       const existingIds = new Set(state.movies.map((m) => m.id));
@@ -25,6 +25,9 @@ const moviesSlice = createSlice({
   },
 });
 
-export const { setMovies, appendMovies } = moviesSlice.actions;
+export const {
+  //setMovies,
+  appendMovies,
+} = moviesSlice.actions;
 
 export default moviesSlice.reducer;

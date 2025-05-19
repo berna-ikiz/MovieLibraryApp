@@ -2,7 +2,6 @@ import { StyleSheet, View } from "react-native";
 import React, { useState } from "react";
 import Colors from "../theme/colors";
 import LoginForm from "../components/LoginForm";
-import { useDispatch } from "react-redux";
 
 const Register = () => {
   return (

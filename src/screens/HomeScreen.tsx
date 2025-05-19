@@ -9,7 +9,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { fetchPopularMovies } from "../services/movieApi";
 import { useDispatch, useSelector } from "react-redux";
-import { appendMovies, setMovies } from "../state/slices/moviesSlice";
+import { appendMovies } from "../state/slices/moviesSlice";
 import { FlatList } from "react-native-gesture-handler";
 import { RootState } from "../state/movieStore";
 import { MovieType } from "../utils/type/movieType";
@@ -37,7 +37,7 @@ const HomeScreen = () => {
     const loadInitialMovies = async () => {
       try {
         const data = await fetchPopularMovies(page);
-        dispatch(setMovies({ movies: data.movies }));
+        dispatch(appendMovies({ movies: data.movies }));
       } catch (error) {
         //TODO: Toast message
         console.log("API error", error);

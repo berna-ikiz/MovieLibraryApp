@@ -34,7 +34,6 @@ const LoginForm = (Props: Props) => {
 
   const handleSubmit = async () => {
     if (!email || !password) {
-      console.log("here");
       Toast.show({
         type: "error",
         text1: "Please fill all fields.",
@@ -48,10 +47,9 @@ const LoginForm = (Props: Props) => {
       if (isLogin) {
         await dispatch(login({ email, password })).unwrap();
       } else {
-        await dispatch(register({ email, password }));
+        await dispatch(register({ email, password })).unwrap();
       }
     } catch (err) {
-      console.log("here", err);
       Toast.show({
         type: "error",
         text1: isLogin ? "Login Failed" : "Register Failed",
