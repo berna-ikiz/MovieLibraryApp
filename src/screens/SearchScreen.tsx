@@ -35,9 +35,9 @@ const SearchScreen = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [fetchingMore, setFetchingMore] = useState(false);
   const [showRatingModal, setShowRatingModal] = useState(false);
-  const [selectedRating, setSelectedRating] = useState<number | undefined>(
-    undefined
-  );
+  const [selectedRating, setSelectedRating] = useState<
+    { minRating: number | undefined; maxRating: number | undefined } | undefined
+  >(undefined);
 
   const navigation = useNavigation();
 

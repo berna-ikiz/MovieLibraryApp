@@ -2,13 +2,21 @@ import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Colors from "../theme/colors";
+import Toast from "react-native-toast-message";
+import toastConfig from "../utils/toastConfig";
 
 type Props = {
   visible: boolean;
   onClose: () => void;
   initialMinRating?: number;
   initialMaxRating?: number;
-  onSelectRating: (rating: number) => void;
+  onSelectRating: ({
+    minRating,
+    maxRating,
+  }: {
+    minRating: number | undefined;
+    maxRating: number | undefined;
+  }) => void;
 };
 
 const MAX_RATING = 10;
@@ -24,6 +32,21 @@ const RatingModal = (Props: Props) => {
 
   const [minRating, setMinRating] = useState(initialMinRating);
   const [maxRating, setMaxRating] = useState(initialMaxRating);
+
+  const handleApply = () => {
+    if (minRating <= maxRating) {
+      onSelectRating({ minRating: minRating, maxRating: maxRating });
+      onClose();
+    } else {
+      Toast.show({
+        type: "error",
+        text1: "Minumum rating cannot be higher than maximum rating",
+        position: "top",
+        topOffset: 60,
+        visibilityTime: 3000,
+      });
+    }
+  };
 
   return (
     <Modal
@@ -48,12 +71,13 @@ const RatingModal = (Props: Props) => {
             <TouchableOpacity onPress={onClose} style={styles.modalButton}>
               <Text style={styles.modalButtonText}>Cancel</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.modalButton}>
+            <TouchableOpacity onPress={handleApply} style={styles.modalButton}>
               <Text style={styles.modalButtonText}>Apply</Text>
             </TouchableOpacity>
           </View>
         </View>
       </View>
+      <Toast config={toastConfig} />
     </Modal>
   );
 };
