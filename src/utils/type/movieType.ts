@@ -41,3 +41,10 @@ export type GenreType = {
   id: number;
   name: string;
 };
+
+export type FavoriteMovieType = {
+  id: number;
+  title: string;
+  poster_path: string;
+  genres: string;
+};
