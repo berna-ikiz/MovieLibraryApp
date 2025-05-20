@@ -96,7 +96,7 @@ const renderMinRating = (
         activeOpacity={0.7}
       >
         <Icon
-          name="star"
+          name="popcorn"
           size={24}
           color={i <= minRating ? Colors.primary : Colors.gray600}
         />
@@ -120,7 +120,7 @@ const renderMaxRating = (
         activeOpacity={0.7}
       >
         <Icon
-          name="star"
+          name="popcorn"
           size={24}
           color={i <= maxRating ? Colors.primary : Colors.gray600}
         />

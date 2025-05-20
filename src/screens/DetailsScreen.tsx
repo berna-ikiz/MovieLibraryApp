@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { RouteProp } from "@react-navigation/native";
 import { castMemberType, MovieDetailType } from "../utils/type/movieType";
@@ -9,6 +9,10 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { fetchCastDetails, fetchMovieDetails } from "../services/movieApi";
 import Loading from "../components/Loading";
 import { RootStackParamList } from "../utils/type/authType";
+import { useSelector } from "react-redux";
+import { RootState } from "../state/movieStore";
+import { deleteDoc, doc, setDoc } from "firebase/firestore";
+import { db } from "../services/firebase";
 
 type DetailsScreenRouteProp = RouteProp<RootStackParamList, "Details">;
 type Props = {
@@ -20,6 +24,8 @@ const DetailsScreen = ({ route }: Props) => {
   const [cast, setCast] = useState<castMemberType[] | []>([]);
   const [isloading, setIsLoading] = useState(true);
   const { movieId } = route.params;
+  const [isFavorite, setIsFavorite] = useState(false);
+  const user = useSelector((state: RootState) => state.auth.currentUser);
 
   useEffect(() => {
     const getMovieDetails = async () => {
@@ -36,6 +42,25 @@ const DetailsScreen = ({ route }: Props) => {
     };
     getMovieDetails();
   }, [movieId]);
+
+  const handleFavorite = async () => {
+    if (!user || !movie) return;
+    const docId = `${user.uid}_${movieId}`;
+    const favRef = doc(db, "favorites", docId);
+    if (isFavorite) {
+      await deleteDoc(favRef);
+      setIsFavorite(false);
+    } else {
+      await setDoc(favRef, {
+        userId: user.uid,
+        title: movie.title,
+        movieId: movie.id,
+        poster: movie.poster_path,
+        genres: movie.genres?.join(","),
+      });
+      setIsFavorite(true);
+    }
+  };
 
   if (isloading) {
     return <Loading title={""} />;
@@ -56,7 +81,13 @@ const DetailsScreen = ({ route }: Props) => {
           />
           <Text style={styles.movieTitle}>{movie.title}</Text>
           <View style={styles.voteContainer}>
-            <Icon name="heart-outline" size={34} color={Colors.primary} />
+            <TouchableOpacity onPress={handleFavorite}>
+              <Icon
+                name={isFavorite ? "heart" : "heart-outline"}
+                size={34}
+                color={Colors.primary}
+              />
+            </TouchableOpacity>
             <Text style={styles.voteText}>
               {movie.vote_average} / {releaseYear}
             </Text>
