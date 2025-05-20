@@ -91,11 +91,12 @@ const renderMinRating = (
   for (let i = 1; i <= MAX_RATING; i++) {
     minRatingIcons.push(
       <TouchableOpacity
+        key={`min-${i}`}
         onPress={() => (i === minRating ? setMinRating(0) : setMinRating(i))}
         activeOpacity={0.7}
       >
         <Icon
-          name="popcorn"
+          name="star"
           size={24}
           color={i <= minRating ? Colors.primary : Colors.gray600}
         />
@@ -114,11 +115,12 @@ const renderMaxRating = (
   for (let i = 1; i <= MAX_RATING; i++) {
     maxRatingIcons.push(
       <TouchableOpacity
+        key={`max-${i}`}
         onPress={() => (i === maxRating ? setMaxRating(0) : setMaxRating(i))}
         activeOpacity={0.7}
       >
         <Icon
-          name="popcorn"
+          name="star"
           size={24}
           color={i <= maxRating ? Colors.primary : Colors.gray600}
         />
