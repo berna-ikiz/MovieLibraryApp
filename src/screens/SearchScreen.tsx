@@ -48,7 +48,6 @@ const SearchScreen = () => {
         try {
           const results = await searchMovies(searchText);
           setResults(results);
-          console.log(results);
         } catch (error) {
           //TODO toast message
           console.log(error);
@@ -66,25 +65,25 @@ const SearchScreen = () => {
     if (activeTab === "filter") {
       const getGenres = async () => {
         const genres = await fetchGenres();
-        console.log(genres);
         setGenres(genres);
       };
       getGenres();
-      console.log("genres", genres);
     }
   }, [activeTab]);
 
   useEffect(() => {
-    console.log(selectedGenres);
-    if (selectedGenres.length > 0) {
+    if (activeTab !== "filter") return;
+    if (
+      selectedGenres.length > 0 ||
+      (selectedRating && (selectedRating.minRating || selectedRating.maxRating))
+    ) {
+      setFilteredMovies([]);
       loadMoreMoviesByFilters(1);
     } else {
       setFilteredMovies([]);
       setCurrentPage(1);
     }
-  }, [selectedGenres]);
-
-  console.log(selectedGenres);
+  }, [selectedGenres, selectedRating, activeTab]);
 
   const toggleGenre = (genre: GenreType) => {
     setSelectedGenres((prev) =>
@@ -98,8 +97,15 @@ const SearchScreen = () => {
     setFetchingMore(true);
     try {
       const genreIds = selectedGenres.map((g) => g.id.toString());
-      const newMovies = await fetchMoviesByFilters(genreIds, page);
-      console.log(newMovies);
+      const minRating = selectedRating?.minRating;
+      const maxRating = selectedRating?.maxRating;
+
+      const newMovies = await fetchMoviesByFilters(
+        genreIds,
+        page,
+        minRating,
+        maxRating
+      );
       setFilteredMovies((prev) => {
         const existingIds = new Set(prev.map((m) => m.id));
         const uniqueMovies = newMovies.filter(
@@ -193,7 +199,13 @@ const SearchScreen = () => {
                   color={Colors.white}
                   style={styles.icon}
                 />
-                <Text style={styles.filterCardText}>Rating</Text>
+                <Text style={styles.filterCardText}>
+                  {selectedRating?.minRating || selectedRating?.maxRating
+                    ? `${selectedRating?.minRating ?? 0} - ${
+                        selectedRating?.maxRating ?? 0
+                      }`
+                    : "Rating"}
+                </Text>
               </TouchableOpacity>
             </View>
             {filteredMovies.length > 0 && (
@@ -233,7 +245,6 @@ const SearchScreen = () => {
 };
 
 const renderItem = ({ item, navigation }: any) => {
-  console.log(item);
   return (
     <TouchableOpacity
       style={styles.searchCard}

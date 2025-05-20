@@ -26,7 +26,7 @@ const RatingModal = (Props: Props) => {
     visible,
     onClose,
     initialMinRating = 0,
-    initialMaxRating = 10,
+    initialMaxRating = 0,
     onSelectRating,
   } = Props;
 
