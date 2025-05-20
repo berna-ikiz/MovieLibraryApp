@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     marginHorizontal: 2,
     backgroundColor: Colors.primary,
-    borderRadius: 8,
+    borderRadius: 20,
     alignItems: "center",
   },
   modalButtonText: {
