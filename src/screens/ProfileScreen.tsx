@@ -5,7 +5,7 @@ import Header from "../components/Header";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../state/movieStore";
-import { logout } from "../services/auth";
+import { logout } from "../services/authService";
 import { auth } from "../services/firebase";
 import { deleteUser } from "firebase/auth";
 

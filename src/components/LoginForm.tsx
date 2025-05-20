@@ -8,7 +8,7 @@ import {
 import React, { useEffect, useRef, useState } from "react";
 import Colors from "../theme/colors";
 import { useDispatch, useSelector } from "react-redux";
-import { login, register } from "../services/auth";
+import { login, register } from "../services/authService";
 import { AppDispatch, RootState } from "../state/movieStore";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";

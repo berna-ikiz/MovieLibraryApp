@@ -14,7 +14,7 @@ import {
   fetchGenres,
   fetchMoviesByFilters,
   searchMovies,
-} from "../services/movieApi";
+} from "../services/movieService";
 import Loading from "../components/Loading";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";

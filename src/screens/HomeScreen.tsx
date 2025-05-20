@@ -7,7 +7,7 @@ import {
   View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { fetchPopularMovies } from "../services/movieApi";
+import { fetchPopularMovies } from "../services/movieService";
 import { useDispatch, useSelector } from "react-redux";
 import { appendMovies } from "../state/slices/moviesSlice";
 import { FlatList } from "react-native-gesture-handler";

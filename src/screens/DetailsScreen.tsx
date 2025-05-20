@@ -6,7 +6,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import Colors from "../theme/colors";
 import Header from "../components/Header";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { fetchCastDetails, fetchMovieDetails } from "../services/movieApi";
+import { fetchCastDetails, fetchMovieDetails } from "../services/movieService";
 import Loading from "../components/Loading";
 import { RootStackParamList } from "../utils/type/authType";
 import { useSelector } from "react-redux";

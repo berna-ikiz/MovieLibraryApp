@@ -10,7 +10,7 @@ import { UserInfo } from "./utils/type/authType";
 import Toast from "react-native-toast-message";
 import { StyleSheet } from "react-native";
 import toastConfig from "./utils/toastConfig";
-import { checkAuth } from "./services/auth";
+import { checkAuth } from "./services/authService";
 
 export default () => {
   return (
