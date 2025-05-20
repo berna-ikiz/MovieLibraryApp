@@ -43,6 +43,15 @@ const RatingModal = (Props: Props) => {
           <View style={styles.iconsContainer}>
             {renderMaxRating(setMaxRating, maxRating)}
           </View>
+
+          <View style={styles.modalButtonContainer}>
+            <TouchableOpacity onPress={onClose} style={styles.modalButton}>
+              <Text style={styles.modalButtonText}>Cancel</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.modalButton}>
+              <Text style={styles.modalButtonText}>Apply</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </Modal>
@@ -117,9 +126,28 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   label: {
-    color: Colors.white,
+    color: Colors.gray400,
     fontSize: 16,
     marginVertical: 8,
     alignSelf: "flex-start",
+  },
+  modalButtonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    marginTop: 20,
+  },
+  modalButton: {
+    flex: 1,
+    paddingVertical: 10,
+    marginHorizontal: 2,
+    backgroundColor: Colors.primary,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  modalButtonText: {
+    color: Colors.gray400,
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
