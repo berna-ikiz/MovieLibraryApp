@@ -90,7 +90,10 @@ const renderMinRating = (
 
   for (let i = 1; i <= MAX_RATING; i++) {
     minRatingIcons.push(
-      <TouchableOpacity onPress={() => setMinRating(i)} activeOpacity={0.7}>
+      <TouchableOpacity
+        onPress={() => (i === minRating ? setMinRating(0) : setMinRating(i))}
+        activeOpacity={0.7}
+      >
         <Icon
           name="popcorn"
           size={24}
@@ -110,7 +113,10 @@ const renderMaxRating = (
 
   for (let i = 1; i <= MAX_RATING; i++) {
     maxRatingIcons.push(
-      <TouchableOpacity onPress={() => setMaxRating(i)} activeOpacity={0.7}>
+      <TouchableOpacity
+        onPress={() => (i === maxRating ? setMaxRating(0) : setMaxRating(i))}
+        activeOpacity={0.7}
+      >
         <Icon
           name="popcorn"
           size={24}
