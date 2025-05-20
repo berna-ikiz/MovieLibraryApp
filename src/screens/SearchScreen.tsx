@@ -21,6 +21,7 @@ import { useNavigation } from "@react-navigation/native";
 import { GenreType, MovieType } from "../utils/type/movieType";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import GenreModal from "../components/GenreModal";
+import RatingModal from "../components/RatingModal";
 
 const SearchScreen = () => {
   const [activeTab, setActiveTab] = useState("search");
@@ -33,6 +34,10 @@ const SearchScreen = () => {
   const [filteredMovies, setFilteredMovies] = useState<MovieType[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [fetchingMore, setFetchingMore] = useState(false);
+  const [showRatingModal, setShowRatingModal] = useState(false);
+  const [selectedRating, setSelectedRating] = useState<number | undefined>(
+    undefined
+  );
 
   const navigation = useNavigation();
 
@@ -178,7 +183,10 @@ const SearchScreen = () => {
                 />
                 <Text style={styles.filterCardText}>Genres</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.filterCard}>
+              <TouchableOpacity
+                style={styles.filterCard}
+                onPress={() => setShowRatingModal(true)}
+              >
                 <MaterialIcons
                   name="star-rate"
                   size={24}
@@ -205,6 +213,11 @@ const SearchScreen = () => {
                 }
               />
             )}
+            <RatingModal
+              visible={showRatingModal}
+              onClose={() => setShowRatingModal(false)}
+              onSelectRating={setSelectedRating}
+            />
             <GenreModal
               visible={showGenreModal}
               onClose={() => setShowGenreModal(false)}
