@@ -85,11 +85,11 @@ export const fetchMoviesByFilters = async (
       params.with_genres = genreIds.join(",");
     }
 
-    if (minRating! === undefined) {
-      params["vote_avarage.gte"] = minRating;
+    if (minRating !== undefined) {
+      params["vote_average.gte"] = minRating;
     }
-    if (maxRating! === undefined) {
-      params["vote_avarage.lte"] = maxRating;
+    if (maxRating !== undefined) {
+      params["vote_average.lte"] = maxRating;
     }
 
     const { data } = await api.get("/discover/movie", { params });
