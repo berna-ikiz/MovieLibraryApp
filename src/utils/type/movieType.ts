@@ -46,5 +46,5 @@ export type FavoriteMovieType = {
   id: number;
   title: string;
   poster_path: string;
-  genres: string;
+  genres?: string;
 };

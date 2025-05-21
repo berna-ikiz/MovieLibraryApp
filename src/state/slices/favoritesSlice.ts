@@ -1,12 +1,16 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, isPending, PayloadAction } from "@reduxjs/toolkit";
 import { FavoriteMovieType } from "../../utils/type/movieType";
+import { fetchUserFavorites } from "../../services/favoriteService";
+import { RootState } from "../movieStore";
 
 interface Favorites {
   favorites: FavoriteMovieType[];
+  error: string | null;
 }
 
 const initialState: Favorites = {
   favorites: [],
+  error: null,
 };
 
 const favoritesSlice = createSlice({
@@ -24,6 +28,18 @@ const favoritesSlice = createSlice({
         (movie) => movie.id !== action.payload
       );
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchUserFavorites.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(fetchUserFavorites.fulfilled, (state, action) => {
+        state.favorites = action.payload;
+      })
+      .addCase(fetchUserFavorites.rejected, (state, action) => {
+        state.error = action.payload ?? "Unknown error";
+      });
   },
 });
 

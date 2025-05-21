@@ -9,10 +9,13 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { fetchCastDetails, fetchMovieDetails } from "../services/movieService";
 import Loading from "../components/Loading";
 import { RootStackParamList } from "../utils/type/authType";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../state/movieStore";
-import { deleteDoc, doc, setDoc } from "firebase/firestore";
-import { db } from "../services/firebase";
+import {
+  addFavoriteToDb,
+  removeFavoriteToDb,
+} from "../services/favoriteService";
+import { addFavorite, removeFavorite } from "../state/slices/favoritesSlice";
 
 type DetailsScreenRouteProp = RouteProp<RootStackParamList, "Details">;
 type Props = {
@@ -24,8 +27,12 @@ const DetailsScreen = ({ route }: Props) => {
   const [cast, setCast] = useState<castMemberType[] | []>([]);
   const [isloading, setIsLoading] = useState(true);
   const { movieId } = route.params;
-  const [isFavorite, setIsFavorite] = useState(false);
+  const favorites = useSelector(
+    (state: RootState) => state.favorites.favorites
+  );
+  const isFavorite = favorites.some((fav) => fav.id === movieId);
   const user = useSelector((state: RootState) => state.auth.currentUser);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getMovieDetails = async () => {
@@ -45,20 +52,19 @@ const DetailsScreen = ({ route }: Props) => {
 
   const handleFavorite = async () => {
     if (!user || !movie) return;
-    const docId = `${user.uid}_${movieId}`;
-    const favRef = doc(db, "favorites", docId);
     if (isFavorite) {
-      await deleteDoc(favRef);
-      setIsFavorite(false);
+      await removeFavoriteToDb(user.uid, movieId);
+      dispatch(removeFavorite(movieId));
     } else {
-      await setDoc(favRef, {
-        userId: user.uid,
-        title: movie.title,
-        movieId: movie.id,
-        poster: movie.poster_path,
-        genres: movie.genres?.join(","),
-      });
-      setIsFavorite(true);
+      await addFavoriteToDb(user.uid, movie);
+      dispatch(
+        addFavorite({
+          id: movie.id,
+          title: movie.title,
+          poster_path: movie.poster_path,
+          genres: movie.genres?.join(","),
+        })
+      );
     }
   };
 
