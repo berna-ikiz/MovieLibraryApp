@@ -48,10 +48,10 @@ export const fetchCastDetails = async (movieId: Number) => {
   }
 };
 
-export const searchMovies = async (query: string) => {
+export const searchMovies = async (page: number = 1, query: string) => {
   try {
     const { data } = await api.get(`/search/movie`, {
-      params: { query },
+      params: { query, page },
     });
     return data.results;
   } catch (error) {
@@ -93,7 +93,6 @@ export const fetchMoviesByFilters = async (
     }
 
     const { data } = await api.get("/discover/movie", { params });
-    console.log("here", data);
     return data.results;
   } catch (error) {
     console.log(error);
