@@ -47,4 +47,5 @@ export type FavoriteMovieType = {
   title: string;
   poster_path: string;
   genres?: string;
+  release_date: string;
 };

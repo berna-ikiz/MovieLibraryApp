@@ -28,6 +28,7 @@ const FavoritesScreen = ({ navigation }) => {
   useEffect(() => {
     if (favorites) {
       setSearchResults(favorites);
+      setFilteredMovies(favorites);
     }
   }, [favorites]);
 
@@ -54,29 +55,35 @@ const FavoritesScreen = ({ navigation }) => {
 };
 
 const renderItem = ({ item, navigation }: any) => {
-  console.log("render Item", item);
+  const releaseYear = item.release_date?.split("-")[0] || "N/A";
   return (
-    <TouchableOpacity
-      style={styles.searchCard}
-      onPress={() => navigation.navigate("Details", { movieId: item.id })}
-    >
-      {item.poster_path ? (
-        <Image
-          source={{
-            uri: `https://image.tmdb.org/t/p/w500${item.poster_path}`,
-          }}
-          style={styles.poster}
-          resizeMode="cover"
-        />
-      ) : (
-        <View style={[styles.poster, styles.noImageIconContainer]}>
-          <Icon name="movie-roll" size={40} color={Colors.gray800} />
+    <View style={styles.movieItemContainer}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Details", { movieId: item.id })}
+      >
+        <View style={styles.movieCard}>
+          <Image
+            source={{
+              uri: `https://image.tmdb.org/t/p/w500${item.poster_path}`,
+            }}
+            style={styles.poster}
+          />
+          <View style={styles.movieCardTextContainer}>
+            <Text style={styles.title}>{item.title}</Text>
+            <Text style={styles.year}>{releaseYear}</Text>
+          </View>
+          <TouchableOpacity>
+            <Icon
+              name={"heart"}
+              size={40}
+              color={Colors.primary}
+              style={styles.heartIcon}
+            />
+          </TouchableOpacity>
         </View>
-      )}
-      <Text style={styles.movieTitle} numberOfLines={2}>
-        {item.title}
-      </Text>
-    </TouchableOpacity>
+      </TouchableOpacity>
+      <View style={styles.movieItemDevider}></View>
+    </View>
   );
 };
 
@@ -95,12 +102,6 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     alignItems: "center",
   },
-  poster: {
-    width: "50%",
-    height: 180,
-    borderTopLeftRadius: 8,
-    borderTopRightRadius: 8,
-  },
   movieTitle: {
     color: Colors.gray300,
     fontSize: 20,
@@ -112,5 +113,40 @@ const styles = StyleSheet.create({
     borderColor: Colors.gray700,
     alignItems: "center",
     justifyContent: "center",
+  },
+  movieItemContainer: {
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+  },
+  movieCard: {
+    flexDirection: "row",
+    margin: 10,
+    alignItems: "center",
+  },
+  movieCardTextContainer: {
+    flex: 1,
+    marginLeft: 10,
+  },
+  poster: {
+    width: 120,
+    height: 180,
+    borderRadius: 10,
+  },
+  title: {
+    color: Colors.white,
+    fontSize: 16,
+    fontWeight: "600",
+    textAlign: "center",
+  },
+  year: {
+    color: Colors.gray500,
+    fontSize: 14,
+    textAlign: "center",
+  },
+  heartIcon: { paddingHorizontal: 10 },
+  movieItemDevider: {
+    height: 1,
+    backgroundColor: Colors.gray800,
+    marginTop: 10,
   },
 });

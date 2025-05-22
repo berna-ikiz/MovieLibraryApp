@@ -142,7 +142,7 @@ const TabSelector = ({
                 renderItem={({ item }) =>
                   renderItemSearch({ item, navigation })
                 }
-                numColumns={2}
+                numColumns={numColumns}
                 columnWrapperStyle={
                   columnWrapperStyle ? columnWrapperStyle : null
                 }

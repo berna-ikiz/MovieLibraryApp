@@ -33,6 +33,7 @@ const DetailsScreen = ({ route }: Props) => {
   const isFavorite = favorites.some((fav) => fav.id === movieId);
   const user = useSelector((state: RootState) => state.auth.currentUser);
   const dispatch = useDispatch();
+  const releaseYear = movie?.release_date?.split("-")[0] || "N/A";
 
   useEffect(() => {
     const getMovieDetails = async () => {
@@ -63,6 +64,7 @@ const DetailsScreen = ({ route }: Props) => {
           title: movie.title,
           poster_path: movie.poster_path,
           genres: movie.genres?.join(","),
+          release_date: releaseYear,
         })
       );
     }
@@ -71,8 +73,6 @@ const DetailsScreen = ({ route }: Props) => {
   if (isloading) {
     return <Loading title={""} />;
   }
-
-  const releaseYear = movie?.release_date?.split("-")[0] || "N/A";
 
   return (
     <View style={styles.container}>

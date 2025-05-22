@@ -22,7 +22,6 @@ const SearchScreen = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    console.log("text here");
     setCurrentPage(1);
     const delayDebounce = setTimeout(async () => {
       if (searchText.trim().length > 1) {
@@ -113,8 +112,8 @@ const SearchScreen = () => {
         setSearchText={setSearchText}
         dataSearch={searchResults}
         dataFilter={filteredMovies}
-        renderItemSearch={renderItem}
-        renderItemFilter={renderItem}
+        renderItemSearch={RenderItem}
+        renderItemFilter={RenderItem}
         onFilterChange={async (genresSelected, ratingSelected) => {
           setSelectedGenres(genresSelected);
           setSelectedRating(ratingSelected);
@@ -133,11 +132,10 @@ const SearchScreen = () => {
   );
 };
 
-const renderItem = ({ item, navigation }: any) => {
-  console.log("render Item");
+const RenderItem = ({ item, navigation }: any) => {
   return (
     <TouchableOpacity
-      style={styles.searchCard}
+      style={styles.filterCard}
       onPress={() => navigation.navigate("Details", { movieId: item.id })}
     >
       {item.poster_path ? (
@@ -165,7 +163,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.black,
   },
-  searchCard: {
+  filterCard: {
     flex: 1,
     margin: 8,
     borderRadius: 8,
