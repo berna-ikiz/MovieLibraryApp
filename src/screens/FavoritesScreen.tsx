@@ -32,6 +32,24 @@ const FavoritesScreen = ({ navigation }) => {
     }
   }, [favorites]);
 
+  useEffect(() => {
+    if (searchText.trim().length > 1) {
+      setIsLoading(true);
+
+      const searchedFavoriteMovies = favorites.filter((item) => {
+        return item.title
+          .toLocaleLowerCase()
+          .includes(searchText.toLowerCase());
+      });
+      if (searchedFavoriteMovies) {
+        setIsLoading(false);
+        setSearchResults(searchedFavoriteMovies);
+      }
+    } else {
+      setSearchResults(favorites);
+    }
+  }, [searchText]);
+
   return (
     <View style={styles.container}>
       <TabSelector
