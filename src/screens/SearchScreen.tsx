@@ -9,7 +9,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 const SearchScreen = () => {
   const [searchText, setSearchText] = useState("");
-  const [results, setResults] = useState<MovieType[]>([]);
+  const [searchResults, setSearchResults] = useState<MovieType[]>([]);
   const [filteredMovies, setFilteredMovies] = useState<MovieType[]>([]);
   const [selectedGenres, setSelectedGenres] = useState<GenreType[]>([]);
   const [selectedRating, setSelectedRating] = useState<{
@@ -30,14 +30,14 @@ const SearchScreen = () => {
         try {
           const movies = await searchMovies(currentPage, searchText);
           console.log(movies);
-          setResults(movies);
+          setSearchResults(movies);
         } catch (error) {
           console.log(error);
         } finally {
           setIsLoading(false);
         }
       } else {
-        setResults([]);
+        setSearchResults([]);
       }
     }, 500);
 
@@ -95,7 +95,7 @@ const SearchScreen = () => {
       const nextPage = currentPage + 1;
       const moreMovies = await searchMovies(nextPage, searchText);
       if (moreMovies.length > 0) {
-        setResults((prev) => [...prev, ...moreMovies]);
+        setSearchResults((prev) => [...prev, ...moreMovies]);
         setCurrentPage(nextPage);
       }
     } catch (error) {
@@ -111,7 +111,7 @@ const SearchScreen = () => {
       <TabSelector
         searchText={searchText}
         setSearchText={setSearchText}
-        dataSearch={results}
+        dataSearch={searchResults}
         dataFilter={filteredMovies}
         renderItemSearch={renderItem}
         renderItemFilter={renderItem}
@@ -127,6 +127,7 @@ const SearchScreen = () => {
         currentPage={currentPage}
         onEndReachedThreshold={0.5}
         numColumns={2}
+        columnWrapperStyle={styles.columnWrapper}
       />
     </View>
   );
@@ -189,6 +190,11 @@ const styles = StyleSheet.create({
     borderColor: Colors.gray700,
     alignItems: "center",
     justifyContent: "center",
+  },
+  columnWrapper: {
+    justifyContent: "space-between",
+    marginBottom: 16,
+    paddingHorizontal: 10,
   },
 });
 

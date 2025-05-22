@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Image,
   ActivityIndicator,
+  ViewStyle,
 } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Loading from "../components/Loading";
@@ -36,6 +37,7 @@ type Props = {
   currentPage?: number;
   onEndReachedThreshold?: number;
   numColumns?: number;
+  columnWrapperStyle?: ViewStyle;
 };
 
 const TabSelector = ({
@@ -54,6 +56,7 @@ const TabSelector = ({
   currentPage,
   onEndReachedThreshold,
   numColumns,
+  columnWrapperStyle,
 }: Props) => {
   const [showGenreModal, setShowGenreModal] = useState(false);
   const [showRatingModal, setShowRatingModal] = useState(false);
@@ -140,7 +143,9 @@ const TabSelector = ({
                   renderItemSearch({ item, navigation })
                 }
                 numColumns={2}
-                columnWrapperStyle={styles.columnWrapper}
+                columnWrapperStyle={
+                  columnWrapperStyle ? columnWrapperStyle : null
+                }
                 showsVerticalScrollIndicator={false}
                 onEndReached={() => {
                   if (loadMoreSearchResults && currentPage !== undefined) {
@@ -204,7 +209,9 @@ const TabSelector = ({
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => renderItemFilter({ item, navigation })}
               numColumns={numColumns}
-              columnWrapperStyle={styles.columnWrapper}
+              columnWrapperStyle={
+                columnWrapperStyle ? columnWrapperStyle : null
+              }
               showsVerticalScrollIndicator={false}
               onEndReached={() => {
                 if (loadMoreMoviesByFilters && currentPage !== undefined) {

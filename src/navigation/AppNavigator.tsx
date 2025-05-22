@@ -38,6 +38,13 @@ const SearchStack = () => (
   </Stack.Navigator>
 );
 
+const FavoritesStack = () => (
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="Favorites" component={FavoritesScreen} />
+    <Stack.Screen name="Details" component={DetailsScreen} />
+  </Stack.Navigator>
+);
+
 const AppNavigator = () => {
   return (
     <Tab.Navigator
@@ -63,7 +70,7 @@ const AppNavigator = () => {
       />
       <Tab.Screen
         name="Favorites"
-        component={FavoritesScreen}
+        component={FavoritesStack}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Icon name="heart" color={color} size={30} />

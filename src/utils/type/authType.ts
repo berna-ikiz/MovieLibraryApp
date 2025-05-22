@@ -14,6 +14,7 @@ export type RootStackParamList = {
   HomeScreen: undefined;
   Details: { movieId: number };
   Search: undefined;
+  Favorites: undefined;
 };
 export type AuthStackParamList = {
   Login: undefined;
