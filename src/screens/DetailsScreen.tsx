@@ -2,7 +2,11 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { RouteProp } from "@react-navigation/native";
 import { castMemberType, MovieDetailType } from "../utils/type/movieType";
-import { ScrollView } from "react-native-gesture-handler";
+import {
+  Gesture,
+  GestureDetector,
+  ScrollView,
+} from "react-native-gesture-handler";
 import Colors from "../theme/colors";
 import Header from "../components/Header";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -14,10 +18,14 @@ import { RootState } from "../state/movieStore";
 import { addLikedMovie, removeLikedMovie } from "../services/favoriteService";
 import { addFavorite, removeFavorite } from "../state/slices/favoritesSlice";
 import Animated, {
+  Easing,
+  runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withSequence,
   withTiming,
+  ZoomIn,
+  ZoomOut,
 } from "react-native-reanimated";
 
 type DetailsScreenRouteProp = RouteProp<RootStackParamList, "Details">;
@@ -38,6 +46,7 @@ const DetailsScreen = ({ route }: Props) => {
   const dispatch = useDispatch();
   const releaseYear = movie?.release_date?.split("-")[0] || "";
   const heartScale = useSharedValue(1);
+  const posterHeartOpacity = useSharedValue(0);
 
   useEffect(() => {
     const getMovieDetails = async () => {
@@ -90,6 +99,33 @@ const DetailsScreen = ({ route }: Props) => {
     };
   });
 
+  const doubleTap = Gesture.Tap()
+    .numberOfTaps(2)
+    .onStart(() => {
+      posterHeartOpacity.value = 0; // Reset animasyon
+      runOnJS(handleAddRemoveFavorite)();
+
+      if (!isFavorite) {
+        posterHeartOpacity.value = withSequence(
+          withTiming(1, { duration: 200 }),
+          withTiming(1, { duration: 1600 }),
+          withTiming(0, { duration: 200 })
+        );
+      }
+    });
+
+  const animatedPosterHeartStyle = useAnimatedStyle(() => {
+    const scale =
+      posterHeartOpacity.value === 1
+        ? withTiming(1.2, { duration: 200 })
+        : withTiming(1, { duration: 200 });
+
+    return {
+      opacity: posterHeartOpacity.value,
+      transform: [{ translateX: -27 }, { translateY: -27 }, { scale }],
+    };
+  });
+
   if (isloading) {
     return <Loading title={""} />;
   }
@@ -99,12 +135,29 @@ const DetailsScreen = ({ route }: Props) => {
       {movie && (
         <>
           <Header title={movie.title} showBackButton={true} />
-          <Image
-            source={{
-              uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
-            }}
-            style={styles.poster}
-          />
+          <GestureDetector gesture={doubleTap}>
+            <Animated.View>
+              <Image
+                source={{
+                  uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+                }}
+                style={styles.poster}
+              />
+              {isFavorite && (
+                <Animated.View
+                  style={[styles.heartContainer, animatedPosterHeartStyle]}
+                  entering={ZoomIn.duration(400).easing(Easing.ease)}
+                  exiting={ZoomOut.duration(400).easing(Easing.ease)}
+                >
+                  <Icon
+                    name="heart"
+                    size={54}
+                    color={"rgba(142, 68, 173, 0.5)"}
+                  />
+                </Animated.View>
+              )}
+            </Animated.View>
+          </GestureDetector>
           <Text style={styles.movieTitle}>{movie.title}</Text>
           <View style={styles.voteContainer}>
             <Animated.View style={animatedHeartStyle}>
@@ -189,6 +242,12 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius: 12,
     marginBottom: 16,
+  },
+  heartContainer: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    zIndex: 1,
   },
   movieTitle: {
     fontSize: 22,
