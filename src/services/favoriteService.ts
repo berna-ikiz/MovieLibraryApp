@@ -44,10 +44,7 @@ export const fetchUserFavorites = createAsyncThunk<
   }
 });
 
-export const addFavoriteToDb = async (
-  userId: string,
-  movie: MovieDetailType
-) => {
+export const addLikedMovie = async (userId: string, movie: MovieDetailType) => {
   const docId = `${userId}_${movie.id}`;
   const favRef = doc(db, "favorites", docId);
   await setDoc(favRef, {
@@ -61,7 +58,7 @@ export const addFavoriteToDb = async (
   });
 };
 
-export const removeFavoriteToDb = async (userId: string, movieId: number) => {
+export const removeLikedMovie = async (userId: string, movieId: number) => {
   const docId = `${userId}_${movieId}`;
   const favRef = doc(db, "favorites", docId);
   await deleteDoc(favRef);

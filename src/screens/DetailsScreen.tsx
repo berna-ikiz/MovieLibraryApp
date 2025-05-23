@@ -11,10 +11,7 @@ import Loading from "../components/Loading";
 import { RootStackParamList } from "../utils/type/authType";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../state/movieStore";
-import {
-  addFavoriteToDb,
-  removeFavoriteToDb,
-} from "../services/favoriteService";
+import { addLikedMovie, removeLikedMovie } from "../services/favoriteService";
 import { addFavorite, removeFavorite } from "../state/slices/favoritesSlice";
 
 type DetailsScreenRouteProp = RouteProp<RootStackParamList, "Details">;
@@ -54,10 +51,10 @@ const DetailsScreen = ({ route }: Props) => {
   const handleFavorite = async () => {
     if (!user || !movie) return;
     if (isFavorite) {
-      await removeFavoriteToDb(user.uid, movieId);
+      await removeLikedMovie(user.uid, movieId);
       dispatch(removeFavorite(movieId));
     } else {
-      await addFavoriteToDb(user.uid, movie);
+      await addLikedMovie(user.uid, movie);
       dispatch(
         addFavorite({
           id: movie.id,

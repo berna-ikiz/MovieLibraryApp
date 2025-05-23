@@ -10,8 +10,10 @@ import {
 } from "../utils/type/movieType";
 import { useSelector } from "react-redux";
 import { RootState } from "../state/movieStore";
+import { useNavigation } from "@react-navigation/native";
 
-const FavoritesScreen = ({ navigation }) => {
+const FavoritesScreen = () => {
+  const navigation = useNavigation();
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState<FavoriteMovieType[]>([]);
   const [filteredMovies, setFilteredMovies] = useState<FavoriteMovieType[]>([]);
