@@ -26,7 +26,7 @@ type Props = {
   renderItemSearch: ({ item, navigation }: any) => JSX.Element;
   renderItemFilter: ({ item, navigation }: any) => JSX.Element;
   onFilterChange: (
-    genres: GenreType[],
+    genres: GenreType | null,
     rating: { minRating?: number; maxRating?: number } | undefined
   ) => Promise<void>;
   isLoading: boolean;
@@ -60,7 +60,7 @@ const TabSelector = ({
 }: Props) => {
   const [showGenreModal, setShowGenreModal] = useState(false);
   const [showRatingModal, setShowRatingModal] = useState(false);
-  const [selectedGenres, setSelectedGenres] = useState<GenreType[]>([]);
+  const [selectedGenre, setSelectedGenre] = useState<GenreType | null>(null);
   const [selectedRating, setSelectedRating] = useState<{
     minRating?: number;
     maxRating?: number;
@@ -70,11 +70,11 @@ const TabSelector = ({
   const [genres, setGenres] = useState<GenreType[]>([]);
 
   const toggleGenre = (genre: GenreType) => {
-    setSelectedGenres((prev) =>
-      prev.some((g) => g.id === genre.id)
-        ? prev.filter((g) => g.id !== genre.id)
-        : [...prev, genre]
-    );
+    if (selectedGenre?.id === genre.id) {
+      setSelectedGenre(null);
+    } else {
+      setSelectedGenre(genre);
+    }
   };
 
   useEffect(() => {
@@ -88,8 +88,8 @@ const TabSelector = ({
   }, [activeTab]);
 
   useEffect(() => {
-    onFilterChange(selectedGenres, selectedRating);
-  }, [selectedGenres, selectedRating]);
+    onFilterChange(selectedGenre, selectedRating);
+  }, [selectedGenre, selectedRating]);
 
   return (
     <View style={styles.container}>
@@ -183,7 +183,9 @@ const TabSelector = ({
                   color={Colors.white}
                   style={styles.icon}
                 />
-                <Text style={styles.filterCardText}>Genres</Text>
+                <Text style={styles.filterCardText}>
+                  {selectedGenre ? selectedGenre.name : "Genre"}
+                </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.filterCard}
@@ -247,7 +249,7 @@ const TabSelector = ({
               visible={showGenreModal}
               onClose={() => setShowGenreModal(false)}
               genres={genres}
-              selectedGenres={selectedGenres}
+              selectedGenre={selectedGenre}
               onSelectGenre={toggleGenre}
             />
           </>

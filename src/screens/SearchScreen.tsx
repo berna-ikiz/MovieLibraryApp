@@ -11,7 +11,7 @@ const SearchScreen = () => {
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState<MovieType[]>([]);
   const [filteredMovies, setFilteredMovies] = useState<MovieType[]>([]);
-  const [selectedGenres, setSelectedGenres] = useState<GenreType[]>([]);
+  const [selectedGenre, setSelectedGenre] = useState<GenreType | null>(null);
   const [selectedRating, setSelectedRating] = useState<{
     minRating?: number;
     maxRating?: number;
@@ -47,25 +47,25 @@ const SearchScreen = () => {
     setCurrentPage(1);
 
     if (
-      selectedGenres.length > 0 ||
+      selectedGenre ||
       selectedRating?.minRating ||
       selectedRating?.maxRating
     ) {
       loadMoreMoviesByFilters();
     }
-  }, [selectedGenres, selectedRating]);
+  }, [selectedGenre, selectedRating]);
 
   const loadMoreMoviesByFilters = async () => {
     if (fetchingMore) return;
     setFetchingMore(true);
     try {
-      const genreIds = selectedGenres.map((g) => g.id.toString());
+      const genreId = selectedGenre?.id.toString() ?? "";
       const minRating = selectedRating?.minRating;
       const maxRating = selectedRating?.maxRating;
       const nextPage = currentPage + 1;
 
       const newMovies = await fetchMoviesByFilters(
-        genreIds,
+        genreId,
         nextPage,
         minRating,
         maxRating
@@ -113,8 +113,8 @@ const SearchScreen = () => {
         dataFilter={filteredMovies}
         renderItemSearch={RenderItem}
         renderItemFilter={RenderItem}
-        onFilterChange={async (genresSelected, ratingSelected) => {
-          setSelectedGenres(genresSelected);
+        onFilterChange={async (genreSelected, ratingSelected) => {
+          setSelectedGenre(genreSelected);
           setSelectedRating(ratingSelected);
         }}
         isLoading={isLoading}

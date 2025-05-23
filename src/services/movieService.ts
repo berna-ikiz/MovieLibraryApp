@@ -71,7 +71,7 @@ export const fetchGenres = async () => {
 };
 
 export const fetchMoviesByFilters = async (
-  genreIds: string[],
+  genreIds: string,
   page = 1,
   minRating?: number,
   maxRating?: number
@@ -82,7 +82,7 @@ export const fetchMoviesByFilters = async (
       sort_by: "popularity.desc",
     };
     if (genreIds.length > 0) {
-      params.with_genres = genreIds.join(",");
+      params.with_genres = genreIds;
     }
 
     if (minRating !== undefined) {

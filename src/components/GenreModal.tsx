@@ -8,12 +8,12 @@ type Props = {
   visible: boolean;
   onClose: () => void;
   genres: GenreType[];
-  selectedGenres: GenreType[];
+  selectedGenre: GenreType | null;
   onSelectGenre: (genre: GenreType) => void;
 };
 
 const GenreModal = (Props: Props) => {
-  const { visible, onClose, genres, selectedGenres, onSelectGenre }: Props =
+  const { visible, onClose, genres, selectedGenre, onSelectGenre }: Props =
     Props;
 
   return (
@@ -31,7 +31,7 @@ const GenreModal = (Props: Props) => {
               data={genres}
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) =>
-                renderGenreItem({ item, selectedGenres, onSelectGenre })
+                renderGenreItem({ item, selectedGenre, onSelectGenre })
               }
               contentContainerStyle={{ paddingBottom: 10 }}
               showsVerticalScrollIndicator={false}
@@ -48,14 +48,14 @@ const GenreModal = (Props: Props) => {
 
 const renderGenreItem = ({
   item,
-  selectedGenres,
+  selectedGenre,
   onSelectGenre,
 }: {
   item: GenreType;
-  selectedGenres: GenreType[];
+  selectedGenre: GenreType | null;
   onSelectGenre: (genre: GenreType) => void;
 }) => {
-  const isSelected = selectedGenres.some((g) => g.id === item.id);
+  const isSelected = selectedGenre?.id === item.id;
   return (
     <TouchableOpacity
       style={[styles.genreItem, isSelected && styles.genreItemSelected]}
