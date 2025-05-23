@@ -103,7 +103,7 @@ const DetailsScreen = ({ route }: Props) => {
               showsHorizontalScrollIndicator={false}
             >
               {movie.genres?.map((genre) => (
-                <View style={styles.genreBox}>
+                <View style={styles.genreBox} key={genre.id}>
                   <Text style={styles.genreText}>{genre.name}</Text>
                 </View>
               ))}
@@ -130,7 +130,7 @@ const DetailsScreen = ({ route }: Props) => {
             style={styles.castScroll}
           >
             {cast.map((person) => (
-              <View style={styles.castItem}>
+              <View style={styles.castItem} key={person.id}>
                 <Image
                   source={
                     person.profile_path
