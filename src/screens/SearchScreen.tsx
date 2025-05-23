@@ -111,8 +111,8 @@ const SearchScreen = () => {
         setSearchText={setSearchText}
         dataSearch={searchResults}
         dataFilter={filteredMovies}
-        renderItemSearch={RenderItem}
-        renderItemFilter={RenderItem}
+        renderItemSearch={({ item }) => RenderItem({ item, navigation })}
+        renderItemFilter={({ item }) => RenderItem({ item, navigation })}
         onFilterChange={async (genreSelected, ratingSelected) => {
           setSelectedGenre(genreSelected);
           setSelectedRating(ratingSelected);

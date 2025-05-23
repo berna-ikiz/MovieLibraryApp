@@ -139,9 +139,7 @@ const TabSelector = ({
               <FlatList
                 data={dataSearch}
                 keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) =>
-                  renderItemSearch({ item, navigation })
-                }
+                renderItem={renderItemSearch}
                 numColumns={numColumns}
                 columnWrapperStyle={
                   columnWrapperStyle ? columnWrapperStyle : null
@@ -209,7 +207,7 @@ const TabSelector = ({
             <FlatList
               data={dataFilter}
               keyExtractor={(item) => item.id.toString()}
-              renderItem={({ item }) => renderItemFilter({ item, navigation })}
+              renderItem={renderItemFilter}
               numColumns={numColumns}
               columnWrapperStyle={
                 columnWrapperStyle ? columnWrapperStyle : null

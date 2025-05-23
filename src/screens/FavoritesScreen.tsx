@@ -1,5 +1,5 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import TabSelector from "../components/TabSelector";
 import Colors from "../theme/colors";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -8,9 +8,12 @@ import {
   GenreType,
   MovieType,
 } from "../utils/type/movieType";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../state/movieStore";
 import { useNavigation } from "@react-navigation/native";
+import Animated from "react-native-reanimated";
+import { removeLikedMovie } from "../services/favoriteService";
+import { removeFavorite } from "../state/slices/favoritesSlice";
 
 const FavoritesScreen = () => {
   const navigation = useNavigation();
@@ -26,6 +29,7 @@ const FavoritesScreen = () => {
   const favorites = useSelector(
     (state: RootState) => state.favorites.favorites
   );
+  const user = useSelector((state: RootState) => state.auth.currentUser);
 
   useEffect(() => {
     if (favorites) {
@@ -80,8 +84,12 @@ const FavoritesScreen = () => {
         setSearchText={setSearchText}
         dataSearch={searchResults as MovieType[]}
         dataFilter={filteredMovies as MovieType[]}
-        renderItemSearch={renderItem}
-        renderItemFilter={renderItem}
+        renderItemSearch={({ item }) => (
+          <RenderItem item={item} navigation={navigation} user={user} />
+        )}
+        renderItemFilter={({ item }) => (
+          <RenderItem item={item} navigation={navigation} user={user} />
+        )}
         onFilterChange={async (genreSelected, ratingSelected) => {
           setSelectedGenre(genreSelected);
           setSelectedRating(ratingSelected);
@@ -95,8 +103,19 @@ const FavoritesScreen = () => {
   );
 };
 
-const renderItem = ({ item, navigation }: any) => {
+const RenderItem = ({ item, navigation, user }: any) => {
+  const dispatch = useDispatch();
+  const [isFavorite, setIsFavorite] = useState(true);
   const releaseYear = item.release_date?.split("-")[0] || "N/A";
+
+  const handleFavorite = async () => {
+    if (!user || !item) return;
+    if (isFavorite) {
+      await removeLikedMovie(user.uid, item.id);
+      dispatch(removeFavorite(item.id));
+    }
+  };
+
   return (
     <View style={styles.movieItemContainer}>
       <TouchableOpacity
@@ -113,9 +132,9 @@ const renderItem = ({ item, navigation }: any) => {
             <Text style={styles.title}>{item.title}</Text>
             <Text style={styles.year}>{releaseYear}</Text>
           </View>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleFavorite}>
             <Icon
-              name={"heart"}
+              name={isFavorite ? "heart" : "heart-outline"}
               size={40}
               color={Colors.primary}
               style={styles.heartIcon}
