@@ -1,4 +1,5 @@
 import {
+  Pressable,
   StyleSheet,
   Text,
   TextInput,
@@ -86,19 +87,20 @@ const LoginForm = (Props: Props) => {
         <Text style={styles.buttonText}>{buttonTitle}</Text>
       </TouchableOpacity>
       <View>
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>
-            {isLogin ? "Don't have an account?" : "Already have an account?"}
-          </Text>
-          <Text
-            style={[styles.footerText, styles.footerLink]}
-            onPress={() => {
-              navigation.navigate(isLogin ? "Register" : "Login");
-            }}
-          >
-            {isLogin ? " Register" : " Login"}
-          </Text>
-        </View>
+        <Pressable
+          onPress={() => {
+            navigation.navigate(isLogin ? "Register" : "Login");
+          }}
+        >
+          <View style={styles.footer}>
+            <Text style={styles.footerText}>
+              {isLogin ? "Don't have an account?" : "Already have an account?"}
+            </Text>
+            <Text style={[styles.footerText, styles.footerLink]}>
+              {isLogin ? " Register" : " Login"}
+            </Text>
+          </View>
+        </Pressable>
       </View>
     </>
   );

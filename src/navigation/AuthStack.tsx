@@ -8,7 +8,7 @@ const Stack = createStackNavigator<AuthStackParamList>();
 
 const AuthStack = () => {
   return (
-    <Stack.Navigator screenOptions={{ animation: "slide_from_bottom" }}>
+    <Stack.Navigator screenOptions={{ animation: "fade" }}>
       <Stack.Screen
         name="Login"
         component={LoginScreen}
