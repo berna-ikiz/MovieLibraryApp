@@ -26,7 +26,7 @@ const Header = ({ title, showBackButton }: HeaderType) => {
           </TouchableOpacity>
         )}
         <Text style={styles.headerTitle} numberOfLines={1}>
-          {title.length < 32 ? `${title}` : `${title.substring(0, 32)}...`}
+          {title.length < 27 ? `${title}` : `${title.substring(0, 27)}...`}
         </Text>
       </View>
     </View>
@@ -50,7 +50,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     color: Colors.primary,
-    flexWrap: "wrap",
   },
   backButton: {
     position: "absolute",
