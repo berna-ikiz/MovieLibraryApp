@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   genreItemSelected: {
-    backgroundColor: "rgba(142, 68, 173, 0.2)",
+    backgroundColor: "rgba(142, 68, 173, 0.3)",
   },
   genreText: {
     fontSize: 18,

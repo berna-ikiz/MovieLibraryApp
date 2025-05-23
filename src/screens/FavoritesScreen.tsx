@@ -15,7 +15,7 @@ const FavoritesScreen = ({ navigation }) => {
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState<FavoriteMovieType[]>([]);
   const [filteredMovies, setFilteredMovies] = useState<FavoriteMovieType[]>([]);
-  const [selectedGenres, setSelectedGenres] = useState<GenreType[]>([]);
+  const [selectedGenre, setSelectedGenre] = useState<GenreType | null>(null);
   const [selectedRating, setSelectedRating] = useState<{
     minRating?: number;
     maxRating?: number;
@@ -53,7 +53,7 @@ const FavoritesScreen = ({ navigation }) => {
   useEffect(() => {
     setFilteredMovies([]);
     if (
-      selectedGenres.length > 0 ||
+      selectedGenre ||
       selectedRating?.minRating ||
       selectedRating?.maxRating
     ) {
@@ -66,8 +66,10 @@ const FavoritesScreen = ({ navigation }) => {
         );
       });
       setFilteredMovies(searchedFavoriteMovies);
+    } else {
+      setFilteredMovies(favorites);
     }
-  }, [selectedGenres, selectedRating]);
+  }, [selectedGenre, selectedRating]);
 
   return (
     <View style={styles.container}>
@@ -78,8 +80,8 @@ const FavoritesScreen = ({ navigation }) => {
         dataFilter={filteredMovies as MovieType[]}
         renderItemSearch={renderItem}
         renderItemFilter={renderItem}
-        onFilterChange={async (genresSelected, ratingSelected) => {
-          setSelectedGenres(genresSelected);
+        onFilterChange={async (genreSelected, ratingSelected) => {
+          setSelectedGenre(genreSelected);
           setSelectedRating(ratingSelected);
         }}
         isLoading={isLoading}
