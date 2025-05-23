@@ -13,6 +13,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../state/movieStore";
 import { addLikedMovie, removeLikedMovie } from "../services/favoriteService";
 import { addFavorite, removeFavorite } from "../state/slices/favoritesSlice";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSequence,
+  withTiming,
+} from "react-native-reanimated";
 
 type DetailsScreenRouteProp = RouteProp<RootStackParamList, "Details">;
 type Props = {
@@ -31,6 +37,7 @@ const DetailsScreen = ({ route }: Props) => {
   const user = useSelector((state: RootState) => state.auth.currentUser);
   const dispatch = useDispatch();
   const releaseYear = movie?.release_date?.split("-")[0] || "";
+  const heartScale = useSharedValue(1);
 
   useEffect(() => {
     const getMovieDetails = async () => {
@@ -48,7 +55,7 @@ const DetailsScreen = ({ route }: Props) => {
     getMovieDetails();
   }, [movieId]);
 
-  const handleFavorite = async () => {
+  const handleAddRemoveFavorite = async () => {
     if (!user || !movie) return;
     if (isFavorite) {
       await removeLikedMovie(user.uid, movieId);
@@ -68,6 +75,21 @@ const DetailsScreen = ({ route }: Props) => {
     }
   };
 
+  const handleFavorite = () => {
+    heartScale.value = withSequence(
+      withTiming(0.7, { duration: 100 }),
+      withTiming(1.2, { duration: 100 }),
+      withTiming(1, { duration: 100 })
+    );
+    handleAddRemoveFavorite();
+  };
+
+  const animatedHeartStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: heartScale.value }],
+    };
+  });
+
   if (isloading) {
     return <Loading title={""} />;
   }
@@ -85,13 +107,15 @@ const DetailsScreen = ({ route }: Props) => {
           />
           <Text style={styles.movieTitle}>{movie.title}</Text>
           <View style={styles.voteContainer}>
-            <TouchableOpacity onPress={handleFavorite}>
-              <Icon
-                name={isFavorite ? "heart" : "heart-outline"}
-                size={34}
-                color={Colors.primary}
-              />
-            </TouchableOpacity>
+            <Animated.View style={animatedHeartStyle}>
+              <TouchableOpacity onPress={handleFavorite}>
+                <Icon
+                  name={isFavorite ? "heart" : "heart-outline"}
+                  size={34}
+                  color={Colors.primary}
+                />
+              </TouchableOpacity>
+            </Animated.View>
             <Text style={styles.voteText}>
               {movie.vote_average} / {releaseYear}
             </Text>
