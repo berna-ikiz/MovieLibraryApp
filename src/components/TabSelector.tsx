@@ -126,13 +126,23 @@ const TabSelector = ({
       <View style={styles.content}>
         {activeTab === "search" && (
           <>
-            <TextInput
-              style={styles.input}
-              placeholder="search movie"
-              value={searchText}
-              onChangeText={setSearchText}
-              placeholderTextColor={Colors.gray500}
-            />
+            <View style={styles.searchInputContainer}>
+              <MaterialIcons
+                name="search"
+                size={22}
+                color="#666"
+                style={styles.icon}
+              />
+
+              <TextInput
+                style={styles.input}
+                placeholder="search movie"
+                value={searchText}
+                onChangeText={setSearchText}
+                placeholderTextColor={Colors.gray500}
+              />
+            </View>
+
             {isLoading ? (
               <Loading title={""} />
             ) : (
@@ -289,11 +299,18 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   content: { marginTop: 20 },
-  input: {
+  searchInputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
     borderWidth: 1,
     borderColor: Colors.primary,
-    padding: 10,
     borderRadius: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+  },
+  input: {
+    flex: 1,
+    padding: 10,
     color: Colors.gray400,
     fontSize: 20,
   },
