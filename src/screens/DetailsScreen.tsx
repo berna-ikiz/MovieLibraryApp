@@ -152,7 +152,7 @@ const DetailsScreen = ({ route }: Props) => {
                   <Icon
                     name="heart"
                     size={54}
-                    color={"rgba(142, 68, 173, 0.5)"}
+                    color={"rgba(220, 185, 235, 0.4)"}
                   />
                 </Animated.View>
               )}
