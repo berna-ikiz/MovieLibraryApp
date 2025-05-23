@@ -50,6 +50,25 @@ const FavoritesScreen = ({ navigation }) => {
     }
   }, [searchText]);
 
+  useEffect(() => {
+    setFilteredMovies([]);
+    if (
+      selectedGenres.length > 0 ||
+      selectedRating?.minRating ||
+      selectedRating?.maxRating
+    ) {
+      const searchedFavoriteMovies = favorites.filter((item) => {
+        return (
+          (selectedRating?.minRating &&
+            item.vote_average > selectedRating?.minRating) ||
+          (selectedRating?.maxRating &&
+            item.vote_average < selectedRating?.maxRating)
+        );
+      });
+      setFilteredMovies(searchedFavoriteMovies);
+    }
+  }, [selectedGenres, selectedRating]);
+
   return (
     <View style={styles.container}>
       <TabSelector

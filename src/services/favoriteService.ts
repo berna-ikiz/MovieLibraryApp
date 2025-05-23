@@ -33,6 +33,7 @@ export const fetchUserFavorites = createAsyncThunk<
         poster_path: data.poster_path,
         genres: data.genres?.split(",") ?? [],
         release_date: data.release_date,
+        vote_average: data.vote_average,
       };
     });
     console.log(favorites);
@@ -55,6 +56,8 @@ export const addFavoriteToDb = async (
     movieId: movie.id,
     poster_path: movie.poster_path,
     genres: movie.genres?.map((g: GenreType) => g.name).join(","),
+    release_date: movie.release_date,
+    vote_average: movie.vote_average,
   });
 };
 

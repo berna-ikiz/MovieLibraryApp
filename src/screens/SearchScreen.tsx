@@ -28,7 +28,6 @@ const SearchScreen = () => {
         setIsLoading(true);
         try {
           const movies = await searchMovies(currentPage, searchText);
-          console.log(movies);
           setSearchResults(movies);
         } catch (error) {
           console.log(error);

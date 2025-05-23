@@ -48,4 +48,5 @@ export type FavoriteMovieType = {
   poster_path: string;
   genres?: string;
   release_date: string;
+  vote_average: number;
 };

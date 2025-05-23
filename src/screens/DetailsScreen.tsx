@@ -65,6 +65,7 @@ const DetailsScreen = ({ route }: Props) => {
           poster_path: movie.poster_path,
           genres: movie.genres?.join(","),
           release_date: releaseYear,
+          vote_average: movie.vote_average,
         })
       );
     }
