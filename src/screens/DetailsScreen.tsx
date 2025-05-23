@@ -30,7 +30,7 @@ const DetailsScreen = ({ route }: Props) => {
   const isFavorite = favorites.some((fav) => fav.id === movieId);
   const user = useSelector((state: RootState) => state.auth.currentUser);
   const dispatch = useDispatch();
-  const releaseYear = movie?.release_date?.split("-")[0] || "N/A";
+  const releaseYear = movie?.release_date?.split("-")[0] || "";
 
   useEffect(() => {
     const getMovieDetails = async () => {

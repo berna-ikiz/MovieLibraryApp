@@ -94,7 +94,7 @@ const RenderItem = ({
   item: MovieType;
   navigation: HomeScreenNavigationProp;
 }) => {
-  const releaseYear = item.release_date?.split("-")[0] || "N/A";
+  const releaseYear = item.release_date?.split("-")[0] || "";
   return (
     <View style={styles.movieItemContainer}>
       <TouchableOpacity

@@ -11,7 +11,13 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../state/movieStore";
 import { useNavigation } from "@react-navigation/native";
-import Animated from "react-native-reanimated";
+import Animated, {
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+  withSequence,
+  withTiming,
+} from "react-native-reanimated";
 import { removeLikedMovie } from "../services/favoriteService";
 import { removeFavorite } from "../state/slices/favoritesSlice";
 
@@ -106,9 +112,25 @@ const FavoritesScreen = () => {
 const RenderItem = ({ item, navigation, user }: any) => {
   const dispatch = useDispatch();
   const [isFavorite, setIsFavorite] = useState(true);
-  const releaseYear = item.release_date?.split("-")[0] || "N/A";
+  const scale = useSharedValue(1);
+  const opacity = useSharedValue(1);
+  const heartScale = useSharedValue(1);
+  const releaseYear = item.release_date?.split("-")[0] || "";
 
-  const handleFavorite = async () => {
+  const animatedItemStyle = useAnimatedStyle(() => {
+    return {
+      opacity: opacity.value,
+      transform: [{ scale: scale.value }],
+    };
+  });
+
+  const animatedHeartStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: heartScale.value }],
+    };
+  });
+
+  const handlRemoveFavorite = async () => {
     if (!user || !item) return;
     if (isFavorite) {
       await removeLikedMovie(user.uid, item.id);
@@ -116,8 +138,21 @@ const RenderItem = ({ item, navigation, user }: any) => {
     }
   };
 
+  const handleFavorite = () => {
+    heartScale.value = withSequence(
+      withTiming(0.7, { duration: 100 }),
+      withTiming(1.2, { duration: 100 }),
+      withTiming(0.7, { duration: 100 })
+    );
+
+    opacity.value = withTiming(0, { duration: 400 });
+    scale.value = withTiming(0.9, { duration: 400 }, () => {
+      runOnJS(handlRemoveFavorite)();
+    });
+  };
+
   return (
-    <View style={styles.movieItemContainer}>
+    <Animated.View style={[styles.movieItemContainer, animatedItemStyle]}>
       <TouchableOpacity
         onPress={() => navigation.navigate("Details", { movieId: item.id })}
       >
@@ -132,18 +167,20 @@ const RenderItem = ({ item, navigation, user }: any) => {
             <Text style={styles.title}>{item.title}</Text>
             <Text style={styles.year}>{releaseYear}</Text>
           </View>
-          <TouchableOpacity onPress={handleFavorite}>
-            <Icon
-              name={isFavorite ? "heart" : "heart-outline"}
-              size={40}
-              color={Colors.primary}
-              style={styles.heartIcon}
-            />
-          </TouchableOpacity>
+          <Animated.View style={animatedHeartStyle}>
+            <TouchableOpacity onPress={handleFavorite}>
+              <Icon
+                name={isFavorite ? "heart" : "heart-outline"}
+                size={40}
+                color={Colors.primary}
+                style={styles.heartIcon}
+              />
+            </TouchableOpacity>
+          </Animated.View>
         </View>
       </TouchableOpacity>
       <View style={styles.movieItemDevider}></View>
-    </View>
+    </Animated.View>
   );
 };
 
