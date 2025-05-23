@@ -307,10 +307,11 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     paddingHorizontal: 12,
     paddingVertical: 4,
+    marginBottom: 3,
   },
   input: {
     flex: 1,
-    padding: 10,
+    padding: 8,
     color: Colors.gray400,
     fontSize: 20,
   },

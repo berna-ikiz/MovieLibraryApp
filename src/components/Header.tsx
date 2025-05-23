@@ -22,10 +22,12 @@ const Header = ({ title, showBackButton }: HeaderType) => {
             onPress={() => navigation.goBack()}
             style={styles.backButton}
           >
-            <Icon name="keyboard-backspace" size={24} color={Colors.primary} />
+            <Icon name="chevron-left" size={28} color={Colors.gray600} />
           </TouchableOpacity>
         )}
-        <Text style={styles.headerTitle}>{title}</Text>
+        <Text style={styles.headerTitle} numberOfLines={1}>
+          {title.length < 32 ? `${title}` : `${title.substring(0, 32)}...`}
+        </Text>
       </View>
     </View>
   );
@@ -48,6 +50,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     color: Colors.primary,
+    flexWrap: "wrap",
   },
   backButton: {
     position: "absolute",
