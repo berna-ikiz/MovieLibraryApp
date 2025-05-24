@@ -9,7 +9,6 @@ import {
 } from "react-native-gesture-handler";
 import Colors from "../theme/colors";
 import Header from "../components/Header";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { fetchCastDetails, fetchMovieDetails } from "../services/movieService";
 import Loading from "../components/Loading";
 import { RootStackParamList } from "../utils/type/authType";
@@ -27,6 +26,7 @@ import Animated, {
   ZoomIn,
   ZoomOut,
 } from "react-native-reanimated";
+import { HeartIcon, HeartOutlineIcon } from "../assests/icons";
 
 type DetailsScreenRouteProp = RouteProp<RootStackParamList, "Details">;
 type Props = {
@@ -149,11 +149,7 @@ const DetailsScreen = ({ route }: Props) => {
                   entering={ZoomIn.duration(400).easing(Easing.ease)}
                   exiting={ZoomOut.duration(400).easing(Easing.ease)}
                 >
-                  <Icon
-                    name="heart"
-                    size={54}
-                    color={"rgba(220, 185, 235, 0.4)"}
-                  />
+                  <HeartIcon size={54} color={"rgba(220, 185, 235, 0.4)"} />
                 </Animated.View>
               )}
             </Animated.View>
@@ -162,11 +158,11 @@ const DetailsScreen = ({ route }: Props) => {
           <View style={styles.voteContainer}>
             <Animated.View style={animatedHeartStyle}>
               <TouchableOpacity onPress={handleFavorite}>
-                <Icon
-                  name={isFavorite ? "heart" : "heart-outline"}
-                  size={34}
-                  color={Colors.primary}
-                />
+                {isFavorite ? (
+                  <HeartIcon size={34} color={Colors.primary} />
+                ) : (
+                  <HeartOutlineIcon size={34} color={Colors.primary} />
+                )}
               </TouchableOpacity>
             </Animated.View>
             <Text style={styles.voteText}>

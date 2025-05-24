@@ -6,17 +6,16 @@ import {
   FlatList,
   Text,
   StyleSheet,
-  Image,
   ActivityIndicator,
   ViewStyle,
 } from "react-native";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Loading from "../components/Loading";
 import GenreModal from "../components/GenreModal";
 import RatingModal from "../components/RatingModal";
 import Colors from "../theme/colors";
 import { GenreType, MovieType } from "../utils/type/movieType";
 import { fetchGenres } from "../services/movieService";
+import { SearchIcon, StarRateIcon, CategoryIcon } from "../assests/icons";
 
 type Props = {
   searchText: string;
@@ -125,12 +124,7 @@ const TabSelector = ({
         {activeTab === "search" && (
           <>
             <View style={styles.searchInputContainer}>
-              <MaterialIcons
-                name="search"
-                size={22}
-                color="#666"
-                style={styles.icon}
-              />
+              <SearchIcon size={22} color="#666" style={styles.icon} />
 
               <TextInput
                 style={styles.input}
@@ -187,8 +181,7 @@ const TabSelector = ({
                 style={styles.filterCard}
                 onPress={() => setShowGenreModal(true)}
               >
-                <MaterialIcons
-                  name="category"
+                <CategoryIcon
                   size={24}
                   color={Colors.white}
                   style={styles.icon}
@@ -201,8 +194,7 @@ const TabSelector = ({
                 style={styles.filterCard}
                 onPress={() => setShowRatingModal(true)}
               >
-                <MaterialIcons
-                  name="star-rate"
+                <StarRateIcon
                   size={24}
                   color={Colors.white}
                   style={styles.icon}

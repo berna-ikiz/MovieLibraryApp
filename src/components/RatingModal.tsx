@@ -1,6 +1,6 @@
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { PopcornIcon } from "../assests/icons";
 import Colors from "../theme/colors";
 import Toast from "react-native-toast-message";
 import toastConfig from "../utils/config/toastConfig";
@@ -95,8 +95,7 @@ const renderMinRating = (
         onPress={() => (i === minRating ? setMinRating(0) : setMinRating(i))}
         activeOpacity={0.7}
       >
-        <Icon
-          name="popcorn"
+        <PopcornIcon
           size={24}
           color={i <= minRating ? Colors.primary : Colors.gray600}
         />
@@ -119,8 +118,7 @@ const renderMaxRating = (
         onPress={() => (i === maxRating ? setMaxRating(0) : setMaxRating(i))}
         activeOpacity={0.7}
       >
-        <Icon
-          name="popcorn"
+        <PopcornIcon
           size={24}
           color={i <= maxRating ? Colors.primary : Colors.gray600}
         />

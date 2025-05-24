@@ -1,8 +1,12 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { BaseToastProps } from "react-native-toast-message";
-import Colors from "../../theme/colors"; // kendi renk sistemini kullan
-import Icon from "react-native-vector-icons/MaterialIcons";
+import Colors from "../../theme/colors";
+import {
+  ErrorIcon,
+  StarBorderIcon,
+  DeleteVariantIcon,
+} from "../../assests/icons";
 
 interface CustomToastProps extends BaseToastProps {
   text1?: string;
@@ -14,12 +18,7 @@ const toastConfig = {
     <View style={[styles.toastContainer, styles.errorContainer]}>
       {text1 ? (
         <View style={styles.toastMessageContainer}>
-          <Icon
-            name="error"
-            size={18}
-            color={Colors.danger}
-            style={styles.icon}
-          />
+          <ErrorIcon size={18} color={Colors.danger} style={styles.icon} />
           <Text style={styles.titleText}>{text1}</Text>
         </View>
       ) : null}
@@ -30,8 +29,7 @@ const toastConfig = {
     <View style={[styles.toastContainer, styles.successContainer]}>
       {text1 ? (
         <View style={styles.toastMessageContainer}>
-          <Icon
-            name="star-border"
+          <StarBorderIcon
             size={18}
             color={Colors.success}
             style={styles.icon}
@@ -46,8 +44,7 @@ const toastConfig = {
     <View style={[styles.toastContainer, styles.errorContainer]}>
       {text1 ? (
         <View style={styles.toastMessageContainer}>
-          <Icon
-            name="delete-variant"
+          <DeleteVariantIcon
             size={18}
             color={Colors.success}
             style={styles.icon}

@@ -2,7 +2,6 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import TabSelector from "../components/TabSelector";
 import Colors from "../theme/colors";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import {
   FavoriteMovieType,
   GenreType,
@@ -20,6 +19,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { removeLikedMovie } from "../services/favoriteService";
 import { removeFavorite } from "../state/slices/favoritesSlice";
+import { HeartIcon, HeartOutlineIcon } from "../assests/icons";
 
 const FavoritesScreen = () => {
   const navigation = useNavigation();
@@ -168,12 +168,19 @@ const RenderItem = ({ item, navigation, user }: any) => {
           </View>
           <Animated.View style={animatedHeartStyle}>
             <TouchableOpacity onPress={handleFavorite}>
-              <Icon
-                name={isFavorite ? "heart" : "heart-outline"}
-                size={40}
-                color={Colors.primary}
-                style={styles.heartIcon}
-              />
+              {isFavorite ? (
+                <HeartIcon
+                  size={40}
+                  color={Colors.primary}
+                  style={styles.heartIcon}
+                />
+              ) : (
+                <HeartOutlineIcon
+                  size={40}
+                  color={Colors.primary}
+                  style={styles.heartIcon}
+                />
+              )}
             </TouchableOpacity>
           </Animated.View>
         </View>

@@ -5,7 +5,7 @@ import { GenreType, MovieType } from "../utils/type/movieType";
 import { fetchMoviesByFilters, searchMovies } from "../services/movieService";
 import TabSelector from "../components/TabSelector";
 import Colors from "../theme/colors";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { MovieRollIcon } from "../assests/icons";
 
 const SearchScreen = () => {
   const [searchText, setSearchText] = useState("");
@@ -146,7 +146,7 @@ const RenderItem = ({ item, navigation }: any) => {
         />
       ) : (
         <View style={[styles.poster, styles.noImageIconContainer]}>
-          <Icon name="movie-roll" size={40} color={Colors.gray800} />
+          <MovieRollIcon size={40} color={Colors.gray800} />
         </View>
       )}
       <Text style={styles.movieTitle} numberOfLines={2}>
