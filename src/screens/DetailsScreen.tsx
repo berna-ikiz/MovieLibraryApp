@@ -177,7 +177,13 @@ const DetailsScreen = ({ route }: Props) => {
             >
               {movie.genres?.map((genre) => (
                 <View style={styles.genreBox} key={genre.id}>
-                  <Text style={styles.genreText}>{genre.name}</Text>
+                  <Text
+                    style={styles.genreText}
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                  >
+                    {genre.name}
+                  </Text>
                 </View>
               ))}
             </ScrollView>
@@ -291,6 +297,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     paddingLeft: 16,
     maxHeight: 40,
+    minHeight: 40,
   },
   genreBox: {
     backgroundColor: Colors.primary,
