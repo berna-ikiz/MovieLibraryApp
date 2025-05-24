@@ -101,7 +101,6 @@ const FavoritesScreen = () => {
           setSelectedRating(ratingSelected);
         }}
         isLoading={isLoading}
-        navigation={navigation}
         onEndReachedThreshold={0.5}
         numColumns={1}
       />

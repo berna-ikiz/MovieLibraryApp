@@ -30,7 +30,6 @@ type Props = {
     rating: { minRating?: number; maxRating?: number } | undefined
   ) => Promise<void>;
   isLoading: boolean;
-  navigation: any;
   loadMoreMoviesByFilters?: () => void;
   loadMoreSearchResults?: () => void;
   fetchingMore?: boolean;
@@ -49,7 +48,6 @@ const TabSelector = ({
   renderItemFilter,
   onFilterChange,
   isLoading,
-  navigation,
   loadMoreMoviesByFilters,
   loadMoreSearchResults,
   fetchingMore,
@@ -142,7 +140,6 @@ const TabSelector = ({
                 placeholderTextColor={Colors.gray500}
               />
             </View>
-
             {isLoading ? (
               <Loading title={""} />
             ) : (
@@ -173,6 +170,11 @@ const TabSelector = ({
                       ? "No results found"
                       : "Filter for movies"}
                   </Text>
+                }
+                ListFooterComponent={
+                  fetchingMore ? (
+                    <ActivityIndicator size="small" color={Colors.primary} />
+                  ) : null
                 }
               />
             )}
@@ -214,45 +216,50 @@ const TabSelector = ({
                 </Text>
               </TouchableOpacity>
             </View>
-            <FlatList
-              data={dataFilter}
-              keyExtractor={(item) => item.id.toString()}
-              renderItem={renderItemFilter}
-              numColumns={numColumns}
-              columnWrapperStyle={
-                columnWrapperStyle ? columnWrapperStyle : null
-              }
-              showsVerticalScrollIndicator={false}
-              onEndReached={() => {
-                if (loadMoreMoviesByFilters && currentPage !== undefined) {
-                  loadMoreMoviesByFilters();
+            {isLoading ? (
+              <Loading title={""} />
+            ) : (
+              <FlatList
+                data={dataFilter}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={renderItemFilter}
+                numColumns={numColumns}
+                columnWrapperStyle={
+                  columnWrapperStyle ? columnWrapperStyle : null
                 }
-              }}
-              onEndReachedThreshold={0.5}
-              ListEmptyComponent={
-                <Text
-                  style={{
-                    color: Colors.gray400,
-                    textAlign: "center",
-                    marginTop: 20,
-                  }}
-                >
-                  {searchText.length > 1
-                    ? "No results found"
-                    : "Search for movies"}
-                </Text>
-              }
-              ListFooterComponent={
-                fetchingMore ? (
-                  <ActivityIndicator size="small" color={Colors.primary} />
-                ) : null
-              }
-            />
+                showsVerticalScrollIndicator={false}
+                onEndReached={() => {
+                  if (loadMoreMoviesByFilters && currentPage !== undefined) {
+                    loadMoreMoviesByFilters();
+                  }
+                }}
+                onEndReachedThreshold={0.5}
+                ListEmptyComponent={
+                  <Text
+                    style={{
+                      color: Colors.gray400,
+                      textAlign: "center",
+                      marginTop: 20,
+                    }}
+                  >
+                    {searchText.length > 1
+                      ? "No results found"
+                      : "Search for movies"}
+                  </Text>
+                }
+                ListFooterComponent={
+                  fetchingMore ? (
+                    <ActivityIndicator size="small" color={Colors.primary} />
+                  ) : null
+                }
+              />
+            )}
             <RatingModal
               visible={showRatingModal}
               onClose={() => setShowRatingModal(false)}
               onSelectRating={setSelectedRating}
             />
+
             <GenreModal
               visible={showGenreModal}
               onClose={() => setShowGenreModal(false)}
@@ -298,7 +305,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
   },
-  content: { marginTop: 20 },
+  content: {
+    flex: 1,
+    marginTop: 20,
+  },
   searchInputContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -375,6 +385,11 @@ const styles = StyleSheet.create({
     color: Colors.white,
     fontSize: 16,
     fontWeight: "600",
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

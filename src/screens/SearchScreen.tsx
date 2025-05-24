@@ -118,7 +118,6 @@ const SearchScreen = () => {
           setSelectedRating(ratingSelected);
         }}
         isLoading={isLoading}
-        navigation={navigation}
         loadMoreMoviesByFilters={loadMoreMoviesByFilters}
         loadMoreSearchResults={loadMoreSearchResults}
         fetchingMore={fetchingMore}
