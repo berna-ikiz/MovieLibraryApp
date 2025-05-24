@@ -5,7 +5,7 @@ import { AppDispatch, store } from "./state/movieStore";
 import RootNavigator from "./navigation/RootNavigator";
 import Toast from "react-native-toast-message";
 import { StyleSheet } from "react-native";
-import toastConfig from "./utils/toastConfig";
+import toastConfig from "./utils/config/toastConfig";
 import { checkAuth } from "./services/authService";
 
 export default () => {

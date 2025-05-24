@@ -7,7 +7,7 @@ import {
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { auth } from "./firebase";
 import { UserInfo } from "../utils/type/authType";
-import { getAuthErrorMessage } from "../utils/firebaseAuthErrorMessage";
+import { getAuthErrorMessage } from "../utils/errors/firebaseAuthErrorMessage";
 import { FirebaseError } from "firebase/app";
 
 export const register = createAsyncThunk<

@@ -1,11 +1,12 @@
 import axios from "axios";
 import { TMDB_API_KEY, TMDB_BASE_URL } from "@env";
+import { TMDB_CONFIG } from "../utils/constants/tmdbConfig";
 
 const api = axios.create({
   baseURL: TMDB_BASE_URL,
   params: {
     api_key: TMDB_API_KEY,
-    language: "tr-TR",
+    language: TMDB_CONFIG.DEFAULT_LANGUAGE,
   },
 });
 
@@ -16,7 +17,6 @@ export const fetchPopularMovies = async (page = 1) => {
     });
     return {
       movies: data.results,
-      totalPage: data.totalPage,
     };
   } catch (error) {
     console.log(error);

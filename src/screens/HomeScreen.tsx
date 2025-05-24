@@ -9,8 +9,8 @@ import {
 import React, { useEffect, useState } from "react";
 import { fetchPopularMovies } from "../services/movieService";
 import { useDispatch, useSelector } from "react-redux";
-import { appendMovies } from "../state/slices/moviesSlice";
-import { FlatList } from "react-native-gesture-handler";
+import { appendMovies, clearMovies } from "../state/slices/moviesSlice";
+import { FlatList } from "react-native";
 import { RootState } from "../state/movieStore";
 import { MovieType } from "../utils/type/movieType";
 import Colors from "../theme/colors";
@@ -19,6 +19,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
 import { RootStackParamList } from "../utils/type/authType";
+import { TMDB_CONFIG } from "../utils/constants/tmdbConfig";
 
 export type HomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -32,6 +33,7 @@ const HomeScreen = () => {
   const dispatch = useDispatch();
   const movies = useSelector((state: RootState) => state.moviesData.movies);
   const navigation = useNavigation<HomeScreenNavigationProp>();
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     const loadInitialMovies = async () => {
@@ -64,6 +66,34 @@ const HomeScreen = () => {
     }
   };
 
+  const loadRefreshingMovies = async (page: number) => {
+    try {
+      const data = await fetchPopularMovies(page);
+      dispatch(clearMovies());
+      dispatch(appendMovies({ movies: data.movies }));
+    } catch (error) {
+      //TODO
+      console.log("API error", error);
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
+  const onRefresh = async () => {
+    if (refreshing) return;
+
+    setRefreshing(true);
+    try {
+      //Because API only allow 500 pages.
+      const newPage = TMDB_CONFIG.MAX_PAGES
+        ? Math.floor(Math.random() * TMDB_CONFIG.MAX_PAGES) + 1
+        : 1;
+      await loadRefreshingMovies(newPage);
+    } catch (error) {
+      console.log("Refresh failed:", error);
+    }
+  };
+
   if (isLoading) {
     return <Loading title="🎬 Movie Library" />;
   }
@@ -77,6 +107,8 @@ const HomeScreen = () => {
         renderItem={({ item }) => RenderItem({ item, navigation })}
         onEndReached={loadMoreMovies}
         onEndReachedThreshold={0.5}
+        refreshing={refreshing}
+        onRefresh={onRefresh}
         ListFooterComponent={
           fetchingMore ? (
             <ActivityIndicator size="small" color={Colors.primary} />

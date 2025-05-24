@@ -3,10 +3,14 @@ import { MovieType } from "../../utils/type/movieType";
 
 interface MoviesState {
   movies: MovieType[];
+  loading: boolean;
+  error: string | null;
 }
 
 const initialState: MoviesState = {
   movies: [],
+  loading: false,
+  error: null,
 };
 
 const moviesSlice = createSlice({
@@ -22,12 +26,16 @@ const moviesSlice = createSlice({
       const filteredMovies = newMovies.filter((m) => !existingIds.has(m.id));
       state.movies = [...state.movies, ...filteredMovies];
     },
+    clearMovies: (state) => {
+      state.movies = [];
+    },
   },
 });
 
 export const {
   //setMovies,
   appendMovies,
+  clearMovies,
 } = moviesSlice.actions;
 
 export default moviesSlice.reducer;

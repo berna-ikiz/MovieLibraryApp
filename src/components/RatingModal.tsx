@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Colors from "../theme/colors";
 import Toast from "react-native-toast-message";
-import toastConfig from "../utils/toastConfig";
+import toastConfig from "../utils/config/toastConfig";
 
 type Props = {
   visible: boolean;

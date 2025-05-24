@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { BaseToastProps } from "react-native-toast-message";
-import Colors from "../theme/colors"; // kendi renk sistemini kullan
+import Colors from "../../theme/colors"; // kendi renk sistemini kullan
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 interface CustomToastProps extends BaseToastProps {

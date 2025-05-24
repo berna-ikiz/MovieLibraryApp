@@ -1,0 +1,5 @@
+export const TMDB_CONFIG = {
+  MAX_PAGES: 500,
+  DEFAULT_LANGUAGE: "tr-TR",
+  DEFAULT_REGION: "TR",
+};
