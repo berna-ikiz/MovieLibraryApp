@@ -38,7 +38,11 @@ const HomeScreen = () => {
   useEffect(() => {
     const loadInitialMovies = async () => {
       try {
-        const data = await fetchPopularMovies(page);
+        const initialPage = TMDB_CONFIG.MAX_PAGES
+          ? Math.floor(Math.random() * TMDB_CONFIG.MAX_PAGES) + 1
+          : 1;
+        setPage(initialPage);
+        const data = await fetchPopularMovies(initialPage);
         dispatch(appendMovies({ movies: data.movies }));
       } catch (error) {
         //TODO: Toast message
