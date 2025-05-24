@@ -1,4 +1,3 @@
-// src/state/slices/authSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AuthState, UserInfo } from "../../utils/type/authType";
 import { checkAuth, login, logout, register } from "../../services/authService";
@@ -7,6 +6,7 @@ const initialState: AuthState = {
   currentUser: null,
   error: null,
   loading: false,
+  checkingAuth: true,
 };
 
 const authSlice = createSlice({
@@ -54,12 +54,19 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
+      .addCase(checkAuth.pending, (state) => {
+        state.checkingAuth = true;
+      })
       .addCase(
         checkAuth.fulfilled,
         (state, action: PayloadAction<UserInfo | null>) => {
           state.currentUser = action.payload;
+          state.checkingAuth = false;
         }
-      );
+      )
+      .addCase(checkAuth.rejected, (state) => {
+        state.checkingAuth = false;
+      });
   },
 });
 

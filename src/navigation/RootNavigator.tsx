@@ -5,19 +5,33 @@ import { AppDispatch, RootState } from "../state/movieStore";
 import AppNavigator from "./AppNavigator";
 import AuthStack from "./AuthStack";
 import { fetchUserFavorites } from "../services/favoriteService";
+import { auth } from "../services/firebase";
+import { checkAuth } from "../services/authService";
+import Loading from "../components/Loading";
 
 const RootNavigator = () => {
-  const user = useSelector((state: RootState) => state.auth.currentUser);
+  const currentUser = useSelector((state: RootState) => state.auth.currentUser);
+  const checkingAuth = useSelector(
+    (state: RootState) => state.auth.checkingAuth
+  );
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    if (user && user.uid) {
-      dispatch(fetchUserFavorites(user?.uid));
+    dispatch(checkAuth());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (currentUser && currentUser.uid) {
+      dispatch(fetchUserFavorites(currentUser?.uid));
     }
-  }, [user && user.uid]);
+  }, [currentUser, dispatch]);
+
+  if (checkingAuth) {
+    return <Loading title={""} />;
+  }
   return (
     <NavigationContainer>
-      {user ? <AppNavigator /> : <AuthStack />}
+      {currentUser ? <AppNavigator /> : <AuthStack />}
     </NavigationContainer>
   );
 };

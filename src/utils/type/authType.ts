@@ -8,6 +8,7 @@ export type AuthState = {
   currentUser: UserInfo | null;
   error: string | null;
   loading: boolean;
+  checkingAuth: boolean;
 };
 
 export type RootStackParamList = {

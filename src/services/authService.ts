@@ -1,5 +1,6 @@
 import {
   createUserWithEmailAndPassword,
+  onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
@@ -74,16 +75,19 @@ export const logout = createAsyncThunk<void, void, { rejectValue: string }>(
 export const checkAuth = createAsyncThunk<UserInfo | null>(
   "auth/checkAuth",
   async (_, thunkAPI) => {
-    const user = auth.currentUser;
-
-    if (user) {
-      const userInfo: UserInfo = {
-        uid: user.uid,
-        email: user.email,
-        displayName: user.displayName ?? null,
-      };
-      return userInfo;
-    }
-    return null;
+    return new Promise((resolve) => {
+      const unsubscribe = auth.onAuthStateChanged((user) => {
+        if (user) {
+          resolve({
+            uid: user.uid,
+            email: user.email,
+            displayName: user.displayName ?? null,
+          });
+        } else {
+          resolve(null);
+        }
+        unsubscribe();
+      });
+    });
   }
 );

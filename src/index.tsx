@@ -1,12 +1,8 @@
 import React, { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { NavigationContainer } from "@react-navigation/native";
 import { Provider, useDispatch } from "react-redux";
 import { AppDispatch, store } from "./state/movieStore";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./services/firebase";
 import RootNavigator from "./navigation/RootNavigator";
-import { UserInfo } from "./utils/type/authType";
 import Toast from "react-native-toast-message";
 import { StyleSheet } from "react-native";
 import toastConfig from "./utils/toastConfig";
