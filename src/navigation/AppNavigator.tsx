@@ -69,7 +69,7 @@ const AppNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Favorites"
+        name="FavoritesTab"
         component={FavoritesStack}
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -78,7 +78,7 @@ const AppNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Search"
+        name="SearchTab"
         component={SearchStack}
         options={{
           tabBarIcon: ({ color, size }) => (

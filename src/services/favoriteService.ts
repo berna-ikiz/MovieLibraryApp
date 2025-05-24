@@ -36,7 +36,6 @@ export const fetchUserFavorites = createAsyncThunk<
         vote_average: data.vote_average,
       };
     });
-    console.log(favorites);
     return favorites;
   } catch (error) {
     console.error("Firebase fetch error:", error);
