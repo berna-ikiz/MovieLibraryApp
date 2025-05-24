@@ -322,8 +322,8 @@ const styles = StyleSheet.create({
   },
   castImage: {
     width: 70,
-    height: 110,
-    borderRadius: 8,
+    height: 100,
+    borderRadius: 20,
     marginBottom: 6,
     borderWidth: 1,
     borderColor: Colors.gray300,
