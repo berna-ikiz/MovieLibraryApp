@@ -17,6 +17,7 @@ import { GenreType, MovieType } from "../utils/type/movieType";
 import { fetchGenres } from "../services/movieService";
 import { SearchIcon, StarRateIcon, CategoryIcon } from "../assets/icons";
 import { CustomText } from "../theme/fontContext";
+import { Fonts } from "../theme/fonts";
 
 type Props = {
   searchText: string;
@@ -317,6 +318,7 @@ const styles = StyleSheet.create({
     padding: 8,
     color: Colors.gray400,
     fontSize: 20,
+    fontFamily: Fonts.fontFamily.regular,
   },
   searchCard: {
     flex: 1,

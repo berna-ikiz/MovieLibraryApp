@@ -17,6 +17,7 @@ import { AuthStackParamList } from "../utils/type/authType";
 import Loading from "./Loading";
 import Toast from "react-native-toast-message";
 import { CustomText } from "../theme/fontContext";
+import { Fonts } from "../theme/fonts";
 
 type AuthStackNavigationProp = StackNavigationProp<AuthStackParamList>;
 
@@ -124,6 +125,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 8,
     color: Colors.gray200,
+    fontFamily: Fonts.fontFamily.regular,
   },
   button: {
     backgroundColor: Colors.primary,
