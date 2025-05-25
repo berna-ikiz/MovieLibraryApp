@@ -19,7 +19,8 @@ import Animated, {
 } from "react-native-reanimated";
 import { removeLikedMovie } from "../services/favoriteService";
 import { removeFavorite } from "../state/slices/favoritesSlice";
-import { HeartIcon, HeartOutlineIcon } from "../assests/icons";
+import { HeartIcon, HeartOutlineIcon } from "../assets/icons";
+import { CustomText } from "../theme/fontContext";
 
 const FavoritesScreen = () => {
   const navigation = useNavigation();
@@ -163,8 +164,8 @@ const RenderItem = ({ item, navigation, user }: any) => {
             style={styles.poster}
           />
           <View style={styles.movieCardTextContainer}>
-            <Text style={styles.title}>{item.title}</Text>
-            <Text style={styles.year}>{releaseYear}</Text>
+            <CustomText style={styles.title}>{item.title}</CustomText>
+            <CustomText style={styles.year}>{releaseYear}</CustomText>
           </View>
           <Animated.View style={animatedHeartStyle}>
             <TouchableOpacity onPress={handleFavorite}>

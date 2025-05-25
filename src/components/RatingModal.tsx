@@ -1,9 +1,10 @@
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
-import { PopcornIcon } from "../assests/icons";
+import { PopcornIcon } from "../assets/icons";
 import Colors from "../theme/colors";
 import Toast from "react-native-toast-message";
 import toastConfig from "../utils/config/toastConfig";
+import { CustomText } from "../theme/fontContext";
 
 type Props = {
   visible: boolean;
@@ -57,22 +58,22 @@ const RatingModal = (Props: Props) => {
     >
       <View style={styles.modalContainer}>
         <View style={styles.ratingContainer}>
-          <Text style={styles.title}>Select Rating Range</Text>
-          <Text style={styles.label}>Minimum Rating</Text>
+          <CustomText style={styles.title}>Select Rating Range</CustomText>
+          <CustomText style={styles.label}>Minimum Rating</CustomText>
           <View style={styles.iconsContainer}>
             {renderMinRating(setMinRating, minRating)}
           </View>
-          <Text style={styles.label}>Maximum Rating</Text>
+          <CustomText style={styles.label}>Maximum Rating</CustomText>
           <View style={styles.iconsContainer}>
             {renderMaxRating(setMaxRating, maxRating)}
           </View>
 
           <View style={styles.modalButtonContainer}>
             <TouchableOpacity onPress={onClose} style={styles.modalButton}>
-              <Text style={styles.modalButtonText}>Cancel</Text>
+              <CustomText style={styles.modalButtonText}>Cancel</CustomText>
             </TouchableOpacity>
             <TouchableOpacity onPress={handleApply} style={styles.modalButton}>
-              <Text style={styles.modalButtonText}>Apply</Text>
+              <CustomText style={styles.modalButtonText}>Apply</CustomText>
             </TouchableOpacity>
           </View>
         </View>

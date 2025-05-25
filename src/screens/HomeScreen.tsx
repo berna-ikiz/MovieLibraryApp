@@ -20,6 +20,7 @@ import Header from "../components/Header";
 import Loading from "../components/Loading";
 import { RootStackParamList } from "../utils/type/authType";
 import { TMDB_CONFIG } from "../utils/constants/tmdbConfig";
+import { CustomText } from "../theme/fontContext";
 
 export type HomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -144,8 +145,8 @@ const RenderItem = ({
             style={styles.poster}
           />
           <View style={styles.movieCardTextContainer}>
-            <Text style={styles.title}>{item.title}</Text>
-            <Text style={styles.title}>{releaseYear}</Text>
+            <CustomText style={styles.title}>{item.title}</CustomText>
+            <CustomText style={styles.year}>{releaseYear}</CustomText>
           </View>
         </View>
       </TouchableOpacity>
@@ -181,10 +182,17 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   title: {
-    marginTop: 5,
-    textAlign: "center",
     color: Colors.white,
+    fontSize: 16,
+    fontWeight: "600",
+    textAlign: "center",
   },
+  year: {
+    color: Colors.gray500,
+    fontSize: 14,
+    textAlign: "center",
+  },
+
   movieItemDevider: {
     height: 1,
     backgroundColor: Colors.gray800,

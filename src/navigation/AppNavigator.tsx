@@ -8,12 +8,7 @@ import SearchScreen from "../screens/SearchScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import { RootStackParamList } from "../utils/type/authType";
 import Colors from "../theme/colors";
-import {
-  HomeIcon,
-  HeartIcon,
-  MagnifyIcon,
-  AccountIcon,
-} from "../assests/icons";
+import { HomeIcon, HeartIcon, MagnifyIcon, AccountIcon } from "../assets/icons";
 
 const Tab = createBottomTabNavigator();
 

@@ -6,7 +6,8 @@ import {
   ErrorIcon,
   StarBorderIcon,
   DeleteVariantIcon,
-} from "../../assests/icons";
+} from "../../assets/icons";
+import { CustomText } from "../../theme/fontContext";
 
 interface CustomToastProps extends BaseToastProps {
   text1?: string;
@@ -19,10 +20,12 @@ const toastConfig = {
       {text1 ? (
         <View style={styles.toastMessageContainer}>
           <ErrorIcon size={18} color={Colors.danger} style={styles.icon} />
-          <Text style={styles.titleText}>{text1}</Text>
+          <CustomText style={styles.titleText}>{text1}</CustomText>
         </View>
       ) : null}
-      {text2 ? <Text style={styles.messageText}>{text2}</Text> : null}
+      {text2 ? (
+        <CustomText style={styles.messageText}>{text2}</CustomText>
+      ) : null}
     </View>
   ),
   success: ({ text1, text2 }: CustomToastProps) => (
@@ -34,10 +37,12 @@ const toastConfig = {
             color={Colors.success}
             style={styles.icon}
           />
-          <Text style={styles.titleText}>{text1}</Text>
+          <CustomText style={styles.titleText}>{text1}</CustomText>
         </View>
       ) : null}
-      {text2 ? <Text style={styles.messageText}>{text2}</Text> : null}
+      {text2 ? (
+        <CustomText style={styles.messageText}>{text2}</CustomText>
+      ) : null}
     </View>
   ),
   delete: ({ text1, text2 }: CustomToastProps) => (
@@ -49,10 +54,12 @@ const toastConfig = {
             color={Colors.success}
             style={styles.icon}
           />
-          <Text style={styles.titleText}>{text1}</Text>
+          <CustomText style={styles.titleText}>{text1}</CustomText>
         </View>
       ) : null}
-      {text2 ? <Text style={styles.messageText}>{text2}</Text> : null}
+      {text2 ? (
+        <CustomText style={styles.messageText}>{text2}</CustomText>
+      ) : null}
     </View>
   ),
 };

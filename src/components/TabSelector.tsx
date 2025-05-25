@@ -4,7 +4,6 @@ import {
   TextInput,
   TouchableOpacity,
   FlatList,
-  Text,
   StyleSheet,
   ActivityIndicator,
   ViewStyle,
@@ -15,7 +14,9 @@ import RatingModal from "../components/RatingModal";
 import Colors from "../theme/colors";
 import { GenreType, MovieType } from "../utils/type/movieType";
 import { fetchGenres } from "../services/movieService";
-import { SearchIcon, StarRateIcon, CategoryIcon } from "../assests/icons";
+import { SearchIcon, StarRateIcon, CategoryIcon } from "../assets/icons";
+import { CustomText } from "../theme/fontContext";
+import { Fonts } from "../theme/fonts";
 
 type Props = {
   searchText: string;
@@ -95,28 +96,28 @@ const TabSelector = ({
           style={styles.tabButton}
           onPress={() => setActiveTab("search")}
         >
-          <Text
+          <CustomText
             style={[
               styles.tabText,
               activeTab === "search" && styles.activeTabText,
             ]}
           >
             Search
-          </Text>
+          </CustomText>
           {activeTab === "search" && <View style={styles.underline} />}
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.tabButton}
           onPress={() => setActiveTab("filter")}
         >
-          <Text
+          <CustomText
             style={[
               styles.tabText,
               activeTab === "filter" && styles.activeTabText,
             ]}
           >
             Filter
-          </Text>
+          </CustomText>
           {activeTab === "filter" && <View style={styles.underline} />}
         </TouchableOpacity>
       </View>
@@ -153,7 +154,7 @@ const TabSelector = ({
                 }}
                 onEndReachedThreshold={onEndReachedThreshold}
                 ListEmptyComponent={
-                  <Text
+                  <CustomText
                     style={{
                       color: Colors.gray400,
                       textAlign: "center",
@@ -163,7 +164,7 @@ const TabSelector = ({
                     {searchText.length > 1
                       ? "No results found"
                       : "Filter for movies"}
-                  </Text>
+                  </CustomText>
                 }
                 ListFooterComponent={
                   fetchingMore ? (
@@ -186,9 +187,9 @@ const TabSelector = ({
                   color={Colors.white}
                   style={styles.icon}
                 />
-                <Text style={styles.filterCardText}>
+                <CustomText style={styles.filterCardText}>
                   {selectedGenre ? selectedGenre.name : "Genre"}
-                </Text>
+                </CustomText>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.filterCard}
@@ -199,13 +200,13 @@ const TabSelector = ({
                   color={Colors.white}
                   style={styles.icon}
                 />
-                <Text style={styles.filterCardText}>
+                <CustomText style={styles.filterCardText}>
                   {selectedRating?.minRating || selectedRating?.maxRating
                     ? `${selectedRating?.minRating ?? 0} - ${
                         selectedRating?.maxRating ?? 0
                       }`
                     : "Rating"}
-                </Text>
+                </CustomText>
               </TouchableOpacity>
             </View>
             {isLoading ? (
@@ -227,7 +228,7 @@ const TabSelector = ({
                 }}
                 onEndReachedThreshold={0.5}
                 ListEmptyComponent={
-                  <Text
+                  <CustomText
                     style={{
                       color: Colors.gray400,
                       textAlign: "center",
@@ -237,7 +238,7 @@ const TabSelector = ({
                     {searchText.length > 1
                       ? "No results found"
                       : "Search for movies"}
-                  </Text>
+                  </CustomText>
                 }
                 ListFooterComponent={
                   fetchingMore ? (
@@ -316,6 +317,7 @@ const styles = StyleSheet.create({
     padding: 8,
     color: Colors.gray400,
     fontSize: 20,
+    fontFamily: Fonts.fontFamily.regular,
   },
   searchCard: {
     flex: 1,

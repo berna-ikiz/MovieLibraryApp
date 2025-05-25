@@ -9,7 +9,8 @@ import React from "react";
 import Colors from "../theme/colors";
 import { HeaderType } from "../utils/type/movieType";
 import { useNavigation } from "@react-navigation/native";
-import { ChevronLeftIcon } from "../assests/icons";
+import { ChevronLeftIcon } from "../assets/icons";
+import { CustomText } from "../theme/fontContext";
 
 const Header = ({ title, showBackButton }: HeaderType) => {
   const navigation = useNavigation();
@@ -25,9 +26,9 @@ const Header = ({ title, showBackButton }: HeaderType) => {
             <ChevronLeftIcon size={28} color={Colors.gray600} />
           </TouchableOpacity>
         )}
-        <Text style={styles.headerTitle} numberOfLines={1}>
+        <CustomText style={styles.headerTitle} numberOfLines={1}>
           {title.length < 27 ? `${title}` : `${title.substring(0, 27)}...`}
-        </Text>
+        </CustomText>
       </View>
     </View>
   );

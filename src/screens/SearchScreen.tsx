@@ -5,7 +5,8 @@ import { GenreType, MovieType } from "../utils/type/movieType";
 import { fetchMoviesByFilters, searchMovies } from "../services/movieService";
 import TabSelector from "../components/TabSelector";
 import Colors from "../theme/colors";
-import { MovieRollIcon } from "../assests/icons";
+import { MovieRollIcon } from "../assets/icons";
+import { CustomText } from "../theme/fontContext";
 
 const SearchScreen = () => {
   const [searchText, setSearchText] = useState("");
@@ -149,9 +150,9 @@ const RenderItem = ({ item, navigation }: any) => {
           <MovieRollIcon size={40} color={Colors.gray800} />
         </View>
       )}
-      <Text style={styles.movieTitle} numberOfLines={2}>
+      <CustomText style={styles.movieTitle} numberOfLines={2}>
         {item.title}
-      </Text>
+      </CustomText>
     </TouchableOpacity>
   );
 };

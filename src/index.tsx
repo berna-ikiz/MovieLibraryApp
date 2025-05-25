@@ -7,12 +7,15 @@ import Toast from "react-native-toast-message";
 import { StyleSheet } from "react-native";
 import toastConfig from "./utils/config/toastConfig";
 import { checkAuth } from "./services/authService";
+import { FontProvider } from "./theme/fontContext";
 
 export default () => {
   return (
     <Provider store={store}>
       <GestureHandlerRootView style={styles.container}>
-        <Main />
+        <FontProvider>
+          <Main />
+        </FontProvider>
         <Toast config={toastConfig} />
       </GestureHandlerRootView>
     </Provider>
@@ -21,7 +24,6 @@ export default () => {
 
 const Main = () => {
   const dispatch = useDispatch<AppDispatch>();
-
   useEffect(() => {
     dispatch(checkAuth());
   }, []);

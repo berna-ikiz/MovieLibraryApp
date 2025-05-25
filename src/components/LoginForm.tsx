@@ -1,12 +1,12 @@
 import {
+  Platform,
   Pressable,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import Colors from "../theme/colors";
 import { useDispatch, useSelector } from "react-redux";
 import { login, register } from "../services/authService";
@@ -16,6 +16,9 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { AuthStackParamList } from "../utils/type/authType";
 import Loading from "./Loading";
 import Toast from "react-native-toast-message";
+import { CustomText } from "../theme/fontContext";
+import { Fonts } from "../theme/fonts";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 type AuthStackNavigationProp = StackNavigationProp<AuthStackParamList>;
 
@@ -67,41 +70,50 @@ const LoginForm = (Props: Props) => {
 
   return (
     <>
-      <TextInput
-        placeholder="Email"
-        placeholderTextColor={Colors.gray600}
-        style={styles.input}
-        autoCapitalize="none"
-        onEndEditing={(e) => setEmail(e.nativeEvent.text)}
-        onSubmitEditing={() => passwordRef.current?.focus()}
-      />
-      <TextInput
-        ref={passwordRef}
-        placeholder="Password"
-        placeholderTextColor={Colors.gray600}
-        style={styles.input}
-        secureTextEntry={true}
-        onEndEditing={(e) => setPassword(e.nativeEvent.text)}
-      />
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-        <Text style={styles.buttonText}>{buttonTitle}</Text>
-      </TouchableOpacity>
-      <View>
-        <Pressable
-          onPress={() => {
-            navigation.navigate(isLogin ? "Register" : "Login");
-          }}
-        >
-          <View style={styles.footer}>
-            <Text style={styles.footerText}>
-              {isLogin ? "Don't have an account?" : "Already have an account?"}
-            </Text>
-            <Text style={[styles.footerText, styles.footerLink]}>
-              {isLogin ? " Register" : " Login"}
-            </Text>
-          </View>
-        </Pressable>
-      </View>
+      <KeyboardAwareScrollView
+        contentContainerStyle={styles.container}
+        enableOnAndroid
+        keyboardShouldPersistTaps="handled"
+        extraScrollHeight={Platform.OS === "ios" ? 100 : 0}
+      >
+        <TextInput
+          placeholder="Email"
+          placeholderTextColor={Colors.gray600}
+          style={styles.input}
+          autoCapitalize="none"
+          onEndEditing={(e) => setEmail(e.nativeEvent.text)}
+          onSubmitEditing={() => passwordRef.current?.focus()}
+        />
+        <TextInput
+          ref={passwordRef}
+          placeholder="Password"
+          placeholderTextColor={Colors.gray600}
+          style={styles.input}
+          secureTextEntry={true}
+          onEndEditing={(e) => setPassword(e.nativeEvent.text)}
+        />
+        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+          <CustomText style={styles.buttonText}>{buttonTitle}</CustomText>
+        </TouchableOpacity>
+        <View>
+          <Pressable
+            onPress={() => {
+              navigation.navigate(isLogin ? "Register" : "Login");
+            }}
+          >
+            <View style={styles.footer}>
+              <CustomText style={styles.footerText}>
+                {isLogin
+                  ? "Don't have an account?"
+                  : "Already have an account?"}
+              </CustomText>
+              <CustomText style={[styles.footerText, styles.footerLink]}>
+                {isLogin ? " Register" : " Login"}
+              </CustomText>
+            </View>
+          </Pressable>
+        </View>
+      </KeyboardAwareScrollView>
     </>
   );
 };
@@ -110,7 +122,7 @@ export default LoginForm;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     justifyContent: "center",
     paddingHorizontal: 24,
     backgroundColor: Colors.black,
@@ -123,6 +135,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 8,
     color: Colors.gray200,
+    fontFamily: Fonts.fontFamily.regular,
   },
   button: {
     backgroundColor: Colors.primary,
