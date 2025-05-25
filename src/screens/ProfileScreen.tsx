@@ -14,13 +14,9 @@ import {
 } from "../assets/icons";
 import { CustomText } from "../theme/fontContext";
 import Toast from "react-native-toast-message";
-import { useNavigation } from "@react-navigation/core";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "src/utils/type/authType";
 
 const ProfileScreen = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   const handleLogout = () => {
     Alert.alert(
