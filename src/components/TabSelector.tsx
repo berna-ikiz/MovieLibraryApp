@@ -4,7 +4,6 @@ import {
   TextInput,
   TouchableOpacity,
   FlatList,
-  Text,
   StyleSheet,
   ActivityIndicator,
   ViewStyle,
