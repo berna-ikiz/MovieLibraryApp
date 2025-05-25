@@ -3,7 +3,6 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  FlatList,
   StyleSheet,
   ActivityIndicator,
   ViewStyle,
@@ -17,6 +16,13 @@ import { fetchGenres } from "../services/movieService";
 import { SearchIcon, StarRateIcon, CategoryIcon } from "../assets/icons";
 import { CustomText } from "../theme/fontContext";
 import { Fonts } from "../theme/fonts";
+import Animated, {
+  runOnJS,
+  useAnimatedScrollHandler,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 
 type Props = {
   searchText: string;
@@ -65,6 +71,47 @@ const TabSelector = ({
   }>();
   const [activeTab, setActiveTab] = useState("search");
   const [genres, setGenres] = useState<GenreType[]>([]);
+  const [headerVisible, setHeaderVisible] = useState(true);
+  const prevScrollY = useSharedValue(0);
+
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      const currentScrollY = event.contentOffset.y;
+
+      if (currentScrollY <= 10) {
+        if (!headerVisible) {
+          runOnJS(setHeaderVisible)(true);
+        }
+      } else {
+        if (currentScrollY > prevScrollY.value + 5) {
+          if (headerVisible) {
+            runOnJS(setHeaderVisible)(false);
+          }
+        } else if (currentScrollY < prevScrollY.value - 5) {
+          if (!headerVisible) {
+            runOnJS(setHeaderVisible)(true);
+          }
+        }
+      }
+
+      prevScrollY.value = currentScrollY;
+    },
+  });
+
+  const headerStyles = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          translateY: withTiming(headerVisible ? 0 : -100, {
+            duration: 100,
+          }),
+        },
+      ],
+      opacity: withTiming(headerVisible ? 1 : 0, {
+        duration: 100,
+      }),
+    };
+  });
 
   const toggleGenre = (genre: GenreType) => {
     if (selectedGenre?.id === genre.id) {
@@ -123,21 +170,23 @@ const TabSelector = ({
       <View style={styles.content}>
         {activeTab === "search" && (
           <>
-            <View style={styles.searchInputContainer}>
-              <SearchIcon size={22} color="#666" style={styles.icon} />
+            <Animated.View style={headerStyles}>
+              <View style={styles.searchInputContainer}>
+                <SearchIcon size={22} color="#666" style={styles.icon} />
 
-              <TextInput
-                style={styles.input}
-                placeholder="search movie"
-                value={searchText}
-                onChangeText={setSearchText}
-                placeholderTextColor={Colors.gray500}
-              />
-            </View>
+                <TextInput
+                  style={styles.input}
+                  placeholder="search movie"
+                  value={searchText}
+                  onChangeText={setSearchText}
+                  placeholderTextColor={Colors.gray500}
+                />
+              </View>
+            </Animated.View>
             {isLoading ? (
               <Loading title={""} />
             ) : (
-              <FlatList
+              <Animated.FlatList
                 data={dataSearch}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={renderItemSearch}
@@ -145,6 +194,8 @@ const TabSelector = ({
                 columnWrapperStyle={
                   columnWrapperStyle ? columnWrapperStyle : null
                 }
+                onScroll={scrollHandler}
+                scrollEventThrottle={16}
                 showsVerticalScrollIndicator={false}
                 onEndReached={() => {
                   if (loadMoreSearchResults && currentPage !== undefined) {
@@ -176,42 +227,44 @@ const TabSelector = ({
         )}
         {activeTab === "filter" && (
           <>
-            <View style={styles.filterContainer}>
-              <TouchableOpacity
-                style={styles.filterCard}
-                onPress={() => setShowGenreModal(true)}
-              >
-                <CategoryIcon
-                  size={24}
-                  color={Colors.white}
-                  style={styles.icon}
-                />
-                <CustomText style={styles.filterCardText}>
-                  {selectedGenre ? selectedGenre.name : "Genre"}
-                </CustomText>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.filterCard}
-                onPress={() => setShowRatingModal(true)}
-              >
-                <StarRateIcon
-                  size={24}
-                  color={Colors.white}
-                  style={styles.icon}
-                />
-                <CustomText style={styles.filterCardText}>
-                  {selectedRating?.minRating || selectedRating?.maxRating
-                    ? `${selectedRating?.minRating ?? 0} - ${
-                        selectedRating?.maxRating ?? 0
-                      }`
-                    : "Rating"}
-                </CustomText>
-              </TouchableOpacity>
-            </View>
+            <Animated.View style={headerStyles}>
+              <View style={styles.filterContainer}>
+                <TouchableOpacity
+                  style={styles.filterCard}
+                  onPress={() => setShowGenreModal(true)}
+                >
+                  <CategoryIcon
+                    size={24}
+                    color={Colors.white}
+                    style={styles.icon}
+                  />
+                  <CustomText style={styles.filterCardText}>
+                    {selectedGenre ? selectedGenre.name : "Genre"}
+                  </CustomText>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.filterCard}
+                  onPress={() => setShowRatingModal(true)}
+                >
+                  <StarRateIcon
+                    size={24}
+                    color={Colors.white}
+                    style={styles.icon}
+                  />
+                  <CustomText style={styles.filterCardText}>
+                    {selectedRating?.minRating || selectedRating?.maxRating
+                      ? `${selectedRating?.minRating ?? 0} - ${
+                          selectedRating?.maxRating ?? 0
+                        }`
+                      : "Rating"}
+                  </CustomText>
+                </TouchableOpacity>
+              </View>
+            </Animated.View>
             {isLoading ? (
               <Loading title={""} />
             ) : (
-              <FlatList
+              <Animated.FlatList
                 data={dataFilter}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={renderItemFilter}
@@ -225,6 +278,8 @@ const TabSelector = ({
                     loadMoreMoviesByFilters();
                   }
                 }}
+                onScroll={scrollHandler}
+                scrollEventThrottle={16}
                 onEndReachedThreshold={0.5}
                 ListEmptyComponent={
                   <CustomText
