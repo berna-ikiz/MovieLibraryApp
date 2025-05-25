@@ -161,12 +161,11 @@ const DetailsScreen = ({ route }: Props) => {
                   entering={ZoomIn.duration(400).easing(Easing.ease)}
                   exiting={ZoomOut.duration(400).easing(Easing.ease)}
                 >
-                  <HeartIcon size={54} color={"rgba(220, 185, 235, 0.4)"} />
+                  <HeartIcon size={54} color={"rgba(220, 185, 235, 0.8)"} />
                 </Animated.View>
               )}
             </Animated.View>
           </GestureDetector>
-          <CustomText style={styles.movieTitle}>{movie.title}</CustomText>
           <View style={styles.voteContainer}>
             <Animated.View style={animatedHeartStyle}>
               <TouchableOpacity onPress={handleFavorite}>
@@ -302,6 +301,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    paddingHorizontal: 10,
     marginVertical: 5,
     gap: 5,
   },
