@@ -11,7 +11,8 @@ import {
   DoorOpenIcon,
   EmoticonSadIcon,
   DeleteEmptyIcon,
-} from "../assests/icons";
+} from "../assets/icons";
+import { CustomText } from "../theme/fontContext";
 
 const ProfileScreen = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -47,7 +48,7 @@ const ProfileScreen = () => {
       <Header title="🎬 Movie Library" showBackButton={false} />
       <TouchableOpacity style={styles.button} onPress={handleLogout}>
         <DoorOpenIcon size={24} color={Colors.white} />
-        <Text style={styles.buttonText}>Log out</Text>
+        <CustomText style={styles.buttonText}>Log out</CustomText>
       </TouchableOpacity>
       <View style={styles.contentContainer}>
         <EmoticonSadIcon size={100} color={Colors.gray800} />
@@ -57,7 +58,7 @@ const ProfileScreen = () => {
         onPress={handleDeleteAccount}
       >
         <DeleteEmptyIcon size={24} color={Colors.white} />
-        <Text style={styles.buttonText}>Delete Account</Text>
+        <CustomText style={styles.buttonText}>Delete Account</CustomText>
       </TouchableOpacity>
     </View>
   );

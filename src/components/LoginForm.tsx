@@ -16,6 +16,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { AuthStackParamList } from "../utils/type/authType";
 import Loading from "./Loading";
 import Toast from "react-native-toast-message";
+import { CustomText } from "../theme/fontContext";
 
 type AuthStackNavigationProp = StackNavigationProp<AuthStackParamList>;
 
@@ -84,7 +85,7 @@ const LoginForm = (Props: Props) => {
         onEndEditing={(e) => setPassword(e.nativeEvent.text)}
       />
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-        <Text style={styles.buttonText}>{buttonTitle}</Text>
+        <CustomText style={styles.buttonText}>{buttonTitle}</CustomText>
       </TouchableOpacity>
       <View>
         <Pressable
@@ -93,12 +94,12 @@ const LoginForm = (Props: Props) => {
           }}
         >
           <View style={styles.footer}>
-            <Text style={styles.footerText}>
+            <CustomText style={styles.footerText}>
               {isLogin ? "Don't have an account?" : "Already have an account?"}
-            </Text>
-            <Text style={[styles.footerText, styles.footerLink]}>
+            </CustomText>
+            <CustomText style={[styles.footerText, styles.footerLink]}>
               {isLogin ? " Register" : " Login"}
-            </Text>
+            </CustomText>
           </View>
         </Pressable>
       </View>

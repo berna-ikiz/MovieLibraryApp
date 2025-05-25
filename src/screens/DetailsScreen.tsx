@@ -26,7 +26,8 @@ import Animated, {
   ZoomIn,
   ZoomOut,
 } from "react-native-reanimated";
-import { HeartIcon, HeartOutlineIcon } from "../assests/icons";
+import { HeartIcon, HeartOutlineIcon } from "../assets/icons";
+import { CustomText } from "../theme/fontContext";
 
 type DetailsScreenRouteProp = RouteProp<RootStackParamList, "Details">;
 type Props = {
@@ -154,7 +155,7 @@ const DetailsScreen = ({ route }: Props) => {
               )}
             </Animated.View>
           </GestureDetector>
-          <Text style={styles.movieTitle}>{movie.title}</Text>
+          <CustomText style={styles.movieTitle}>{movie.title}</CustomText>
           <View style={styles.voteContainer}>
             <Animated.View style={animatedHeartStyle}>
               <TouchableOpacity onPress={handleFavorite}>
@@ -165,9 +166,9 @@ const DetailsScreen = ({ route }: Props) => {
                 )}
               </TouchableOpacity>
             </Animated.View>
-            <Text style={styles.voteText}>
+            <CustomText style={styles.voteText}>
               {movie.vote_average} / {releaseYear}
-            </Text>
+            </CustomText>
           </View>
           {cast && (
             <ScrollView
@@ -177,13 +178,13 @@ const DetailsScreen = ({ route }: Props) => {
             >
               {movie.genres?.map((genre) => (
                 <View style={styles.genreBox} key={genre.id}>
-                  <Text
+                  <CustomText
                     style={styles.genreText}
                     numberOfLines={1}
                     ellipsizeMode="tail"
                   >
                     {genre.name}
-                  </Text>
+                  </CustomText>
                 </View>
               ))}
             </ScrollView>
@@ -193,11 +194,11 @@ const DetailsScreen = ({ route }: Props) => {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ paddingBottom: 24 }}
           >
-            <Text
+            <CustomText
               style={movie.overview ? styles.description : styles.noDescription}
             >
               {movie.overview ? movie.overview : "NO DESCRIPTION"}
-            </Text>
+            </CustomText>
           </ScrollView>
         </>
       )}
@@ -216,13 +217,13 @@ const DetailsScreen = ({ route }: Props) => {
                       ? {
                           uri: `https://image.tmdb.org/t/p/w185${person.profile_path}`,
                         }
-                      : require("../assests/no-image.webp")
+                      : require("../assets/no-image.webp")
                   }
                   style={styles.castImage}
                 />
-                <Text style={styles.castName} numberOfLines={1}>
+                <CustomText style={styles.castName} numberOfLines={1}>
                   {person.name}
-                </Text>
+                </CustomText>
               </View>
             ))}
           </ScrollView>

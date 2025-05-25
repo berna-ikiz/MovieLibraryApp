@@ -3,6 +3,7 @@ import { Modal, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { GenreType } from "../utils/type/movieType";
 import Colors from "../theme/colors";
+import { CustomText } from "../theme/fontContext";
 
 type Props = {
   visible: boolean;
@@ -25,7 +26,7 @@ const GenreModal = (Props: Props) => {
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <Text style={styles.modalTitle}>Select Genres</Text>
+          <CustomText style={styles.modalTitle}>Select Genres</CustomText>
           <View style={styles.genreListContainer}>
             <FlatList
               data={genres}
@@ -38,7 +39,7 @@ const GenreModal = (Props: Props) => {
             />
           </View>
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-            <Text style={styles.closeButtonText}>Close</Text>
+            <CustomText style={styles.closeButtonText}>Close</CustomText>
           </TouchableOpacity>
         </View>
       </View>
@@ -62,7 +63,7 @@ const renderGenreItem = ({
       onPress={() => onSelectGenre(item)}
       activeOpacity={0.7}
     >
-      <Text style={styles.genreText}>{item.name}</Text>
+      <CustomText style={styles.genreText}>{item.name}</CustomText>
     </TouchableOpacity>
   );
 };
