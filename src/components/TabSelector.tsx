@@ -63,7 +63,6 @@ const TabSelector = ({
     minRating?: number;
     maxRating?: number;
   }>();
-  const [filteredMovies, setFilteredMovies] = useState<MovieType[]>([]);
   const [activeTab, setActiveTab] = useState("search");
   const [genres, setGenres] = useState<GenreType[]>([]);
 
@@ -311,6 +310,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 4,
     marginBottom: 3,
+    marginTop: -10,
   },
   input: {
     flex: 1,
