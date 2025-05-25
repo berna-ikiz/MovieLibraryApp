@@ -21,6 +21,7 @@ import Loading from "../components/Loading";
 import { RootStackParamList } from "../utils/type/authType";
 import { TMDB_CONFIG } from "../utils/constants/tmdbConfig";
 import { CustomText } from "../theme/fontContext";
+import Toast from "react-native-toast-message";
 
 export type HomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -46,8 +47,12 @@ const HomeScreen = () => {
         const data = await fetchPopularMovies(initialPage);
         dispatch(appendMovies({ movies: data.movies }));
       } catch (error) {
-        //TODO: Toast message
-        console.log("API error", error);
+        Toast.show({
+          type: "error",
+          text1: "Failed to load movies. Please try again.",
+          position: "top",
+          visibilityTime: 3000,
+        });
       } finally {
         setIsLoading(false);
       }
@@ -64,8 +69,12 @@ const HomeScreen = () => {
       dispatch(appendMovies({ movies: data.movies }));
       setPage(nextPage);
     } catch (error) {
-      //TODO toast message
-      console.log("Load more error", error);
+      Toast.show({
+        type: "error",
+        text1: "Failed to load more movies. Please try again.",
+        position: "top",
+        visibilityTime: 3000,
+      });
     } finally {
       setFetchingMore(false);
     }
@@ -77,8 +86,12 @@ const HomeScreen = () => {
       dispatch(clearMovies());
       dispatch(appendMovies({ movies: data.movies }));
     } catch (error) {
-      //TODO
-      console.log("API error", error);
+      Toast.show({
+        type: "error",
+        text1: "Failed to refresh movies. Please try again.",
+        position: "top",
+        visibilityTime: 3000,
+      });
     } finally {
       setRefreshing(false);
     }

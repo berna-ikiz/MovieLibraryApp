@@ -13,6 +13,7 @@ import {
   DeleteEmptyIcon,
 } from "../assets/icons";
 import { CustomText } from "../theme/fontContext";
+import Toast from "react-native-toast-message";
 
 const ProfileScreen = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -34,8 +35,13 @@ const ProfileScreen = () => {
               console.log("User has been Deleted!");
             }
           } catch (error) {
-            //TODO toast message
-            console.log("User couldn't be deleted.");
+            Toast.show({
+              type: "error",
+              text1: "Failed to delete account.",
+              text2: "Please try again later.",
+              position: "top",
+              visibilityTime: 3000,
+            });
           }
         },
         style: "destructive",

@@ -28,6 +28,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { HeartIcon, HeartOutlineIcon } from "../assets/icons";
 import { CustomText } from "../theme/fontContext";
+import Toast from "react-native-toast-message";
 
 type DetailsScreenRouteProp = RouteProp<RootStackParamList, "Details">;
 type Props = {
@@ -67,21 +68,31 @@ const DetailsScreen = ({ route }: Props) => {
 
   const handleAddRemoveFavorite = async () => {
     if (!user || !movie) return;
-    if (isFavorite) {
-      await removeLikedMovie(user.uid, movieId);
-      dispatch(removeFavorite(movieId));
-    } else {
-      await addLikedMovie(user.uid, movie);
-      dispatch(
-        addFavorite({
-          id: movie.id,
-          title: movie.title,
-          poster_path: movie.poster_path,
-          genres: movie.genres?.join(","),
-          release_date: releaseYear,
-          vote_average: movie.vote_average,
-        })
-      );
+    try {
+      if (isFavorite) {
+        await removeLikedMovie(user.uid, movieId);
+        dispatch(removeFavorite(movieId));
+      } else {
+        await addLikedMovie(user.uid, movie);
+        dispatch(
+          addFavorite({
+            id: movie.id,
+            title: movie.title,
+            poster_path: movie.poster_path,
+            genres: movie.genres?.join(","),
+            release_date: releaseYear,
+            vote_average: movie.vote_average,
+          })
+        );
+      }
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        text1: "Failed to update favorites.",
+        text2: "Please try again.",
+        position: "top",
+        visibilityTime: 3000,
+      });
     }
   };
 

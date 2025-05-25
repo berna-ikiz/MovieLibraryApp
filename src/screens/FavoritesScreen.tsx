@@ -21,6 +21,7 @@ import { removeLikedMovie } from "../services/favoriteService";
 import { removeFavorite } from "../state/slices/favoritesSlice";
 import { HeartIcon, HeartOutlineIcon } from "../assets/icons";
 import { CustomText } from "../theme/fontContext";
+import Toast from "react-native-toast-message";
 
 const FavoritesScreen = () => {
   const navigation = useNavigation();
@@ -111,7 +112,7 @@ const FavoritesScreen = () => {
 
 const RenderItem = ({ item, navigation, user }: any) => {
   const dispatch = useDispatch();
-  const [isFavorite, setIsFavorite] = useState(true);
+  const [isFavorite] = useState(true);
   const scale = useSharedValue(1);
   const opacity = useSharedValue(1);
   const heartScale = useSharedValue(1);
@@ -130,11 +131,21 @@ const RenderItem = ({ item, navigation, user }: any) => {
     };
   });
 
-  const handlRemoveFavorite = async () => {
+  const handleRemoveFavorite = async () => {
     if (!user || !item) return;
     if (isFavorite) {
-      await removeLikedMovie(user.uid, item.id);
-      dispatch(removeFavorite(item.id));
+      try {
+        await removeLikedMovie(user.uid, item.id);
+        dispatch(removeFavorite(item.id));
+      } catch (error) {
+        Toast.show({
+          type: "error",
+          text1: "Failed to remove from favorites.",
+          text2: "Please try again.",
+          position: "top",
+          visibilityTime: 3000,
+        });
+      }
     }
   };
 
@@ -147,7 +158,7 @@ const RenderItem = ({ item, navigation, user }: any) => {
 
     opacity.value = withTiming(0, { duration: 400 });
     scale.value = withTiming(0.9, { duration: 400 }, () => {
-      runOnJS(handlRemoveFavorite)();
+      runOnJS(handleRemoveFavorite)();
     });
   };
 

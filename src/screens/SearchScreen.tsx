@@ -7,6 +7,7 @@ import TabSelector from "../components/TabSelector";
 import Colors from "../theme/colors";
 import { MovieRollIcon } from "../assets/icons";
 import { CustomText } from "../theme/fontContext";
+import Toast from "react-native-toast-message";
 
 const SearchScreen = () => {
   const [searchText, setSearchText] = useState("");
@@ -98,8 +99,13 @@ const SearchScreen = () => {
         setCurrentPage(nextPage);
       }
     } catch (error) {
-      //TODO toast
-      console.log(error);
+      Toast.show({
+        type: "error",
+        text1: "Failed to load more search results.",
+        text2: "Please check your connection and try again.",
+        position: "top",
+        visibilityTime: 3000,
+      });
     } finally {
       setFetchingMore(false);
     }
