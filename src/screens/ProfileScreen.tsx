@@ -19,34 +19,65 @@ const ProfileScreen = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const handleLogout = () => {
-    dispatch(logout());
+    Alert.alert(
+      "Logout",
+      "Are you sure you want to log out? Even the popcorn is getting cold 🍿😢",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Yes",
+          onPress: async () => {
+            try {
+              const user = auth.currentUser;
+              if (user) {
+                dispatch(logout());
+                console.log("User has been logged out!");
+              }
+            } catch (error) {
+              Toast.show({
+                type: "error",
+                text1: "Failed to log out.",
+                text2: "Please try again later.",
+                position: "top",
+                visibilityTime: 3000,
+              });
+            }
+          },
+          style: "destructive",
+        },
+      ]
+    );
   };
 
   const handleDeleteAccount = () => {
-    Alert.alert("Delete Account", "Are you sure to delete account?", [
-      { text: "Cancel", style: "cancel" },
-      {
-        text: "Yes",
-        onPress: async () => {
-          try {
-            const user = auth.currentUser;
-            if (user) {
-              await deleteUser(user);
-              console.log("User has been Deleted!");
+    Alert.alert(
+      "Delete Account",
+      "Are you sure to delete your account? Even my emoji is crying 😢",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Yes",
+          onPress: async () => {
+            try {
+              const user = auth.currentUser;
+              if (user) {
+                await deleteUser(user);
+                console.log("User has been Deleted!");
+              }
+            } catch (error) {
+              Toast.show({
+                type: "error",
+                text1: "Failed to delete account.",
+                text2: "Please try again later.",
+                position: "top",
+                visibilityTime: 3000,
+              });
             }
-          } catch (error) {
-            Toast.show({
-              type: "error",
-              text1: "Failed to delete account.",
-              text2: "Please try again later.",
-              position: "top",
-              visibilityTime: 3000,
-            });
-          }
+          },
+          style: "destructive",
         },
-        style: "destructive",
-      },
-    ]);
+      ]
+    );
   };
 
   return (
@@ -57,7 +88,12 @@ const ProfileScreen = () => {
         <CustomText style={styles.buttonText}>Log out</CustomText>
       </TouchableOpacity>
       <View style={styles.contentContainer}>
-        <EmoticonSadIcon size={100} color={Colors.gray800} />
+        <View style={styles.contentContainer}>
+          <EmoticonSadIcon size={100} color={Colors.gray800} />
+          <CustomText style={styles.sadFunnyText}>
+            Whatever you choose, just know you're crashing my soul.
+          </CustomText>
+        </View>
       </View>
       <TouchableOpacity
         style={[styles.button, styles.deleteButton]}
@@ -113,5 +149,12 @@ const styles = StyleSheet.create({
     left: 24,
     right: 24,
     shadowColor: "#cc4444",
+  },
+  sadFunnyText: {
+    color: Colors.gray800,
+    fontSize: 20,
+    fontStyle: "italic",
+    textAlign: "center",
+    paddingHorizontal: 12,
   },
 });
