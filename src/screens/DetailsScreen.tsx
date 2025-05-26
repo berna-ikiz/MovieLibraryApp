@@ -273,6 +273,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     color: Colors.white,
+    paddingHorizontal: 16,
     marginBottom: 6,
   },
   description: {
@@ -280,6 +281,7 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     marginBottom: 16,
     textAlign: "justify",
+    fontSize: 18,
   },
   noDescription: {
     textAlign: "center",
