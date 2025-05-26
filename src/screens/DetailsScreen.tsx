@@ -82,6 +82,7 @@ const DetailsScreen = ({ route }: Props) => {
             genres: movie.genres?.join(","),
             release_date: releaseYear,
             vote_average: movie.vote_average,
+            vote_count: movie.vote_count,
           })
         );
       }
@@ -176,9 +177,15 @@ const DetailsScreen = ({ route }: Props) => {
                 )}
               </TouchableOpacity>
             </Animated.View>
-            <CustomText style={styles.voteText}>
-              {movie.vote_average} / {releaseYear}
-            </CustomText>
+            <View style={styles.voteInfo}>
+              <CustomText style={styles.voteText}>
+                ⭐ {movie.vote_count?.toLocaleString()}
+              </CustomText>
+              <CustomText style={styles.voteSubText}>
+                {" "}
+                / {releaseYear}
+              </CustomText>
+            </View>
           </View>
           {cast && (
             <ScrollView
@@ -299,10 +306,23 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 34,
   },
-  voteContainer: {
+  voteSubText: {
+    color: Colors.gray600,
+    fontWeight: "bold",
+    fontSize: 20,
+    lineHeight: 34,
+  },
+  voteInfo: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 10,
+    marginBottom: 12,
+  },
+  voteContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingHorizontal: 10,
     marginVertical: 5,
     gap: 5,
