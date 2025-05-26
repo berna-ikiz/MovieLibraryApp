@@ -1,5 +1,6 @@
 import {
   Dimensions,
+  FlatList,
   Image,
   StyleSheet,
   Text,
@@ -202,62 +203,61 @@ const DetailsScreen = ({ route }: Props) => {
               </View>
             </View>
             {cast && (
-              <ScrollView
+              <FlatList
+                data={movie.genres}
                 horizontal
-                style={styles.genreScroll}
-                showsHorizontalScrollIndicator={false}
-              >
-                {movie.genres?.map((genre) => (
-                  <View style={styles.genreBox} key={genre.id}>
-                    <CustomText
-                      style={styles.genreText}
-                      numberOfLines={1}
-                      ellipsizeMode="tail"
-                    >
-                      {genre.name}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => (
+                  <View style={styles.genreBox}>
+                    <CustomText style={styles.genreText}>
+                      {item.name}
                     </CustomText>
                   </View>
-                ))}
-              </ScrollView>
+                )}
+                showsHorizontalScrollIndicator={false}
+              />
             )}
-            <CustomText
-              style={movie.overview ? styles.description : styles.noDescription}
-            >
-              {movie.overview
-                ? movie.overview
-                : "This movie does not have a description available."}
-            </CustomText>
+            <View style={styles.descriptionBox}>
+              <CustomText
+                style={
+                  movie.overview ? styles.description : styles.noDescription
+                }
+              >
+                {movie.overview
+                  ? movie.overview
+                  : "This movie does not have a description available."}
+              </CustomText>
+              {cast && (
+                <FlatList
+                  data={cast}
+                  horizontal
+                  keyExtractor={(item) => item.id.toString()}
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.castScroll}
+                  renderItem={({ item }) => (
+                    <View style={styles.castItem}>
+                      <Image
+                        source={
+                          item.profile_path
+                            ? {
+                                uri: `https://image.tmdb.org/t/p/w185${item.profile_path}`,
+                              }
+                            : require("../assets/no-image.webp")
+                        }
+                        style={styles.castImage}
+                        resizeMode="cover"
+                      />
+                      <CustomText style={styles.castName} numberOfLines={1}>
+                        {item.name}
+                      </CustomText>
+                    </View>
+                  )}
+                />
+              )}
+            </View>
           </ScrollView>
         )}
       </ScrollView>
-      {cast && (
-        <View>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={styles.castScroll}
-          >
-            {cast.map((person) => (
-              <View style={styles.castItem} key={person.id}>
-                <Image
-                  source={
-                    person.profile_path
-                      ? {
-                          uri: `https://image.tmdb.org/t/p/w185${person.profile_path}`,
-                        }
-                      : require("../assets/no-image.webp")
-                  }
-                  style={styles.castImage}
-                  resizeMode="cover"
-                />
-                <CustomText style={styles.castName} numberOfLines={1}>
-                  {person.name}
-                </CustomText>
-              </View>
-            ))}
-          </ScrollView>
-        </View>
-      )}
     </View>
   );
 };
@@ -274,6 +274,7 @@ const styles = StyleSheet.create({
     height: height * 0.5,
     borderRadius: 12,
     marginBottom: 16,
+    marginTop: 10,
   },
   heartContainer: {
     position: "absolute",
@@ -288,19 +289,27 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 10,
   },
+  descriptionBox: {
+    flex: 1,
+    backgroundColor: "rgba(175, 86, 216, 0.2)",
+    overflow: "hidden",
+    marginTop: 10,
+    paddingBottom: 14,
+  },
   description: {
-    color: Colors.white,
+    color: Colors.gray300,
     lineHeight: 22,
     marginBottom: 16,
-    textAlign: "justify",
+    textAlign: "center",
     fontSize: 18,
+    margin: 16,
   },
   noDescription: {
     textAlign: "center",
     color: Colors.gray600,
     fontSize: 24,
     fontWeight: "bold",
-    marginTop: 20,
+    margin: 10,
   },
   voteText: {
     color: Colors.white,
@@ -340,7 +349,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingHorizontal: 14,
     paddingVertical: 6,
-    marginRight: 10,
+    margin: 10,
     justifyContent: "center",
     alignItems: "center",
     alignSelf: "flex-start",
@@ -359,7 +368,7 @@ const styles = StyleSheet.create({
   castImage: {
     width: 70,
     height: 100,
-    borderRadius: 20,
+    borderRadius: 10,
     marginBottom: 6,
     borderWidth: 1,
     borderColor: Colors.gray300,
