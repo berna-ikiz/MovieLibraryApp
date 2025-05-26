@@ -214,7 +214,9 @@ const DetailsScreen = ({ route }: Props) => {
             <CustomText
               style={movie.overview ? styles.description : styles.noDescription}
             >
-              {movie.overview ? movie.overview : "NO DESCRIPTION"}
+              {movie.overview
+                ? movie.overview
+                : "This movie does not have a description available."}
             </CustomText>
           </ScrollView>
         </>
@@ -292,12 +294,9 @@ const styles = StyleSheet.create({
   },
   noDescription: {
     textAlign: "center",
-    color: Colors.gray800,
+    color: Colors.gray600,
     fontSize: 24,
     fontWeight: "bold",
-    textShadowColor: Colors.gray800,
-    textShadowOffset: { width: 0, height: 2 },
-    opacity: 0.4,
     marginTop: 80,
   },
   voteText: {
