@@ -365,6 +365,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 4,
     marginBottom: 3,
+    marginHorizontal: 16,
     marginTop: -10,
   },
   input: {
