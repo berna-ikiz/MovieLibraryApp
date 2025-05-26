@@ -1,4 +1,11 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Dimensions,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { RouteProp } from "@react-navigation/native";
 import { castMemberType, MovieDetailType } from "../utils/type/movieType";
@@ -34,6 +41,8 @@ type DetailsScreenRouteProp = RouteProp<RootStackParamList, "Details">;
 type Props = {
   route: DetailsScreenRouteProp;
 };
+
+const { width, height } = Dimensions.get("window");
 
 const DetailsScreen = ({ route }: Props) => {
   const [movie, setMovie] = useState<MovieDetailType | null>(null);
@@ -145,72 +154,72 @@ const DetailsScreen = ({ route }: Props) => {
 
   return (
     <View style={styles.container}>
-      {movie && (
-        <>
-          <Header title={movie.title} showBackButton={true} />
-          <GestureDetector gesture={doubleTap}>
-            <Animated.View>
-              <Image
-                source={{
-                  uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
-                }}
-                style={styles.poster}
-              />
-              {isFavorite && (
-                <Animated.View
-                  style={[styles.heartContainer, animatedPosterHeartStyle]}
-                  entering={ZoomIn.duration(400).easing(Easing.ease)}
-                  exiting={ZoomOut.duration(400).easing(Easing.ease)}
-                >
-                  <HeartIcon size={54} color={"rgba(220, 185, 235, 0.8)"} />
-                </Animated.View>
-              )}
-            </Animated.View>
-          </GestureDetector>
-          <View style={styles.voteContainer}>
-            <Animated.View style={animatedHeartStyle}>
-              <TouchableOpacity onPress={handleFavorite}>
-                {isFavorite ? (
-                  <HeartIcon size={34} color={Colors.primary} />
-                ) : (
-                  <HeartOutlineIcon size={34} color={Colors.primary} />
-                )}
-              </TouchableOpacity>
-            </Animated.View>
-            <View style={styles.voteInfo}>
-              <CustomText style={styles.voteText}>
-                ⭐ {movie.vote_count?.toLocaleString()}
-              </CustomText>
-              <CustomText style={styles.voteSubText}>
-                {" "}
-                / {releaseYear}
-              </CustomText>
-            </View>
-          </View>
-          {cast && (
-            <ScrollView
-              horizontal
-              style={styles.genreScroll}
-              showsHorizontalScrollIndicator={false}
-            >
-              {movie.genres?.map((genre) => (
-                <View style={styles.genreBox} key={genre.id}>
-                  <CustomText
-                    style={styles.genreText}
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
+      {movie && <Header title={movie.title} showBackButton={true} />}
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 24 }}
+      >
+        {movie && (
+          <ScrollView>
+            <GestureDetector gesture={doubleTap}>
+              <Animated.View>
+                <Image
+                  source={{
+                    uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+                  }}
+                  style={styles.poster}
+                  resizeMode="cover"
+                />
+                {isFavorite && (
+                  <Animated.View
+                    style={[styles.heartContainer, animatedPosterHeartStyle]}
+                    entering={ZoomIn.duration(400).easing(Easing.ease)}
+                    exiting={ZoomOut.duration(400).easing(Easing.ease)}
                   >
-                    {genre.name}
-                  </CustomText>
-                </View>
-              ))}
-            </ScrollView>
-          )}
-          <ScrollView
-            style={styles.descriptionScroll}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: 24 }}
-          >
+                    <HeartIcon size={54} color={"rgba(220, 185, 235, 0.8)"} />
+                  </Animated.View>
+                )}
+              </Animated.View>
+            </GestureDetector>
+            <View style={styles.voteContainer}>
+              <Animated.View style={animatedHeartStyle}>
+                <TouchableOpacity onPress={handleFavorite}>
+                  {isFavorite ? (
+                    <HeartIcon size={34} color={Colors.primary} />
+                  ) : (
+                    <HeartOutlineIcon size={34} color={Colors.primary} />
+                  )}
+                </TouchableOpacity>
+              </Animated.View>
+              <View style={styles.voteInfo}>
+                <CustomText style={styles.voteText}>
+                  ⭐ {movie.vote_count?.toLocaleString()}
+                </CustomText>
+                <CustomText style={styles.voteSubText}>
+                  {" "}
+                  / {releaseYear}
+                </CustomText>
+              </View>
+            </View>
+            {cast && (
+              <ScrollView
+                horizontal
+                style={styles.genreScroll}
+                showsHorizontalScrollIndicator={false}
+              >
+                {movie.genres?.map((genre) => (
+                  <View style={styles.genreBox} key={genre.id}>
+                    <CustomText
+                      style={styles.genreText}
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                    >
+                      {genre.name}
+                    </CustomText>
+                  </View>
+                ))}
+              </ScrollView>
+            )}
             <CustomText
               style={movie.overview ? styles.description : styles.noDescription}
             >
@@ -219,8 +228,8 @@ const DetailsScreen = ({ route }: Props) => {
                 : "This movie does not have a description available."}
             </CustomText>
           </ScrollView>
-        </>
-      )}
+        )}
+      </ScrollView>
       {cast && (
         <View>
           <ScrollView
@@ -239,6 +248,7 @@ const DetailsScreen = ({ route }: Props) => {
                       : require("../assets/no-image.webp")
                   }
                   style={styles.castImage}
+                  resizeMode="cover"
                 />
                 <CustomText style={styles.castName} numberOfLines={1}>
                   {person.name}
@@ -260,8 +270,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.black,
   },
   poster: {
-    width: "100%",
-    height: 200,
+    width: width,
+    height: height * 0.5,
     borderRadius: 12,
     marginBottom: 16,
   },
@@ -278,13 +288,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 10,
   },
-  descriptionScroll: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: Colors.white,
-    paddingHorizontal: 16,
-    marginBottom: 6,
-  },
   description: {
     color: Colors.white,
     lineHeight: 22,
@@ -297,7 +300,7 @@ const styles = StyleSheet.create({
     color: Colors.gray600,
     fontSize: 24,
     fontWeight: "bold",
-    marginTop: 80,
+    marginTop: 20,
   },
   voteText: {
     color: Colors.white,
