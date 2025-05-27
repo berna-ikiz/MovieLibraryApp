@@ -12,10 +12,12 @@ export type AuthState = {
 };
 
 export type RootStackParamList = {
+  MainTabs: undefined;
   HomeScreen: undefined;
   Details: { movieId: number };
   Search: undefined;
   Favorites: undefined;
+  Profile: undefined;
 };
 export type AuthStackParamList = {
   Login: undefined;
