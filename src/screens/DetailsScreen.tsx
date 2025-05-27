@@ -228,31 +228,35 @@ const DetailsScreen = ({ route }: Props) => {
                   : "This movie does not have a description available."}
               </CustomText>
               {cast && (
-                <FlatList
-                  data={cast}
-                  horizontal
-                  keyExtractor={(item) => item.id.toString()}
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={styles.castScroll}
-                  renderItem={({ item }) => (
-                    <View style={styles.castItem}>
-                      <Image
-                        source={
-                          item.profile_path
-                            ? {
-                                uri: `https://image.tmdb.org/t/p/w185${item.profile_path}`,
-                              }
-                            : require("../assets/no-image.webp")
-                        }
-                        style={styles.castImage}
-                        resizeMode="cover"
-                      />
-                      <CustomText style={styles.castName} numberOfLines={1}>
-                        {item.name}
-                      </CustomText>
-                    </View>
-                  )}
-                />
+                <>
+                  <CustomText style={styles.castTitle}>Cast</CustomText>
+                  <View style={styles.divider} />
+                  <FlatList
+                    data={cast}
+                    horizontal
+                    keyExtractor={(item) => item.id.toString()}
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={styles.castScroll}
+                    renderItem={({ item }) => (
+                      <View style={styles.castItem}>
+                        <Image
+                          source={
+                            item.profile_path
+                              ? {
+                                  uri: `https://image.tmdb.org/t/p/w185${item.profile_path}`,
+                                }
+                              : require("../assets/no-image.webp")
+                          }
+                          style={styles.castImage}
+                          resizeMode="cover"
+                        />
+                        <CustomText style={styles.castName} numberOfLines={1}>
+                          {item.name}
+                        </CustomText>
+                      </View>
+                    )}
+                  />
+                </>
               )}
             </View>
           </ScrollView>
@@ -291,9 +295,10 @@ const styles = StyleSheet.create({
   },
   descriptionBox: {
     flex: 1,
-    backgroundColor: "rgba(175, 86, 216, 0.2)",
+    backgroundColor: "rgba(37, 35, 38, 0.7)",
     overflow: "hidden",
-    marginTop: 10,
+    margin: 4,
+    borderRadius: 20,
     paddingBottom: 14,
   },
   description: {
@@ -378,5 +383,22 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     fontSize: 12,
+  },
+  castTitle: {
+    color: Colors.primaryDark,
+    fontSize: 24,
+    fontWeight: "900",
+    paddingHorizontal: 16,
+    marginTop: 10,
+    marginLeft: 16,
+    marginBottom: 2,
+    textAlign: "center",
+  },
+  divider: {
+    height: 1,
+    backgroundColor: Colors.primaryDark,
+    marginHorizontal: 8,
+    marginBottom: 16,
+    opacity: 0.6,
   },
 });
