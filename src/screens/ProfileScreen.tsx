@@ -31,7 +31,7 @@ const ProfileScreen = () => {
               }
             } catch (error) {
               Toast.show({
-                type: "error",
+                type: "info",
                 text1: "Failed to log out.",
                 text2: "Please try again later.",
                 position: "top",
@@ -63,7 +63,7 @@ const ProfileScreen = () => {
               }
             } catch (error) {
               Toast.show({
-                type: "error",
+                type: "info",
                 text1: "Failed to delete account.",
                 text2: "Please try again later.",
                 position: "top",

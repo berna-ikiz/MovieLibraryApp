@@ -253,7 +253,7 @@ const TabSelector = ({
                   onPress={() => setShowRatingModal(true)}
                 >
                   <AppIcon
-                    name="star-rate"
+                    name="star"
                     size={24}
                     color={Colors.white}
                     style={styles.icon}

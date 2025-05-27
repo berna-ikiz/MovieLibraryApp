@@ -1,25 +1,21 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { BaseToastProps } from "react-native-toast-message";
+import {
+  BaseToastProps,
+  ToastConfig,
+  ToastConfigParams,
+} from "react-native-toast-message";
 import Colors from "../../theme/colors";
 import AppIcon from "../../assets/icons";
 import { CustomText } from "../../theme/fontContext";
 
-interface CustomToastProps extends BaseToastProps {
-  text1?: string;
-  text2?: string;
-  type: "error" | "success" | "delete";
-}
-
-const toastConfig = {
-  error: (props: CustomToastProps) => <CustomToast {...props} type="error" />,
-  success: (props: CustomToastProps) => (
-    <CustomToast {...props} type="success" />
-  ),
-  delete: (props: CustomToastProps) => <CustomToast {...props} type="delete" />,
+const toastConfig: ToastConfig = {
+  error: (props) => <CustomToast {...props} />,
+  success: (props) => <CustomToast {...props} />,
+  info: (props) => <CustomToast {...props} />,
 };
 
-const CustomToast = ({ text1, text2, type }: CustomToastProps) => {
+const CustomToast = ({ text1, text2, type }: ToastConfigParams<any>) => {
   const iconMap = {
     error: (
       <AppIcon
@@ -37,7 +33,7 @@ const CustomToast = ({ text1, text2, type }: CustomToastProps) => {
         style={styles.icon}
       />
     ),
-    delete: (
+    info: (
       <AppIcon
         name="delete-empty"
         size={18}
@@ -51,7 +47,7 @@ const CustomToast = ({ text1, text2, type }: CustomToastProps) => {
     <View style={[styles.toastContainer, styles.errorContainer]}>
       {text1 ? (
         <View style={styles.toastMessageContainer}>
-          {iconMap[type]}
+          {iconMap[type as keyof typeof iconMap]}
           <CustomText style={styles.titleText}>{text1}</CustomText>
         </View>
       ) : null}

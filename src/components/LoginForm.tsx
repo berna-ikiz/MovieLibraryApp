@@ -39,7 +39,7 @@ const LoginForm = (Props: Props) => {
   const handleSubmit = async () => {
     if (!email || !password) {
       Toast.show({
-        type: "error",
+        type: "info",
         text1: "Please fill all fields.",
         position: "top",
         visibilityTime: 3000,
@@ -55,7 +55,7 @@ const LoginForm = (Props: Props) => {
       }
     } catch (err) {
       Toast.show({
-        type: "error",
+        type: "info",
         text1: isLogin ? "Login Failed" : "Register Failed",
         text2: typeof err === "string" ? err : "An unexpected error occurred.",
         position: "top",

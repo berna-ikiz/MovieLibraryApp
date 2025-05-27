@@ -40,7 +40,7 @@ const RatingModal = (Props: Props) => {
       onClose();
     } else {
       Toast.show({
-        type: "error",
+        type: "info",
         text1: "Minumum rating cannot be higher than maximum rating",
         position: "top",
         topOffset: 60,

@@ -100,7 +100,7 @@ const SearchScreen = () => {
       }
     } catch (error) {
       Toast.show({
-        type: "error",
+        type: "info",
         text1: "Failed to load more search results.",
         text2: "Please check your connection and try again.",
         position: "top",

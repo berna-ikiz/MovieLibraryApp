@@ -19,7 +19,7 @@ type IconName =
   | "star-outline"
   | "delete-alert"
   | "movie-filter-outline"
-  | "star-rate";
+  | "star";
 
 type IconProps = {
   name: IconName;
