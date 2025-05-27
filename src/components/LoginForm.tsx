@@ -81,7 +81,7 @@ const LoginForm = (Props: Props) => {
           placeholderTextColor={Colors.gray600}
           style={styles.input}
           autoCapitalize="none"
-          onEndEditing={(e) => setEmail(e.nativeEvent.text)}
+          onChangeText={setEmail}
           onSubmitEditing={() => passwordRef.current?.focus()}
         />
         <TextInput
@@ -90,7 +90,8 @@ const LoginForm = (Props: Props) => {
           placeholderTextColor={Colors.gray600}
           style={styles.input}
           secureTextEntry={true}
-          onEndEditing={(e) => setPassword(e.nativeEvent.text)}
+          value={password}
+          onChangeText={setPassword}
         />
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
           <CustomText style={styles.buttonText}>{buttonTitle}</CustomText>
