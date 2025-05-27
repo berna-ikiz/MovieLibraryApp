@@ -139,7 +139,7 @@ const RenderItem = ({ item, navigation, user }: any) => {
         dispatch(removeFavorite(item.id));
       } catch (error) {
         Toast.show({
-          type: "error",
+          type: "info",
           text1: "Failed to remove from favorites.",
           text2: "Please try again.",
           position: "top",

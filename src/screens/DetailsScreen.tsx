@@ -65,6 +65,16 @@ const DetailsScreen = ({ route }: Props) => {
       try {
         const movieData = await fetchMovieDetails(movieId);
         const castData = await fetchCastDetails(movieId);
+
+        if (!movieData || !castData) {
+          Toast.show({
+            type: "info",
+            text1: "Failed to refresh movies. Please try again.",
+            position: "top",
+            visibilityTime: 3000,
+          });
+          return;
+        }
         setMovie(movieData.movieDetails);
         setCast(castData.castData);
         setIsLoading(false);
@@ -98,7 +108,7 @@ const DetailsScreen = ({ route }: Props) => {
       }
     } catch (error) {
       Toast.show({
-        type: "error",
+        type: "info",
         text1: "Failed to update favorites.",
         text2: "Please try again.",
         position: "top",
