@@ -13,7 +13,7 @@ import RatingModal from "../components/RatingModal";
 import Colors from "../theme/colors";
 import { GenreType, MovieType } from "../utils/type/movieType";
 import { fetchGenres } from "../services/movieService";
-import { SearchIcon, StarRateIcon, CategoryIcon } from "../assets/icons";
+import AppIcon from "../assets/icons";
 import { CustomText } from "../theme/fontContext";
 import { Fonts } from "../theme/fonts";
 import Animated, {
@@ -172,7 +172,12 @@ const TabSelector = ({
           <>
             <Animated.View style={headerStyles}>
               <View style={styles.searchInputContainer}>
-                <SearchIcon size={22} color="#666" style={styles.icon} />
+                <AppIcon
+                  name="magnify"
+                  size={22}
+                  color={Colors.primary}
+                  style={styles.icon}
+                />
 
                 <TextInput
                   style={styles.input}
@@ -233,7 +238,8 @@ const TabSelector = ({
                   style={styles.filterCard}
                   onPress={() => setShowGenreModal(true)}
                 >
-                  <CategoryIcon
+                  <AppIcon
+                    name="movie-filter-outline"
                     size={24}
                     color={Colors.white}
                     style={styles.icon}
@@ -246,7 +252,8 @@ const TabSelector = ({
                   style={styles.filterCard}
                   onPress={() => setShowRatingModal(true)}
                 >
-                  <StarRateIcon
+                  <AppIcon
+                    name="star-rate"
                     size={24}
                     color={Colors.white}
                     style={styles.icon}

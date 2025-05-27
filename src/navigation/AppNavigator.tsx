@@ -8,7 +8,7 @@ import SearchScreen from "../screens/SearchScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import { RootStackParamList } from "../utils/type/authType";
 import Colors from "../theme/colors";
-import { HomeIcon, HeartIcon, MagnifyIcon, AccountIcon } from "../assets/icons";
+import AppIcon from "../assets/icons";
 
 const Tab = createBottomTabNavigator();
 
@@ -63,7 +63,9 @@ const AppNavigator = () => {
         name="HomeTab"
         component={HomeStack}
         options={{
-          tabBarIcon: ({ color, size }) => <HomeIcon color={color} size={30} />,
+          tabBarIcon: ({ color, size }) => (
+            <AppIcon name="home" color={color} size={30} />
+          ),
         }}
       />
       <Tab.Screen
@@ -71,7 +73,7 @@ const AppNavigator = () => {
         component={FavoritesStack}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <HeartIcon color={color} size={30} />
+            <AppIcon name="heart" color={color} size={30} />
           ),
         }}
       />
@@ -80,7 +82,7 @@ const AppNavigator = () => {
         component={SearchStack}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <MagnifyIcon color={color} size={30} />
+            <AppIcon name="magnify" color={color} size={30} />
           ),
         }}
       />
@@ -89,7 +91,7 @@ const AppNavigator = () => {
         component={ProfileScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <AccountIcon color={color} size={30} />
+            <AppIcon name="account" color={color} size={30} />
           ),
         }}
       />

@@ -19,7 +19,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { removeLikedMovie } from "../services/favoriteService";
 import { removeFavorite } from "../state/slices/favoritesSlice";
-import { HeartIcon, HeartOutlineIcon } from "../assets/icons";
+import AppIcon from "../assets/icons";
 import { CustomText } from "../theme/fontContext";
 import Toast from "react-native-toast-message";
 
@@ -181,13 +181,15 @@ const RenderItem = ({ item, navigation, user }: any) => {
           <Animated.View style={animatedHeartStyle}>
             <TouchableOpacity onPress={handleFavorite}>
               {isFavorite ? (
-                <HeartIcon
+                <AppIcon
+                  name="heart"
                   size={40}
                   color={Colors.primary}
                   style={styles.heartIcon}
                 />
               ) : (
-                <HeartOutlineIcon
+                <AppIcon
+                  name="heart-outline"
                   size={40}
                   color={Colors.primary}
                   style={styles.heartIcon}

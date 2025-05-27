@@ -7,11 +7,7 @@ import { AppDispatch } from "../state/movieStore";
 import { logout } from "../services/authService";
 import { auth } from "../services/firebase";
 import { deleteUser } from "firebase/auth";
-import {
-  DoorOpenIcon,
-  EmoticonSadIcon,
-  DeleteEmptyIcon,
-} from "../assets/icons";
+import AppIcon from "../assets/icons";
 import { CustomText } from "../theme/fontContext";
 import Toast from "react-native-toast-message";
 
@@ -85,12 +81,12 @@ const ProfileScreen = () => {
     <View style={styles.container}>
       <Header title="🎬 Movie Library" showBackButton={false} />
       <TouchableOpacity style={styles.button} onPress={handleLogout}>
-        <DoorOpenIcon size={24} color={Colors.white} />
+        <AppIcon name="door-open" size={24} color={Colors.white} />
         <CustomText style={styles.buttonText}>Log out</CustomText>
       </TouchableOpacity>
       <View style={styles.contentContainer}>
         <View style={styles.contentContainer}>
-          <EmoticonSadIcon size={100} color={Colors.gray800} />
+          <AppIcon name="emoticon-sad" size={100} color={Colors.gray800} />
           <CustomText style={styles.sadFunnyText}>
             Whatever you choose, just know you're crashing my soul.
           </CustomText>
@@ -100,7 +96,7 @@ const ProfileScreen = () => {
         style={[styles.button, styles.deleteButton]}
         onPress={handleDeleteAccount}
       >
-        <DeleteEmptyIcon size={24} color={Colors.white} />
+        <AppIcon name="delete-alert" size={24} color={Colors.white} />
         <CustomText style={styles.buttonText}>Delete Account</CustomText>
       </TouchableOpacity>
     </View>

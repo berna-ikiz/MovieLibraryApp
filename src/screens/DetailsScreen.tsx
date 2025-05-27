@@ -34,7 +34,7 @@ import Animated, {
   ZoomIn,
   ZoomOut,
 } from "react-native-reanimated";
-import { HeartIcon, HeartOutlineIcon } from "../assets/icons";
+import AppIcon from "../assets/icons";
 import { CustomText } from "../theme/fontContext";
 import Toast from "react-native-toast-message";
 
@@ -177,7 +177,11 @@ const DetailsScreen = ({ route }: Props) => {
                     entering={ZoomIn.duration(400).easing(Easing.ease)}
                     exiting={ZoomOut.duration(400).easing(Easing.ease)}
                   >
-                    <HeartIcon size={54} color={"rgba(220, 185, 235, 0.8)"} />
+                    <AppIcon
+                      name="heart"
+                      size={54}
+                      color={"rgba(220, 185, 235, 0.8)"}
+                    />
                   </Animated.View>
                 )}
               </Animated.View>
@@ -186,9 +190,13 @@ const DetailsScreen = ({ route }: Props) => {
               <Animated.View style={animatedHeartStyle}>
                 <TouchableOpacity onPress={handleFavorite}>
                   {isFavorite ? (
-                    <HeartIcon size={34} color={Colors.primary} />
+                    <AppIcon name="heart" size={34} color={Colors.primary} />
                   ) : (
-                    <HeartOutlineIcon size={34} color={Colors.primary} />
+                    <AppIcon
+                      name="heart-outline"
+                      size={34}
+                      color={Colors.primary}
+                    />
                   )}
                 </TouchableOpacity>
               </Animated.View>
