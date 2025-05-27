@@ -220,7 +220,9 @@ const DetailsScreen = ({ route }: Props) => {
             <View style={styles.descriptionBox}>
               <CustomText
                 style={
-                  movie.overview ? styles.description : styles.noDescription
+                  movie.overview
+                    ? styles.description
+                    : [styles.description, styles.noDescription]
                 }
               >
                 {movie.overview
@@ -302,12 +304,18 @@ const styles = StyleSheet.create({
     paddingBottom: 14,
   },
   description: {
-    color: Colors.gray300,
-    lineHeight: 22,
-    marginBottom: 16,
+    color: Colors.gray400,
+    lineHeight: 24,
+    fontSize: 20,
     textAlign: "center",
-    fontSize: 18,
-    margin: 16,
+    marginVertical: 16,
+    marginHorizontal: 10,
+    fontWeight: "300",
+    letterSpacing: 1,
+    fontStyle: "italic",
+    textShadowColor: "rgba(0, 0, 0, 0.3)",
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 3,
   },
   noDescription: {
     textAlign: "center",
