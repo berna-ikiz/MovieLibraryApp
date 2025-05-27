@@ -77,21 +77,21 @@ const TabSelector = ({
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => {
       const currentScrollY = event.contentOffset.y;
-
-      if (currentScrollY <= 10) {
-        if (!headerVisible) {
-          runOnJS(setHeaderVisible)(true);
-        }
-      } else {
-        if (currentScrollY > prevScrollY.value + 5) {
-          if (headerVisible) {
-            runOnJS(setHeaderVisible)(false);
-          }
-        } else if (currentScrollY < prevScrollY.value - 5) {
-          if (!headerVisible) {
-            runOnJS(setHeaderVisible)(true);
-          }
-        }
+      const SCROLL_THRESHOLD = 20;
+      if (currentScrollY <= SCROLL_THRESHOLD && !headerVisible) {
+        runOnJS(setHeaderVisible)(true);
+      } else if (
+        currentScrollY > SCROLL_THRESHOLD &&
+        headerVisible &&
+        currentScrollY > prevScrollY.value + 5
+      ) {
+        runOnJS(setHeaderVisible)(false);
+      } else if (
+        currentScrollY > SCROLL_THRESHOLD &&
+        !headerVisible &&
+        currentScrollY < prevScrollY.value - 5
+      ) {
+        runOnJS(setHeaderVisible)(true);
       }
 
       prevScrollY.value = currentScrollY;
@@ -110,8 +110,9 @@ const TabSelector = ({
       opacity: withTiming(headerVisible ? 1 : 0, {
         duration: 100,
       }),
+      height: withTiming(headerVisible ? 60 : 0, { duration: 100 }),
     };
-  });
+  }, [headerVisible]);
 
   const toggleGenre = (genre: GenreType) => {
     if (selectedGenre?.id === genre.id) {
@@ -170,24 +171,26 @@ const TabSelector = ({
       <View style={styles.content}>
         {activeTab === "search" && (
           <>
-            <Animated.View style={headerStyles}>
-              <View style={styles.searchInputContainer}>
-                <AppIcon
-                  name="magnify"
-                  size={22}
-                  color={Colors.primary}
-                  style={styles.icon}
-                />
+            {headerVisible && (
+              <Animated.View style={headerStyles}>
+                <View style={styles.searchInputContainer}>
+                  <AppIcon
+                    name="magnify"
+                    size={22}
+                    color={Colors.primary}
+                    style={styles.icon}
+                  />
 
-                <TextInput
-                  style={styles.input}
-                  placeholder="search movie"
-                  value={searchText}
-                  onChangeText={setSearchText}
-                  placeholderTextColor={Colors.gray500}
-                />
-              </View>
-            </Animated.View>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="search movie"
+                    value={searchText}
+                    onChangeText={setSearchText}
+                    placeholderTextColor={Colors.gray500}
+                  />
+                </View>
+              </Animated.View>
+            )}
             {isLoading ? (
               <Loading title={""} />
             ) : (
