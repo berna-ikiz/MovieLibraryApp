@@ -1,6 +1,6 @@
 import React from "react";
-import { Modal, StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
+import { View, TouchableOpacity, StyleSheet, FlatList } from "react-native";
+import Modal from "react-native-modal";
 import { GenreType } from "../utils/type/movieType";
 import Colors from "../theme/colors";
 import { CustomText } from "../theme/fontContext";
@@ -12,22 +12,36 @@ type Props = {
   selectedGenre: GenreType | null;
   onSelectGenre: (genre: GenreType) => void;
 };
+import { Dimensions } from "react-native";
 
-const GenreModal = (Props: Props) => {
-  const { visible, onClose, genres, selectedGenre, onSelectGenre }: Props =
-    Props;
+const { width, height } = Dimensions.get("window");
 
+const GenreModal = ({
+  visible,
+  onClose,
+  genres,
+  selectedGenre,
+  onSelectGenre,
+}: Props) => {
   return (
     <Modal
-      animationType="slide"
-      transparent={true}
-      visible={visible}
-      onRequestClose={onClose}
+      isVisible={visible}
+      onBackdropPress={onClose}
+      onBackButtonPress={onClose}
+      backdropOpacity={0.9}
+      animationIn="fadeIn"
+      animationOut="fadeOut"
+      useNativeDriver={true}
+      style={styles.modal}
     >
-      <View style={styles.centeredView}>
-        <View style={styles.modalView}>
-          <CustomText style={styles.modalTitle}>Select Genres</CustomText>
-          <View style={styles.genreListContainer}>
+      <View style={styles.modalView}>
+        <CustomText style={styles.modalTitle}>Select Genres</CustomText>
+        <View style={styles.genreListContainer}>
+          {genres.length === 0 ? (
+            <CustomText style={{ color: Colors.gray400, textAlign: "center" }}>
+              No genres found.
+            </CustomText>
+          ) : (
             <FlatList
               data={genres}
               keyExtractor={(item) => item.id.toString()}
@@ -37,11 +51,11 @@ const GenreModal = (Props: Props) => {
               contentContainerStyle={{ paddingBottom: 10 }}
               showsVerticalScrollIndicator={false}
             />
-          </View>
-          <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-            <CustomText style={styles.closeButtonText}>Close</CustomText>
-          </TouchableOpacity>
+          )}
         </View>
+        <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+          <CustomText style={styles.closeButtonText}>Close</CustomText>
+        </TouchableOpacity>
       </View>
     </Modal>
   );
@@ -69,22 +83,22 @@ const renderGenreItem = ({
 };
 
 const styles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    backgroundColor: "rgba(18, 18, 18, 0.9)",
+  modal: {
     justifyContent: "center",
     alignItems: "center",
+    margin: 0,
+    elevation: 10,
   },
   modalView: {
-    width: "85%",
-    height: "70%",
-    backgroundColor: Colors.black,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.5)",
+    width: width * 0.8,
+    height: height * 0.8,
     borderRadius: 18,
     paddingTop: 20,
     paddingHorizontal: 20,
     flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "flex-start",
   },
   modalTitle: {
     fontSize: 22,
@@ -95,9 +109,8 @@ const styles = StyleSheet.create({
   },
   genreListContainer: {
     width: "100%",
-    flexGrow: 0,
-    flexShrink: 1,
-    maxHeight: "80%",
+    flex: 1,
+    maxHeight: 300,
     marginBottom: 10,
   },
   closeButton: {
