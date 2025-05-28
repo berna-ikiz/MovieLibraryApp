@@ -39,7 +39,7 @@ const LoginForm = (Props: Props) => {
   const handleSubmit = async () => {
     if (!email || !password) {
       Toast.show({
-        type: "error",
+        type: "info",
         text1: "Please fill all fields.",
         position: "top",
         visibilityTime: 3000,
@@ -55,7 +55,7 @@ const LoginForm = (Props: Props) => {
       }
     } catch (err) {
       Toast.show({
-        type: "error",
+        type: "info",
         text1: isLogin ? "Login Failed" : "Register Failed",
         text2: typeof err === "string" ? err : "An unexpected error occurred.",
         position: "top",
@@ -81,7 +81,7 @@ const LoginForm = (Props: Props) => {
           placeholderTextColor={Colors.gray600}
           style={styles.input}
           autoCapitalize="none"
-          onEndEditing={(e) => setEmail(e.nativeEvent.text)}
+          onChangeText={setEmail}
           onSubmitEditing={() => passwordRef.current?.focus()}
         />
         <TextInput
@@ -90,7 +90,8 @@ const LoginForm = (Props: Props) => {
           placeholderTextColor={Colors.gray600}
           style={styles.input}
           secureTextEntry={true}
-          onEndEditing={(e) => setPassword(e.nativeEvent.text)}
+          value={password}
+          onChangeText={setPassword}
         />
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
           <CustomText style={styles.buttonText}>{buttonTitle}</CustomText>

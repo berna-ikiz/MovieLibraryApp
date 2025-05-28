@@ -13,7 +13,6 @@ import {
   FavoriteMovieType,
   GenreType,
   MovieDetailType,
-  MovieType,
 } from "../utils/type/movieType";
 
 export const fetchUserFavorites = createAsyncThunk<

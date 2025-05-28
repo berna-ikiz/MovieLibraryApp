@@ -1,25 +1,53 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { BaseToastProps } from "react-native-toast-message";
-import Colors from "../../theme/colors";
 import {
-  ErrorIcon,
-  StarBorderIcon,
-  DeleteVariantIcon,
-} from "../../assets/icons";
+  BaseToastProps,
+  ToastConfig,
+  ToastConfigParams,
+} from "react-native-toast-message";
+import Colors from "../../theme/colors";
+import AppIcon from "../../assets/icons";
 import { CustomText } from "../../theme/fontContext";
 
-interface CustomToastProps extends BaseToastProps {
-  text1?: string;
-  text2?: string;
-}
+const toastConfig: ToastConfig = {
+  error: (props) => <CustomToast {...props} />,
+  success: (props) => <CustomToast {...props} />,
+  info: (props) => <CustomToast {...props} />,
+};
 
-const toastConfig = {
-  error: ({ text1, text2 }: CustomToastProps) => (
+const CustomToast = ({ text1, text2, type }: ToastConfigParams<any>) => {
+  const iconMap = {
+    error: (
+      <AppIcon
+        name="exclamation-thick"
+        size={18}
+        color={Colors.danger}
+        style={styles.icon}
+      />
+    ),
+    success: (
+      <AppIcon
+        name="star-rate"
+        size={18}
+        color={Colors.success}
+        style={styles.icon}
+      />
+    ),
+    info: (
+      <AppIcon
+        name="delete-empty"
+        size={18}
+        color={Colors.success}
+        style={styles.icon}
+      />
+    ),
+  };
+
+  return (
     <View style={[styles.toastContainer, styles.errorContainer]}>
       {text1 ? (
         <View style={styles.toastMessageContainer}>
-          <ErrorIcon size={18} color={Colors.danger} style={styles.icon} />
+          {iconMap[type as keyof typeof iconMap]}
           <CustomText style={styles.titleText}>{text1}</CustomText>
         </View>
       ) : null}
@@ -27,41 +55,7 @@ const toastConfig = {
         <CustomText style={styles.messageText}>{text2}</CustomText>
       ) : null}
     </View>
-  ),
-  success: ({ text1, text2 }: CustomToastProps) => (
-    <View style={[styles.toastContainer, styles.successContainer]}>
-      {text1 ? (
-        <View style={styles.toastMessageContainer}>
-          <StarBorderIcon
-            size={18}
-            color={Colors.success}
-            style={styles.icon}
-          />
-          <CustomText style={styles.titleText}>{text1}</CustomText>
-        </View>
-      ) : null}
-      {text2 ? (
-        <CustomText style={styles.messageText}>{text2}</CustomText>
-      ) : null}
-    </View>
-  ),
-  delete: ({ text1, text2 }: CustomToastProps) => (
-    <View style={[styles.toastContainer, styles.errorContainer]}>
-      {text1 ? (
-        <View style={styles.toastMessageContainer}>
-          <DeleteVariantIcon
-            size={18}
-            color={Colors.success}
-            style={styles.icon}
-          />
-          <CustomText style={styles.titleText}>{text1}</CustomText>
-        </View>
-      ) : null}
-      {text2 ? (
-        <CustomText style={styles.messageText}>{text2}</CustomText>
-      ) : null}
-    </View>
-  ),
+  );
 };
 
 const styles = StyleSheet.create({

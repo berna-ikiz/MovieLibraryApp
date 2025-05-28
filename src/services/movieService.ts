@@ -20,7 +20,7 @@ export const fetchPopularMovies = async (page = 1) => {
     };
   } catch (error) {
     console.log(error);
-    throw new Error("Failed to fetch popular movies.");
+    return null;
   }
 };
 
@@ -32,7 +32,7 @@ export const fetchMovieDetails = async (movieId: Number) => {
     };
   } catch (error) {
     console.log(error);
-    throw new Error("Failed to fetch movie details.");
+    return null;
   }
 };
 
@@ -44,7 +44,7 @@ export const fetchCastDetails = async (movieId: Number) => {
     };
   } catch (error) {
     console.log(error);
-    throw new Error("Failed to fetch cast details.");
+    return null;
   }
 };
 
@@ -56,7 +56,7 @@ export const searchMovies = async (page: number = 1, query: string) => {
     return data.results;
   } catch (error) {
     console.log(error);
-    throw new Error("Failed to search movies.");
+    return null;
   }
 };
 
@@ -66,7 +66,7 @@ export const fetchGenres = async () => {
     return data.genres;
   } catch (error) {
     console.log(error);
-    throw new Error("Failed to fetch genre  movies.");
+    return null;
   }
 };
 
@@ -96,6 +96,6 @@ export const fetchMoviesByFilters = async (
     return data.results;
   } catch (error) {
     console.log(error);
-    throw new Error("Failed to fetch movies by filters.");
+    return null;
   }
 };

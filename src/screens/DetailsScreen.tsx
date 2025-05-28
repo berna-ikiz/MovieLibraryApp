@@ -1,4 +1,12 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Dimensions,
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { RouteProp } from "@react-navigation/native";
 import { castMemberType, MovieDetailType } from "../utils/type/movieType";
@@ -26,7 +34,7 @@ import Animated, {
   ZoomIn,
   ZoomOut,
 } from "react-native-reanimated";
-import { HeartIcon, HeartOutlineIcon } from "../assets/icons";
+import AppIcon from "../assets/icons";
 import { CustomText } from "../theme/fontContext";
 import Toast from "react-native-toast-message";
 
@@ -34,6 +42,8 @@ type DetailsScreenRouteProp = RouteProp<RootStackParamList, "Details">;
 type Props = {
   route: DetailsScreenRouteProp;
 };
+
+const { width, height } = Dimensions.get("window");
 
 const DetailsScreen = ({ route }: Props) => {
   const [movie, setMovie] = useState<MovieDetailType | null>(null);
@@ -55,6 +65,16 @@ const DetailsScreen = ({ route }: Props) => {
       try {
         const movieData = await fetchMovieDetails(movieId);
         const castData = await fetchCastDetails(movieId);
+
+        if (!movieData || !castData) {
+          Toast.show({
+            type: "info",
+            text1: "Failed to refresh movies. Please try again.",
+            position: "top",
+            visibilityTime: 3000,
+          });
+          return;
+        }
         setMovie(movieData.movieDetails);
         setCast(castData.castData);
         setIsLoading(false);
@@ -82,12 +102,13 @@ const DetailsScreen = ({ route }: Props) => {
             genres: movie.genres?.join(","),
             release_date: releaseYear,
             vote_average: movie.vote_average,
+            vote_count: movie.vote_count,
           })
         );
       }
     } catch (error) {
       Toast.show({
-        type: "error",
+        type: "info",
         text1: "Failed to update favorites.",
         text2: "Please try again.",
         position: "top",
@@ -144,101 +165,123 @@ const DetailsScreen = ({ route }: Props) => {
 
   return (
     <View style={styles.container}>
-      {movie && (
-        <>
-          <Header title={movie.title} showBackButton={true} />
-          <GestureDetector gesture={doubleTap}>
-            <Animated.View>
-              <Image
-                source={{
-                  uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
-                }}
-                style={styles.poster}
-              />
-              {isFavorite && (
-                <Animated.View
-                  style={[styles.heartContainer, animatedPosterHeartStyle]}
-                  entering={ZoomIn.duration(400).easing(Easing.ease)}
-                  exiting={ZoomOut.duration(400).easing(Easing.ease)}
-                >
-                  <HeartIcon size={54} color={"rgba(220, 185, 235, 0.8)"} />
-                </Animated.View>
-              )}
-            </Animated.View>
-          </GestureDetector>
-          <View style={styles.voteContainer}>
-            <Animated.View style={animatedHeartStyle}>
-              <TouchableOpacity onPress={handleFavorite}>
-                {isFavorite ? (
-                  <HeartIcon size={34} color={Colors.primary} />
-                ) : (
-                  <HeartOutlineIcon size={34} color={Colors.primary} />
-                )}
-              </TouchableOpacity>
-            </Animated.View>
-            <CustomText style={styles.voteText}>
-              {movie.vote_average} / {releaseYear}
-            </CustomText>
-          </View>
-          {cast && (
-            <ScrollView
-              horizontal
-              style={styles.genreScroll}
-              showsHorizontalScrollIndicator={false}
-            >
-              {movie.genres?.map((genre) => (
-                <View style={styles.genreBox} key={genre.id}>
-                  <CustomText
-                    style={styles.genreText}
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                  >
-                    {genre.name}
-                  </CustomText>
-                </View>
-              ))}
-            </ScrollView>
-          )}
-          <ScrollView
-            style={styles.descriptionScroll}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: 24 }}
-          >
-            <CustomText
-              style={movie.overview ? styles.description : styles.noDescription}
-            >
-              {movie.overview ? movie.overview : "NO DESCRIPTION"}
-            </CustomText>
-          </ScrollView>
-        </>
-      )}
-      {cast && (
-        <View>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={styles.castScroll}
-          >
-            {cast.map((person) => (
-              <View style={styles.castItem} key={person.id}>
+      {movie && <Header title={movie.title} showBackButton={true} />}
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 24 }}
+      >
+        {movie && (
+          <ScrollView>
+            <GestureDetector gesture={doubleTap}>
+              <Animated.View>
                 <Image
-                  source={
-                    person.profile_path
-                      ? {
-                          uri: `https://image.tmdb.org/t/p/w185${person.profile_path}`,
-                        }
-                      : require("../assets/no-image.webp")
-                  }
-                  style={styles.castImage}
+                  source={{
+                    uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+                  }}
+                  style={styles.poster}
+                  resizeMode="cover"
                 />
-                <CustomText style={styles.castName} numberOfLines={1}>
-                  {person.name}
+                {isFavorite && (
+                  <Animated.View
+                    style={[styles.heartContainer, animatedPosterHeartStyle]}
+                    entering={ZoomIn.duration(400).easing(Easing.ease)}
+                    exiting={ZoomOut.duration(400).easing(Easing.ease)}
+                  >
+                    <AppIcon
+                      name="heart"
+                      size={54}
+                      color={"rgba(220, 185, 235, 0.8)"}
+                    />
+                  </Animated.View>
+                )}
+              </Animated.View>
+            </GestureDetector>
+            <View style={styles.voteContainer}>
+              <Animated.View style={animatedHeartStyle}>
+                <TouchableOpacity onPress={handleFavorite}>
+                  {isFavorite ? (
+                    <AppIcon name="heart" size={34} color={Colors.primary} />
+                  ) : (
+                    <AppIcon
+                      name="heart-outline"
+                      size={34}
+                      color={Colors.primary}
+                    />
+                  )}
+                </TouchableOpacity>
+              </Animated.View>
+              <View style={styles.voteInfo}>
+                <CustomText style={styles.voteText}>
+                  ⭐ {movie.vote_count?.toLocaleString()}
+                </CustomText>
+                <CustomText style={styles.voteSubText}>
+                  {" "}
+                  / {releaseYear}
                 </CustomText>
               </View>
-            ))}
+            </View>
+            {cast && (
+              <FlatList
+                data={movie.genres}
+                horizontal
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => (
+                  <View style={styles.genreBox}>
+                    <CustomText style={styles.genreText}>
+                      {item.name}
+                    </CustomText>
+                  </View>
+                )}
+                showsHorizontalScrollIndicator={false}
+              />
+            )}
+            <View style={styles.descriptionBox}>
+              <CustomText
+                style={
+                  movie.overview
+                    ? styles.description
+                    : [styles.description, styles.noDescription]
+                }
+              >
+                {movie.overview
+                  ? movie.overview
+                  : "This movie does not have a description available."}
+              </CustomText>
+              {cast && (
+                <>
+                  <CustomText style={styles.castTitle}>Cast</CustomText>
+                  <View style={styles.divider} />
+                  <FlatList
+                    data={cast}
+                    horizontal
+                    keyExtractor={(item) => item.id.toString()}
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={styles.castScroll}
+                    renderItem={({ item }) => (
+                      <View style={styles.castItem}>
+                        <Image
+                          source={
+                            item.profile_path
+                              ? {
+                                  uri: `https://image.tmdb.org/t/p/w185${item.profile_path}`,
+                                }
+                              : require("../assets/no-image.webp")
+                          }
+                          style={styles.castImage}
+                          resizeMode="cover"
+                        />
+                        <CustomText style={styles.castName} numberOfLines={1}>
+                          {item.name}
+                        </CustomText>
+                      </View>
+                    )}
+                  />
+                </>
+              )}
+            </View>
           </ScrollView>
-        </View>
-      )}
+        )}
+      </ScrollView>
     </View>
   );
 };
@@ -251,10 +294,11 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.black,
   },
   poster: {
-    width: "100%",
-    height: 200,
+    width: width,
+    height: height * 0.5,
     borderRadius: 12,
     marginBottom: 16,
+    marginTop: 10,
   },
   heartContainer: {
     position: "absolute",
@@ -269,27 +313,34 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 10,
   },
-  descriptionScroll: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: Colors.white,
-    marginBottom: 6,
+  descriptionBox: {
+    flex: 1,
+    backgroundColor: "rgba(37, 35, 38, 0.7)",
+    overflow: "hidden",
+    margin: 4,
+    borderRadius: 20,
+    paddingBottom: 14,
   },
   description: {
-    color: Colors.white,
-    lineHeight: 22,
-    marginBottom: 16,
-    textAlign: "justify",
+    color: Colors.gray400,
+    lineHeight: 24,
+    fontSize: 20,
+    textAlign: "center",
+    marginVertical: 16,
+    marginHorizontal: 10,
+    fontWeight: "300",
+    letterSpacing: 1,
+    fontStyle: "italic",
+    textShadowColor: "rgba(0, 0, 0, 0.3)",
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 3,
   },
   noDescription: {
     textAlign: "center",
-    color: Colors.gray800,
+    color: Colors.gray600,
     fontSize: 24,
     fontWeight: "bold",
-    textShadowColor: Colors.gray800,
-    textShadowOffset: { width: 0, height: 2 },
-    opacity: 0.4,
-    marginTop: 80,
+    margin: 10,
   },
   voteText: {
     color: Colors.white,
@@ -297,10 +348,23 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 34,
   },
-  voteContainer: {
+  voteSubText: {
+    color: Colors.gray600,
+    fontWeight: "bold",
+    fontSize: 20,
+    lineHeight: 34,
+  },
+  voteInfo: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 10,
+    marginBottom: 12,
+  },
+  voteContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingHorizontal: 10,
     marginVertical: 5,
     gap: 5,
@@ -316,7 +380,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingHorizontal: 14,
     paddingVertical: 6,
-    marginRight: 10,
+    margin: 10,
     justifyContent: "center",
     alignItems: "center",
     alignSelf: "flex-start",
@@ -335,7 +399,7 @@ const styles = StyleSheet.create({
   castImage: {
     width: 70,
     height: 100,
-    borderRadius: 20,
+    borderRadius: 10,
     marginBottom: 6,
     borderWidth: 1,
     borderColor: Colors.gray300,
@@ -345,5 +409,22 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     fontSize: 12,
+  },
+  castTitle: {
+    color: Colors.primaryDark,
+    fontSize: 24,
+    fontWeight: "900",
+    paddingHorizontal: 16,
+    marginTop: 10,
+    marginLeft: 16,
+    marginBottom: 2,
+    textAlign: "center",
+  },
+  divider: {
+    height: 1,
+    backgroundColor: Colors.primaryDark,
+    marginHorizontal: 8,
+    marginBottom: 16,
+    opacity: 0.6,
   },
 });

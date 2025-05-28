@@ -37,6 +37,16 @@ const HomeScreen = () => {
   const navigation = useNavigation<HomeScreenNavigationProp>();
   const [refreshing, setRefreshing] = useState(false);
 
+  const showErrorToast = (message: string) => {
+    Toast.show({
+      type: "error",
+      text1: "Error",
+      text2: message,
+      position: "top",
+      visibilityTime: 4000,
+    });
+  };
+
   useEffect(() => {
     const loadInitialMovies = async () => {
       try {
@@ -45,14 +55,13 @@ const HomeScreen = () => {
           : 1;
         setPage(initialPage);
         const data = await fetchPopularMovies(initialPage);
+        if (!data) {
+          showErrorToast("Failed to load movies. Please try again.");
+          return;
+        }
         dispatch(appendMovies({ movies: data.movies }));
       } catch (error) {
-        Toast.show({
-          type: "error",
-          text1: "Failed to load movies. Please try again.",
-          position: "top",
-          visibilityTime: 3000,
-        });
+        showErrorToast("Something went wrong.");
       } finally {
         setIsLoading(false);
       }
@@ -66,15 +75,14 @@ const HomeScreen = () => {
     try {
       const nextPage = page + 1;
       const data = await fetchPopularMovies(nextPage);
+      if (!data) {
+        showErrorToast("Failed to refresh movies. Please try again.");
+        return;
+      }
       dispatch(appendMovies({ movies: data.movies }));
       setPage(nextPage);
     } catch (error) {
-      Toast.show({
-        type: "error",
-        text1: "Failed to load more movies. Please try again.",
-        position: "top",
-        visibilityTime: 3000,
-      });
+      showErrorToast("Something went wrong.");
     } finally {
       setFetchingMore(false);
     }
@@ -83,15 +91,14 @@ const HomeScreen = () => {
   const loadRefreshingMovies = async (page: number) => {
     try {
       const data = await fetchPopularMovies(page);
+      if (!data) {
+        showErrorToast("Failed to load more movies. Please try again.");
+        return;
+      }
       dispatch(clearMovies());
       dispatch(appendMovies({ movies: data.movies }));
     } catch (error) {
-      Toast.show({
-        type: "error",
-        text1: "Failed to refresh movies. Please try again.",
-        position: "top",
-        visibilityTime: 3000,
-      });
+      showErrorToast("Something went wrong.");
     } finally {
       setRefreshing(false);
     }

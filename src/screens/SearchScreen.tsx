@@ -5,7 +5,7 @@ import { GenreType, MovieType } from "../utils/type/movieType";
 import { fetchMoviesByFilters, searchMovies } from "../services/movieService";
 import TabSelector from "../components/TabSelector";
 import Colors from "../theme/colors";
-import { MovieRollIcon } from "../assets/icons";
+import AppIcon from "../assets/icons";
 import { CustomText } from "../theme/fontContext";
 import Toast from "react-native-toast-message";
 
@@ -100,7 +100,7 @@ const SearchScreen = () => {
       }
     } catch (error) {
       Toast.show({
-        type: "error",
+        type: "info",
         text1: "Failed to load more search results.",
         text2: "Please check your connection and try again.",
         position: "top",
@@ -153,7 +153,7 @@ const RenderItem = ({ item, navigation }: any) => {
         />
       ) : (
         <View style={[styles.poster, styles.noImageIconContainer]}>
-          <MovieRollIcon size={40} color={Colors.gray800} />
+          <AppIcon name="movie-roll" size={40} color={Colors.gray800} />
         </View>
       )}
       <CustomText style={styles.movieTitle} numberOfLines={2}>
