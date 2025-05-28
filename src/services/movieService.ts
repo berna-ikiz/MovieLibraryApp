@@ -1,6 +1,6 @@
 import axios from "axios";
 import { TMDB_API_KEY, TMDB_BASE_URL } from "@env";
-import { TMDB_CONFIG } from "../utils/constants/tmdbConfig";
+import { DEFAULT_MAX_RATING, TMDB_CONFIG } from "../utils/constants/constants";
 
 const api = axios.create({
   baseURL: TMDB_BASE_URL,
@@ -76,7 +76,6 @@ export const fetchMoviesByFilters = async (
   minRating?: number
 ) => {
   try {
-    const DEFAULT_MAX_RATING = 10;
     const params: any = {
       page,
       sort_by: "popularity.desc",

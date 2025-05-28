@@ -3,15 +3,12 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
 import AppIcon from "../assets/icons";
 import Colors from "../theme/colors";
-import Toast from "react-native-toast-message";
-import toastConfig from "../utils/config/toastConfig";
 import { CustomText } from "../theme/fontContext";
 
 type Props = {
   visible: boolean;
   onClose: () => void;
   initialMinRating?: number;
-  initialMaxRating?: number;
   onSelectRating: ({ minRating }: { minRating: number | undefined }) => void;
 };
 
@@ -21,14 +18,13 @@ const RatingModal = ({
   visible,
   onClose,
   initialMinRating = 0,
-  initialMaxRating = 0,
   onSelectRating,
 }: Props) => {
   const [minRating, setMinRating] = useState(initialMinRating);
 
   useEffect(() => {
     setMinRating(initialMinRating);
-  }, [initialMinRating, initialMaxRating, visible]);
+  }, [initialMinRating, visible]);
 
   const handleApply = () => {
     onSelectRating({ minRating });
@@ -48,9 +44,7 @@ const RatingModal = ({
     >
       <View style={styles.ratingContainer}>
         <CustomText style={styles.title}>Select Rating Range</CustomText>
-        <CustomText style={styles.label}>
-          Filter movies by setting a min rating
-        </CustomText>
+        <CustomText style={styles.label}>Filter movies by rating</CustomText>
         <View style={styles.iconsContainer}>
           {renderMinRating(setMinRating, minRating)}
         </View>
@@ -71,6 +65,7 @@ const renderMinRating = (
   setMinRating: (rate: number) => void,
   minRating: number
 ) => {
+  console.log(minRating);
   const minRatingIcons = [];
   for (let i = 1; i <= MAX_RATING; i++) {
     minRatingIcons.push(
@@ -118,11 +113,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   label: {
-    color: Colors.gray400,
+    color: Colors.gray600,
     fontSize: 16,
     marginVertical: 8,
-    marginBottom: 10,
-    alignSelf: "flex-start",
+    marginBottom: 12,
+    alignSelf: "center",
   },
   modalButtonContainer: {
     flexDirection: "row",

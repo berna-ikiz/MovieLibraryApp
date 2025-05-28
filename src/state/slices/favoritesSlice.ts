@@ -1,7 +1,6 @@
 import { createSlice, isPending, PayloadAction } from "@reduxjs/toolkit";
 import { FavoriteMovieType } from "../../utils/type/movieType";
 import { fetchUserFavorites } from "../../services/favoriteService";
-import { RootState } from "../movieStore";
 
 interface Favorites {
   favorites: FavoriteMovieType[];

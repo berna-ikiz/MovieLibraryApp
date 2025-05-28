@@ -19,7 +19,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
 import { RootStackParamList } from "../utils/type/authType";
-import { TMDB_CONFIG } from "../utils/constants/tmdbConfig";
+import { TMDB_CONFIG } from "../utils/constants/constants";
 import { CustomText } from "../theme/fontContext";
 import Toast from "react-native-toast-message";
 

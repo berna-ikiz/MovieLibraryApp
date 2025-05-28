@@ -33,6 +33,7 @@ export const fetchUserFavorites = createAsyncThunk<
         genres: data.genres?.split(",") ?? [],
         release_date: data.release_date,
         vote_average: data.vote_average,
+        vote_count: data.vote_count,
       };
     });
     return favorites;

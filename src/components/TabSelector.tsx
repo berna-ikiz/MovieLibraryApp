@@ -26,6 +26,8 @@ import Animated, {
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../state/movieStore";
 import { setGenres } from "../state/slices/moviesSlice";
+import { Dimensions } from "react-native";
+import { DEFAULT_MAX_RATING } from "../utils/constants/constants";
 
 type Props = {
   searchText: string;
@@ -36,7 +38,7 @@ type Props = {
   renderItemFilter: ({ item, navigation }: any) => JSX.Element;
   onFilterChange: (
     genres: GenreType | null,
-    rating: { minRating?: number; maxRating?: number } | undefined
+    rating: { minRating?: number } | undefined
   ) => Promise<void>;
   isLoading: boolean;
   loadMoreMoviesByFilters?: () => void;
@@ -47,7 +49,7 @@ type Props = {
   numColumns?: number;
   columnWrapperStyle?: ViewStyle;
 };
-import { Dimensions } from "react-native";
+
 const { height } = Dimensions.get("window");
 
 const TabSelector = ({
@@ -72,7 +74,6 @@ const TabSelector = ({
   const [selectedGenre, setSelectedGenre] = useState<GenreType | null>(null);
   const [selectedRating, setSelectedRating] = useState<{
     minRating?: number;
-    maxRating?: number;
   }>();
   const [activeTab, setActiveTab] = useState<"search" | "filter">("search");
   const [headerVisible, setHeaderVisible] = useState(true);
@@ -229,10 +230,10 @@ const TabSelector = ({
                       style={styles.icon}
                     />
                     <CustomText style={styles.filterCardText}>
-                      {selectedRating?.minRating || selectedRating?.maxRating
-                        ? `${selectedRating?.minRating ?? 0} - ${
-                            selectedRating?.maxRating ?? 0
-                          }`
+                      {selectedRating?.minRating
+                        ? `${
+                            selectedRating?.minRating ?? 0
+                          } - ${DEFAULT_MAX_RATING}`
                         : "Rating"}
                     </CustomText>
                   </TouchableOpacity>
@@ -242,6 +243,7 @@ const TabSelector = ({
             <RatingModal
               visible={showRatingModal}
               onClose={() => setShowRatingModal(false)}
+              initialMinRating={selectedRating?.minRating}
               onSelectRating={setSelectedRating}
             />
 

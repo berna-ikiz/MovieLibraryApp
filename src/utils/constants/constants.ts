@@ -3,3 +3,4 @@ export const TMDB_CONFIG = {
   DEFAULT_LANGUAGE: "tr-TR",
   DEFAULT_REGION: "TR",
 };
+export const DEFAULT_MAX_RATING = 10;
