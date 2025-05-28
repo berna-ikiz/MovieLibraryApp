@@ -1,4 +1,4 @@
-import React, { useState, useEffect, JSX } from "react";
+import React, { useState, useEffect, JSX, useRef } from "react";
 import {
   View,
   TextInput,
@@ -23,6 +23,9 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../state/movieStore";
+import { setGenres } from "../state/slices/moviesSlice";
 
 type Props = {
   searchText: string;
@@ -44,6 +47,8 @@ type Props = {
   numColumns?: number;
   columnWrapperStyle?: ViewStyle;
 };
+import { Dimensions } from "react-native";
+const { height } = Dimensions.get("window");
 
 const TabSelector = ({
   searchText,
@@ -69,29 +74,30 @@ const TabSelector = ({
     minRating?: number;
     maxRating?: number;
   }>();
-  const [activeTab, setActiveTab] = useState("search");
-  const [genres, setGenres] = useState<GenreType[]>([]);
+  const [activeTab, setActiveTab] = useState<"search" | "filter">("search");
   const [headerVisible, setHeaderVisible] = useState(true);
   const prevScrollY = useSharedValue(0);
+  const genres = useSelector((state: RootState) => state.moviesData.genres);
+  const dispatch = useDispatch();
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => {
       const currentScrollY = event.contentOffset.y;
-
-      if (currentScrollY <= 10) {
-        if (!headerVisible) {
-          runOnJS(setHeaderVisible)(true);
-        }
-      } else {
-        if (currentScrollY > prevScrollY.value + 5) {
-          if (headerVisible) {
-            runOnJS(setHeaderVisible)(false);
-          }
-        } else if (currentScrollY < prevScrollY.value - 5) {
-          if (!headerVisible) {
-            runOnJS(setHeaderVisible)(true);
-          }
-        }
+      const SCROLL_THRESHOLD = 20;
+      if (currentScrollY <= SCROLL_THRESHOLD && !headerVisible) {
+        runOnJS(setHeaderVisible)(true);
+      } else if (
+        currentScrollY > SCROLL_THRESHOLD &&
+        headerVisible &&
+        currentScrollY > prevScrollY.value + 5
+      ) {
+        runOnJS(setHeaderVisible)(false);
+      } else if (
+        currentScrollY > SCROLL_THRESHOLD &&
+        !headerVisible &&
+        currentScrollY < prevScrollY.value - 5
+      ) {
+        runOnJS(setHeaderVisible)(true);
       }
 
       prevScrollY.value = currentScrollY;
@@ -103,15 +109,16 @@ const TabSelector = ({
       transform: [
         {
           translateY: withTiming(headerVisible ? 0 : -100, {
-            duration: 100,
+            duration: 10,
           }),
         },
       ],
       opacity: withTiming(headerVisible ? 1 : 0, {
         duration: 100,
       }),
+      height: withTiming(headerVisible ? height * 0.05 : 0, { duration: 100 }),
     };
-  });
+  }, [headerVisible]);
 
   const toggleGenre = (genre: GenreType) => {
     if (selectedGenre?.id === genre.id) {
@@ -122,14 +129,14 @@ const TabSelector = ({
   };
 
   useEffect(() => {
-    if (activeTab === "filter") {
-      const getGenres = async () => {
+    const getGenres = async () => {
+      if (genres.length === 0) {
         const genres = await fetchGenres();
-        setGenres(genres);
-      };
-      getGenres();
-    }
-  }, [activeTab]);
+        dispatch(setGenres(genres));
+      }
+    };
+    getGenres();
+  }, []);
 
   useEffect(() => {
     onFilterChange(selectedGenre, selectedRating);
@@ -170,143 +177,67 @@ const TabSelector = ({
       <View style={styles.content}>
         {activeTab === "search" && (
           <>
-            <Animated.View style={headerStyles}>
-              <View style={styles.searchInputContainer}>
-                <AppIcon
-                  name="magnify"
-                  size={22}
-                  color={Colors.primary}
-                  style={styles.icon}
-                />
+            {headerVisible && (
+              <Animated.View style={headerStyles}>
+                <View style={styles.searchInputContainer}>
+                  <AppIcon
+                    name="magnify"
+                    size={22}
+                    color={Colors.primary}
+                    style={styles.icon}
+                  />
 
-                <TextInput
-                  style={styles.input}
-                  placeholder="search movie"
-                  value={searchText}
-                  onChangeText={setSearchText}
-                  placeholderTextColor={Colors.gray500}
-                />
-              </View>
-            </Animated.View>
-            {isLoading ? (
-              <Loading title={""} />
-            ) : (
-              <Animated.FlatList
-                data={dataSearch}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={renderItemSearch}
-                numColumns={numColumns}
-                columnWrapperStyle={
-                  columnWrapperStyle ? columnWrapperStyle : null
-                }
-                onScroll={scrollHandler}
-                scrollEventThrottle={16}
-                showsVerticalScrollIndicator={false}
-                onEndReached={() => {
-                  if (loadMoreSearchResults && currentPage !== undefined) {
-                    loadMoreSearchResults();
-                  }
-                }}
-                onEndReachedThreshold={onEndReachedThreshold}
-                ListEmptyComponent={
-                  <CustomText
-                    style={{
-                      color: Colors.gray400,
-                      textAlign: "center",
-                      marginTop: 20,
-                    }}
-                  >
-                    {searchText.length > 1
-                      ? "No results found"
-                      : "Filter for movies"}
-                  </CustomText>
-                }
-                ListFooterComponent={
-                  fetchingMore ? (
-                    <ActivityIndicator size="small" color={Colors.primary} />
-                  ) : null
-                }
-              />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="search movie"
+                    value={searchText}
+                    onChangeText={setSearchText}
+                    placeholderTextColor={Colors.gray500}
+                  />
+                </View>
+              </Animated.View>
             )}
           </>
         )}
         {activeTab === "filter" && (
           <>
-            <Animated.View style={headerStyles}>
-              <View style={styles.filterContainer}>
-                <TouchableOpacity
-                  style={styles.filterCard}
-                  onPress={() => setShowGenreModal(true)}
-                >
-                  <AppIcon
-                    name="movie-filter-outline"
-                    size={24}
-                    color={Colors.white}
-                    style={styles.icon}
-                  />
-                  <CustomText style={styles.filterCardText}>
-                    {selectedGenre ? selectedGenre.name : "Genre"}
-                  </CustomText>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.filterCard}
-                  onPress={() => setShowRatingModal(true)}
-                >
-                  <AppIcon
-                    name="star"
-                    size={24}
-                    color={Colors.white}
-                    style={styles.icon}
-                  />
-                  <CustomText style={styles.filterCardText}>
-                    {selectedRating?.minRating || selectedRating?.maxRating
-                      ? `${selectedRating?.minRating ?? 0} - ${
-                          selectedRating?.maxRating ?? 0
-                        }`
-                      : "Rating"}
-                  </CustomText>
-                </TouchableOpacity>
-              </View>
-            </Animated.View>
-            {isLoading ? (
-              <Loading title={""} />
-            ) : (
-              <Animated.FlatList
-                data={dataFilter}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={renderItemFilter}
-                numColumns={numColumns}
-                columnWrapperStyle={
-                  columnWrapperStyle ? columnWrapperStyle : null
-                }
-                showsVerticalScrollIndicator={false}
-                onEndReached={() => {
-                  if (loadMoreMoviesByFilters && currentPage !== undefined) {
-                    loadMoreMoviesByFilters();
-                  }
-                }}
-                onScroll={scrollHandler}
-                scrollEventThrottle={16}
-                onEndReachedThreshold={0.5}
-                ListEmptyComponent={
-                  <CustomText
-                    style={{
-                      color: Colors.gray400,
-                      textAlign: "center",
-                      marginTop: 20,
-                    }}
+            {!showGenreModal && !showRatingModal && (
+              <Animated.View style={headerStyles}>
+                <View style={styles.filterContainer}>
+                  <TouchableOpacity
+                    style={styles.filterCard}
+                    onPress={() => setShowGenreModal(true)}
                   >
-                    {searchText.length > 1
-                      ? "No results found"
-                      : "Search for movies"}
-                  </CustomText>
-                }
-                ListFooterComponent={
-                  fetchingMore ? (
-                    <ActivityIndicator size="small" color={Colors.primary} />
-                  ) : null
-                }
-              />
+                    <AppIcon
+                      name="movie-filter-outline"
+                      size={24}
+                      color={Colors.white}
+                      style={styles.icon}
+                    />
+                    <CustomText style={styles.filterCardText}>
+                      {selectedGenre ? selectedGenre.name : "Genre"}
+                    </CustomText>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.filterCard}
+                    onPress={() => setShowRatingModal(true)}
+                  >
+                    <AppIcon
+                      name="star"
+                      size={24}
+                      color={Colors.white}
+                      style={styles.icon}
+                    />
+                    <CustomText style={styles.filterCardText}>
+                      {selectedRating?.minRating || selectedRating?.maxRating
+                        ? `${selectedRating?.minRating ?? 0} - ${
+                            selectedRating?.maxRating ?? 0
+                          }`
+                        : "Rating"}
+                    </CustomText>
+                  </TouchableOpacity>
+                </View>
+              </Animated.View>
             )}
             <RatingModal
               visible={showRatingModal}
@@ -322,6 +253,69 @@ const TabSelector = ({
               onSelectGenre={toggleGenre}
             />
           </>
+        )}
+        {isLoading ? (
+          <Loading title={""} />
+        ) : (
+          !(showGenreModal || showRatingModal) && (
+            <Animated.FlatList
+              contentContainerStyle={{
+                paddingTop: headerVisible ? height * 0.02 : 0,
+              }}
+              data={activeTab === "filter" ? dataFilter : dataSearch}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={
+                activeTab === "filter" ? renderItemFilter : renderItemSearch
+              }
+              numColumns={numColumns}
+              columnWrapperStyle={
+                columnWrapperStyle ? columnWrapperStyle : null
+              }
+              onScroll={
+                showGenreModal || showRatingModal ? undefined : scrollHandler
+              }
+              scrollEventThrottle={16}
+              showsVerticalScrollIndicator={false}
+              onEndReached={() => {
+                if (
+                  activeTab === "search" &&
+                  loadMoreSearchResults &&
+                  currentPage !== undefined
+                ) {
+                  loadMoreSearchResults();
+                }
+                if (
+                  activeTab === "filter" &&
+                  loadMoreMoviesByFilters &&
+                  currentPage !== undefined
+                ) {
+                  loadMoreMoviesByFilters();
+                }
+              }}
+              scrollEnabled={!showGenreModal && !showRatingModal}
+              onEndReachedThreshold={onEndReachedThreshold ?? 0.5}
+              ListEmptyComponent={
+                <CustomText
+                  style={{
+                    color: Colors.gray400,
+                    textAlign: "center",
+                    marginTop: 20,
+                  }}
+                >
+                  {searchText.length > 1
+                    ? "No results found"
+                    : activeTab === "filter"
+                    ? "Filter for movies"
+                    : "Search for movies"}
+                </CustomText>
+              }
+              ListFooterComponent={
+                fetchingMore ? (
+                  <ActivityIndicator size="small" color={Colors.primary} />
+                ) : null
+              }
+            />
+          )
         )}
       </View>
     </View>

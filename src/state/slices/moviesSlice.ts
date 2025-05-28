@@ -1,14 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { MovieType } from "../../utils/type/movieType";
+import { GenreType, MovieType } from "../../utils/type/movieType";
 
 interface MoviesState {
   movies: MovieType[];
   loading: boolean;
+  genres: GenreType[];
   error: string | null;
 }
 
 const initialState: MoviesState = {
   movies: [],
+  genres: [],
   loading: false,
   error: null,
 };
@@ -29,6 +31,12 @@ const moviesSlice = createSlice({
     clearMovies: (state) => {
       state.movies = [];
     },
+    setGenres: (state, action: PayloadAction<GenreType[]>) => {
+      state.genres = action.payload;
+    },
+    clearGenres: (state) => {
+      state.genres = [];
+    },
   },
 });
 
@@ -36,6 +44,8 @@ export const {
   //setMovies,
   appendMovies,
   clearMovies,
+  setGenres,
+  clearGenres,
 } = moviesSlice.actions;
 
 export default moviesSlice.reducer;
