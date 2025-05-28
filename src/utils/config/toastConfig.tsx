@@ -27,7 +27,7 @@ const CustomToast = ({ text1, text2, type }: ToastConfigParams<any>) => {
     ),
     success: (
       <AppIcon
-        name="star-rate"
+        name="star"
         size={18}
         color={Colors.success}
         style={styles.icon}

@@ -12,13 +12,7 @@ type Props = {
   onClose: () => void;
   initialMinRating?: number;
   initialMaxRating?: number;
-  onSelectRating: ({
-    minRating,
-    maxRating,
-  }: {
-    minRating: number | undefined;
-    maxRating: number | undefined;
-  }) => void;
+  onSelectRating: ({ minRating }: { minRating: number | undefined }) => void;
 };
 
 const MAX_RATING = 10;
@@ -31,27 +25,14 @@ const RatingModal = ({
   onSelectRating,
 }: Props) => {
   const [minRating, setMinRating] = useState(initialMinRating);
-  const [maxRating, setMaxRating] = useState(initialMaxRating);
 
-  // initialMinRating ve initialMaxRating değişirse iç state'i resetle
   useEffect(() => {
     setMinRating(initialMinRating);
-    setMaxRating(initialMaxRating);
   }, [initialMinRating, initialMaxRating, visible]);
 
   const handleApply = () => {
-    if (minRating <= maxRating) {
-      onSelectRating({ minRating, maxRating });
-      onClose();
-    } else {
-      Toast.show({
-        type: "info",
-        text1: "Minimum rating cannot be higher than maximum rating",
-        position: "top",
-        topOffset: 60,
-        visibilityTime: 3000,
-      });
-    }
+    onSelectRating({ minRating });
+    onClose();
   };
 
   return (
@@ -67,15 +48,12 @@ const RatingModal = ({
     >
       <View style={styles.ratingContainer}>
         <CustomText style={styles.title}>Select Rating Range</CustomText>
-        <CustomText style={styles.label}>Minimum Rating</CustomText>
+        <CustomText style={styles.label}>
+          Filter movies by setting a min rating
+        </CustomText>
         <View style={styles.iconsContainer}>
           {renderMinRating(setMinRating, minRating)}
         </View>
-        <CustomText style={styles.label}>Maximum Rating</CustomText>
-        <View style={styles.iconsContainer}>
-          {renderMaxRating(setMaxRating, maxRating)}
-        </View>
-
         <View style={styles.modalButtonContainer}>
           <TouchableOpacity onPress={onClose} style={styles.modalButton}>
             <CustomText style={styles.modalButtonText}>Cancel</CustomText>
@@ -85,7 +63,6 @@ const RatingModal = ({
           </TouchableOpacity>
         </View>
       </View>
-      <Toast config={toastConfig} />
     </Modal>
   );
 };
@@ -104,7 +81,7 @@ const renderMinRating = (
       >
         <AppIcon
           name="popcorn"
-          size={24}
+          size={26}
           color={i <= minRating ? Colors.primary : Colors.gray600}
           style={{ marginHorizontal: 3 }}
         />
@@ -112,30 +89,6 @@ const renderMinRating = (
     );
   }
   return minRatingIcons;
-};
-
-const renderMaxRating = (
-  setMaxRating: (rate: number) => void,
-  maxRating: number
-) => {
-  const maxRatingIcons = [];
-  for (let i = 1; i <= MAX_RATING; i++) {
-    maxRatingIcons.push(
-      <TouchableOpacity
-        key={`max-${i}`}
-        onPress={() => (i === maxRating ? setMaxRating(0) : setMaxRating(i))}
-        activeOpacity={0.7}
-      >
-        <AppIcon
-          name="popcorn"
-          size={24}
-          color={i <= maxRating ? Colors.primary : Colors.gray600}
-          style={{ marginHorizontal: 3 }}
-        />
-      </TouchableOpacity>
-    );
-  }
-  return maxRatingIcons;
 };
 
 export default RatingModal;
@@ -161,13 +114,14 @@ const styles = StyleSheet.create({
   title: {
     color: Colors.primary,
     fontSize: 24,
-    marginBottom: 20,
+    marginBottom: 10,
     fontWeight: "bold",
   },
   label: {
     color: Colors.gray400,
     fontSize: 16,
     marginVertical: 8,
+    marginBottom: 10,
     alignSelf: "flex-start",
   },
   modalButtonContainer: {

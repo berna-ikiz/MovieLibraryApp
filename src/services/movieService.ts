@@ -73,13 +73,14 @@ export const fetchGenres = async () => {
 export const fetchMoviesByFilters = async (
   genreIds: string,
   page = 1,
-  minRating?: number,
-  maxRating?: number
+  minRating?: number
 ) => {
   try {
+    const DEFAULT_MAX_RATING = 10;
     const params: any = {
       page,
       sort_by: "popularity.desc",
+      "vote_average.lte": DEFAULT_MAX_RATING,
     };
     if (genreIds.length > 0) {
       params.with_genres = genreIds;
@@ -87,9 +88,6 @@ export const fetchMoviesByFilters = async (
 
     if (minRating !== undefined) {
       params["vote_average.gte"] = minRating;
-    }
-    if (maxRating !== undefined) {
-      params["vote_average.lte"] = maxRating;
     }
 
     const { data } = await api.get("/discover/movie", { params });

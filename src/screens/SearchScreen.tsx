@@ -16,7 +16,6 @@ const SearchScreen = () => {
   const [selectedGenre, setSelectedGenre] = useState<GenreType | null>(null);
   const [selectedRating, setSelectedRating] = useState<{
     minRating?: number;
-    maxRating?: number;
   }>();
   const [isLoading, setIsLoading] = useState(false);
   const [fetchingMore, setFetchingMore] = useState(false);
@@ -48,11 +47,7 @@ const SearchScreen = () => {
     setFilteredMovies([]);
     setCurrentPage(1);
 
-    if (
-      selectedGenre ||
-      selectedRating?.minRating ||
-      selectedRating?.maxRating
-    ) {
+    if (selectedGenre || selectedRating?.minRating) {
       loadMoreMoviesByFilters();
     }
   }, [selectedGenre, selectedRating]);
@@ -63,14 +58,12 @@ const SearchScreen = () => {
     try {
       const genreId = selectedGenre?.id.toString() ?? "";
       const minRating = selectedRating?.minRating;
-      const maxRating = selectedRating?.maxRating;
       const nextPage = currentPage + 1;
 
       const newMovies = await fetchMoviesByFilters(
         genreId,
         nextPage,
-        minRating,
-        maxRating
+        minRating
       );
       setFilteredMovies((prev) => {
         const existingIds = new Set(prev.map((m) => m.id));
