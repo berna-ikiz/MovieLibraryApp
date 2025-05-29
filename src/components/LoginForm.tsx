@@ -54,6 +54,7 @@ const LoginForm = (Props: Props) => {
         await dispatch(register({ email, password })).unwrap();
       }
     } catch (err) {
+      setPassword("");
       Toast.show({
         type: "info",
         text1: isLogin ? "Login Failed" : "Register Failed",
