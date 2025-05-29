@@ -135,7 +135,7 @@ const DetailsScreen = ({ route }: Props) => {
   const doubleTap = Gesture.Tap()
     .numberOfTaps(2)
     .onStart(() => {
-      posterHeartOpacity.value = 0; // Reset animasyon
+      posterHeartOpacity.value = 0; // Reset animation
       runOnJS(handleAddRemoveFavorite)();
 
       if (!isFavorite) {

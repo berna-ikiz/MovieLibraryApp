@@ -31,7 +31,6 @@ const FavoritesScreen = () => {
   const [selectedGenre, setSelectedGenre] = useState<GenreType | null>(null);
   const [selectedRating, setSelectedRating] = useState<{
     minRating?: number;
-    maxRating?: number;
   }>();
   const [isLoading, setIsLoading] = useState(false);
   const favorites = useSelector(
@@ -65,25 +64,21 @@ const FavoritesScreen = () => {
   }, [searchText]);
 
   useEffect(() => {
-    setFilteredMovies([]);
-    if (
-      selectedGenre ||
-      selectedRating?.minRating ||
-      selectedRating?.maxRating
-    ) {
-      const searchedFavoriteMovies = favorites.filter((item) => {
-        return (
-          (selectedRating?.minRating &&
-            item.vote_average > selectedRating?.minRating) ||
-          (selectedRating?.maxRating &&
-            item.vote_average < selectedRating?.maxRating)
-        );
-      });
-      setFilteredMovies(searchedFavoriteMovies);
-    } else {
-      setFilteredMovies(favorites);
-    }
-  }, [selectedGenre, selectedRating]);
+    const searchedFavoriteMovies = favorites.filter((item) => {
+      const matchesGenre = selectedGenre
+        ? item.genres?.includes(selectedGenre.name)
+        : true;
+
+      const matchesRating =
+        selectedRating?.minRating !== undefined
+          ? item.vote_average > selectedRating.minRating
+          : true;
+
+      return matchesGenre && matchesRating;
+    });
+
+    setFilteredMovies(searchedFavoriteMovies);
+  }, [selectedGenre, selectedRating, favorites]);
 
   return (
     <View style={styles.container}>
