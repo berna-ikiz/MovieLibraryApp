@@ -1,6 +1,7 @@
 import axios from "axios";
 import { TMDB_API_KEY, TMDB_BASE_URL } from "@env";
 import { DEFAULT_MAX_RATING, TMDB_CONFIG } from "../utils/constants/constants";
+import { castMemberType } from "src/utils/type/movieType";
 
 const api = axios.create({
   baseURL: TMDB_BASE_URL,
@@ -36,7 +37,9 @@ export const fetchMovieDetails = async (movieId: Number) => {
   }
 };
 
-export const fetchCastDetails = async (movieId: Number) => {
+export const fetchCastDetails = async (
+  movieId: Number
+): Promise<{ castData: castMemberType[] } | null> => {
   try {
     const { data } = await api.get(`/movie/${movieId}/credits`);
     return {

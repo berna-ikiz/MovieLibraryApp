@@ -75,8 +75,13 @@ const DetailsScreen = ({ route }: Props) => {
           });
           return;
         }
+        const uniqueCast = Array.from(
+          new Map(
+            castData.castData.map((actor: castMemberType) => [actor.id, actor])
+          ).values()
+        );
         setMovie(movieData.movieDetails);
-        setCast(castData.castData);
+        setCast(uniqueCast);
         setIsLoading(false);
       } catch (error) {
         console.log("Failed to fetch movie details:", error);
