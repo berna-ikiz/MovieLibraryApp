@@ -68,13 +68,7 @@ const MainTabs = () => (
 const AppNavigator = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
     <Stack.Screen name="MainTabs" component={MainTabs} />
-    <Stack.Screen
-      name="Details"
-      component={DetailsScreen}
-      options={{
-        presentation: "modal",
-      }}
-    />
+    <Stack.Screen name="Details" component={DetailsScreen} />
   </Stack.Navigator>
 );
 

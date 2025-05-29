@@ -1,7 +1,8 @@
 import {
+  Dimensions,
+  Platform,
   StatusBar,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -11,6 +12,7 @@ import { HeaderType } from "../utils/type/movieType";
 import { useNavigation } from "@react-navigation/native";
 import { CustomText } from "../theme/fontContext";
 import AppIcon from "../assets/icons";
+const { height } = Dimensions.get("window");
 
 const Header = ({ title, showBackButton }: HeaderType) => {
   const navigation = useNavigation();
@@ -29,6 +31,7 @@ const Header = ({ title, showBackButton }: HeaderType) => {
         <CustomText style={styles.headerTitle} numberOfLines={1}>
           {title.length < 27 ? `${title}` : `${title.substring(0, 27)}...`}
         </CustomText>
+        <View style={styles.backButtonPlaceholder} />
       </View>
     </View>
   );
@@ -39,22 +42,26 @@ export default Header;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.black,
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight || 20 : 44,
   },
   header: {
-    paddingTop: 60,
-    paddingBottom: 16,
-    alignItems: "center",
-    justifyContent: "center",
+    height: 60,
     flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
   },
   headerTitle: {
     fontSize: 20,
     fontWeight: "bold",
     color: Colors.primary,
+    textAlign: "center",
+    flex: 1,
   },
   backButton: {
-    position: "absolute",
-    left: 16,
-    top: 60,
+    paddingRight: 16,
+  },
+  backButtonPlaceholder: {
+    width: 44,
   },
 });
