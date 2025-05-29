@@ -203,13 +203,13 @@ const styles = StyleSheet.create({
   },
   title: {
     color: Colors.white,
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "600",
     textAlign: "center",
   },
   year: {
     color: Colors.gray500,
-    fontSize: 14,
+    fontSize: 13,
     textAlign: "center",
   },
 
