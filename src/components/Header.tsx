@@ -18,7 +18,6 @@ const Header = ({ title, showBackButton }: HeaderType) => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor={Colors.black} barStyle="light-content" />
       <View style={styles.header}>
         {showBackButton && (
           <TouchableOpacity
@@ -42,7 +41,14 @@ export default Header;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.black,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight || 20 : 44,
+    paddingTop:
+      Platform.OS === "android"
+        ? height > 800
+          ? 40
+          : 20
+        : height > 800
+        ? 60
+        : 30,
   },
   header: {
     height: 60,

@@ -78,28 +78,31 @@ const ProfileScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <>
       <Header title="🎬 Movie Library" showBackButton={false} />
-      <TouchableOpacity style={styles.button} onPress={handleLogout}>
-        <AppIcon name="door-open" size={24} color={Colors.white} />
-        <CustomText style={styles.buttonText}>Log out</CustomText>
-      </TouchableOpacity>
-      <View style={styles.contentContainer}>
+
+      <View style={styles.container}>
+        <TouchableOpacity style={styles.button} onPress={handleLogout}>
+          <AppIcon name="door-open" size={24} color={Colors.white} />
+          <CustomText style={styles.buttonText}>Log out</CustomText>
+        </TouchableOpacity>
         <View style={styles.contentContainer}>
-          <AppIcon name="emoticon-sad" size={100} color={Colors.gray800} />
-          <CustomText style={styles.sadFunnyText}>
-            Whatever you choose, just know you're crashing my soul.
-          </CustomText>
+          <View style={styles.contentContainer}>
+            <AppIcon name="emoticon-sad" size={100} color={Colors.gray800} />
+            <CustomText style={styles.sadFunnyText}>
+              Whatever you choose, just know you're crashing my soul.
+            </CustomText>
+          </View>
         </View>
+        <TouchableOpacity
+          style={[styles.button, styles.deleteButton]}
+          onPress={handleDeleteAccount}
+        >
+          <AppIcon name="delete-alert" size={24} color={Colors.white} />
+          <CustomText style={styles.buttonText}>Delete Account</CustomText>
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity
-        style={[styles.button, styles.deleteButton]}
-        onPress={handleDeleteAccount}
-      >
-        <AppIcon name="delete-alert" size={24} color={Colors.white} />
-        <CustomText style={styles.buttonText}>Delete Account</CustomText>
-      </TouchableOpacity>
-    </View>
+    </>
   );
 };
 
@@ -110,7 +113,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.black,
     paddingHorizontal: 24,
-    paddingTop: 24,
     paddingBottom: 36,
   },
   contentContainer: {
